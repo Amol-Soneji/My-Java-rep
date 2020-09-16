@@ -26,5 +26,44 @@ public class countInFile
     charsToSearch = letters;
   }
   
+  /**
+  *The following method is used to count and find the number of instances the letters to search for appear in a text file.  
+  */
+  public static void doCount()
+  {
+    try
+    {
+      File inputFile = new File(fileName);
+      Scanner searchScan = new Scanner(inputFile);
+      while(searchScan.hasNextLine())
+      {
+        String textLine = searchScan.nextLine();
+        for(int i = 0; i < textLine.length(); i++)
+        {
+          for(int j = 0; j < charsToSearch.length; j++)
+          {
+            if(textLine.charAt(i) == charsToSearch[j])
+              numbInstances++;
+          }
+        }
+      }
+      searchScan.close();
+    }
+    catch(FileNotFoundException err)
+    {
+      err.printStackTrace();
+    }
+    catch(IOException err)
+    {
+      err.printStackTrace();
+    }
+  }
   
+  /**
+  *The following method returns the count of the number of instances the letters to search for, occured in the text file.  
+  */
+  public static long getNumbInstances()
+  {
+    return numbInstances;
+  }
 }
