@@ -25,14 +25,14 @@ public class Main
 {
   public static void main(String[] args)
   {
-    Scanner userInput = new Scanner(System.in);
+    Scanner userInput = new Scanner(System.in);//Create the Scanner inststance.  This will be used for user input in this program.  
     boolean validInput = false;
     System.out.println("As stated in the README.md file of the java program, this program counts the number of times a specified group of" 
                        + System.lineSeparator()
                        + "letters or characters (max 3) are found in a text file.  ");
     System.out.println("Enter the number of letters or chacters to search for.  (Max 3)  :  ");
     int numberOfLetters = 0;
-    while(!validInput)
+    while(!validInput)//Check to see if the input that the user enters is valid.  
     {
       try
       {
@@ -42,7 +42,7 @@ public class Main
         else
           validInput = true;
       }
-      catch(Exception someException)
+      catch(Exception someException)//An input that was not a number or something else.  
       {
         System.out.println("Invalid input.  Please try again.  :  ");
       }
@@ -50,7 +50,7 @@ public class Main
     Character[] charsToSearch = new Character[numberOfLetters];
     System.out.println("Please enter the first letter or character that is to be searched for.  :  ");
     charsToSearch[0] = (userInput.nextLine()).charAt(0);
-    for(int i = 1; i < numberOfLetters; i++)
+    for(int i = 1; i < numberOfLetters; i++)//Get the letter or chateracters to be searched for.  
     {
       validInput = false;
       System.out.println("Please enter the next letter or character that is to be searched for.  :  ");
@@ -77,14 +77,14 @@ public class Main
                        + "Otherwise enter the full directory path of the file you want to use.  :  ");
     String fileName = userInput.nextLine();
     
-    //
+    //Set the field variables in the countInFile class by sening fileName string and charsToSearch character array, as parameters.  
     countInFile.setFields(fileName, charsToSearch);
-    //
+    //Do the counting of the number of instances.  
     countInFile.doCount();
-    //
+    //Get the results of the count.  
     int result = countInFile.getNumbInstances();
     
-    //
+    //Display the results of the overall total of all instances that the letters in the charsToSearch character array appeared.  
     System.out.println("The total number of times any one of the " + numberOfLetters + " appeared is " + result + ".  ");
     System.out.println("Thank you for running this program.  ");
     System.exit(0);
