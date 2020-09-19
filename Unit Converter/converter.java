@@ -34,15 +34,15 @@ public class converter
   public static void convert()
   {
     if(measurementType == 1)
-      output = convertLengthMeasurement(inputType, outputType, input);
+      output = convertLengthMeasurement.measurementConvert(inputType, outputType, input);
     else if(measurementType == 2)
-      output = convertAreaMeasurement(inputType, outputType, input);
+      output = convertAreaMeasurement.measurementConvert(inputType, outputType, input);
     else if(measurementType == 3)
-      output = convertVolumeMeasurement(inputType, outputType, input);
+      output = convertVolumeMeasurement.measurementConvert(inputType, outputType, input);
     else if(measurementType == 4)
-      output = convertLiquidMeasurement(inputType, outputType, input);
+      output = convertLiquidMeasurement.measurementConvert(inputType, outputType, input);
     else
-      output = convertWeightMeasurement(inputType, outputType, input);
+      output = convertWeightMeasurement.measurementConvert(inputType, outputType, input);
   }
   
   /**
