@@ -26,4 +26,30 @@ public class converter
     input = inp;
     output = out;
   }
+  
+  /**
+  *The following method is used to do the conversion.  It will use non-child subclasses to do the conversion.  However, those classes will be implemnting the 
+  *measurementTypeConversion interface.  
+  */
+  public static void convert()
+  {
+    if(measurementType == 1)
+      output = convertLengthMeasurement(inputType, outputType, input);
+    else if(measurementType == 2)
+      output = convertAreaMeasurement(inputType, outputType, input);
+    else if(measurementType == 3)
+      output = convertVolumeMeasurement(inputType, outputType, input);
+    else if(measurementType == 4)
+      output = convertLiquidMeasurement(inputType, outputType, input);
+    else
+      output = convertWeightMeasurement(inputType, outputType, input);
+  }
+  
+  /**
+  *The following method returns the result of the conversion.  
+  */
+  public static double getResult()
+  {
+    return output;
+  }
 }
