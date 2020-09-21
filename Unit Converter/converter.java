@@ -9,11 +9,11 @@
 
 public class converter
 {
-  private static byte measurementType;
-  private static byte[] inputType;
-  private static byte[] outputType;
-  private static double input;
-  private static double output;
+  private static byte measurementType;//The type of measurement we are dealing with (ex. Liquid, Volume, Length).  
+  private static byte[] inputType;//An array holding the input type, US or metric, inch, cm, mm, km, or mile.  
+  private static byte[] outputType;//An array holding the desired output type to convert to.  
+  private static double input;//The input measurement value.  
+  private static double output;//The output measurement value from the result of conversion calculation.  
   
   /**
   *The following method is used to set fields, as makeing this convert class into an object does not make sense.  
