@@ -3,3 +3,5 @@ Field Sites is a java program that is meant to be universal, and can run on any 
 
 Field Sites is meant to be used by those who are entering a new field of study, and display users websites that may realte to this new field of theirs.  This program uses predifined set of fields of study.  
 
+## Current state of work on project.  
+On pause.  
