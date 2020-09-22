@@ -73,15 +73,15 @@ public class convertLengthMeasurement implements measurementTypeConversion
   */
   private static void usOnlyConvert()
   {
-    if(inputType[1] == 0)//Inches
+    if(inputType[1] == 1)//Inches
     {
       
     }
-    else if(inputType[1] == 1)//Feet
+    else if(inputType[1] == 2)//Feet
     {
       
     }
-    else if(inputType[1] == 2)//Yards
+    else if(inputType[1] == 3)//Yards
     {
       
     }
@@ -96,7 +96,22 @@ public class convertLengthMeasurement implements measurementTypeConversion
   */
   private static void usToSiConvert()
   {
-    
+    if(inputType[1] == 1)//Inches
+    {
+      
+    }
+    else if(inputType[1] == 2)//Feet
+    {
+      
+    }
+    else if(inputType[1] == 3)//Yards
+    {
+      
+    }
+    else//Miles
+    {
+      
+    }
   }
   
   /**
@@ -105,7 +120,26 @@ public class convertLengthMeasurement implements measurementTypeConversion
   */
   private static void siOnlyConvert()
   {
-    
+    if(inputType[1] == 1)//Millimeter
+    {
+      
+    }
+    else if(inputType[1] == 2)//Centimeter
+    {
+      
+    }
+    else if(inputType[1] == 3)//Decimeter
+    {
+      
+    }
+    else if(inputType[1] == 4)//Hectometer
+    {
+      
+    }
+    else//Kilometer
+    {
+      
+    }
   }
   
   /**
@@ -113,6 +147,25 @@ public class convertLengthMeasurement implements measurementTypeConversion
   */
   private static void siToUsConvert()
   {
-    
+    if(inputType[1] == 1)//Milimeter
+    {
+      
+    }
+    else if(inputType[1] == 2)//Centimeter
+    {
+      
+    }
+    else if(inputType[1] == 3)//Decimeter
+    {
+      
+    }
+    else if(inputType[1] == 4)//Hectometer
+    {
+      
+    }
+    else//Kilometer
+    {
+      
+    }
   }
 }
