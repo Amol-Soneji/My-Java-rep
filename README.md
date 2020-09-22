@@ -1,2 +1,2 @@
 # My-Java-rep
-java repository of some small stuff.  
+Java repository of some stuff.  
