@@ -209,27 +209,93 @@ public class convertLengthMeasurement implements measurementTypeConversion
     }
     else if(inputType[1] == 2)//Centimeter
     {
-      
+      if(outputType[1] == 1)
+        output = input * 10;//A centimeter has 10 millimeters.  
+      else if(outputType[1] == 3)
+        output = input / 10;//10 centimeters in a decimeter.  
+      else if(outputType[1] == 4)
+        output = input / 100;//100 centimeters in a meter.  
+      else if(outputType[1] == 5)
+        output = input / 1000;//1,000 centimeters in a decameter.  
+      else if(outputType[1] == 6)
+        output = input / 10000;//10,000 centimeters in a hectometer.  
+      else
+        output = input / 100000;//100,000 centimeters in a kilometer.  
     }
     else if(inputType[1] == 3)//Decimeter
     {
-      
+      if(outputType[1] == 1)
+        output = input * 100;//A decimeter has 100 millimeters.  
+      else if(outputType[1] == 2)
+        output = input * 10;//A decimeter has 10 centimeters.  
+      else if(outputType[1] == 4)
+        output = input / 10;//10 decimeters in a meter.  
+      else if(outputType[1] == 5)
+        output = input / 100;//100 decimeters in a decameter.  
+      else if(outputType[1] == 6)
+        output = input / 1000;//1,000 decimeters in a hectometer.  
+      else
+        output = input / 10000;//10,000 decimeters in a kilometer.  
     }
     else if(inputType[1] == 4)//Meter
     {
-      
+      if(outputType[1] == 1)
+        output = input * 1000;//A meter has 1,000 millimeters.  
+      else if(outputType[1] == 2)
+        output = input * 100;//A meter has 100 centimeters.  
+      else if(outputType[1] == 3)
+        output = input * 10;//A meter has 10 decimeters.  
+      else if(outputType[1] == 5)
+        output = input / 10;//10 meters in a decameter.  
+      else if(outputType[1] == 6)
+        output = input / 100;//100 meters in a hectometer.  
+      else
+        output = input / 1000;//1,000 meters in a kilometer.  
     }
     else if(inputType[1] == 5)//Decameter
     {
-      
+      if(outputType[1] == 1)
+        output = input * 10000;//A decameter has 10,000 millimeters.  
+      else if(outputType[1] == 2)
+        output = input * 1000;//A decameter has 1,000 centimeters.  
+      else if(outputType[1] == 3)
+        output = input * 100;//A decameter has 100 decimeters.  
+      else if(outputType[1] == 4)
+        output = input * 10;//A decameter has 10 meters.  
+      else if(outputType[1] == 6)
+        output = input / 10;//10 decameters in a hectometer.  
+      else
+        output = input / 100;//100 decameters in a kilometer.  
     }
     else if(inputType[1] == 6)//Hectometer
     {
-      
+      if(outputType[1] == 1)
+        output = input * 100000;//A hectometer has 100,000 millimeters.  
+      else if(outputType[1] == 2)
+        output = input * 10000;//A hectometer has 10,000 centimeters.  
+      else if(outputType[1] == 3)
+        output = input * 1000;//A hectometer has 1,000 decimeters.  
+      else if(outputType[1] == 4)
+        output = input * 100;//A hectometer has 100 meters.  
+      else if(outputType[1] == 5)
+        output = input * 10;//A hectometer has 10 decameters.  
+      else
+        output = input / 10;//10 hectometers in a kilometer.  
     }
     else//Kilometer
     {
-      
+      if(outputType[1] == 1)
+        output = input * 1000000;//A kilometer has 1,000,000 millimeters.  
+      else if(outputType[1] == 2)
+        output = input * 100000;//A kilometer has 100,000 centimeters.  
+      else if(outputType[1] == 3)
+        output = input * 10000;//A kilometer has 10,000 decimeters.  
+      else if(outputType[1] == 4)
+        output = input * 1000;//A kilometer has 1,000 meters.  
+      else if(outputType[1] == 5)
+        output = input * 100;//A kilometer has 100 decameters.  
+      else if(outputType[1] == 6)
+        output = input * 10;//A kilometer has 10 hectometers.  
     }
   }
   
@@ -240,31 +306,80 @@ public class convertLengthMeasurement implements measurementTypeConversion
   {
     if(inputType[1] == 1)//Milimeter
     {
-      
+      if(outputType[1] == 1)
+        
+      else if(outputType[1] == 2)
+        
+      else if(outputType[1] == 3)
+        
+      else
+        
     }
     else if(inputType[1] == 2)//Centimeter
     {
-      
+      if(outputType[1] == 1)
+        
+      else if(outputType[1] == 2)
+        
+      else if(outputType[1] == 3)
+        
+      else
+        
     }
     else if(inputType[1] == 3)//Decimeter
     {
-      
+      if(outputType[1] == 1)
+        
+      else if(outputType[1] == 2)
+        
+      else if(outputType[1] == 3)
+        
+      else
+        
     }
     else if(inputType[1] == 4)//Meter
     {
-      
+      if(outputType[1] == 1)
+        
+      else if(outputType[1] == 2)
+        
+      else if(outputType[1] == 3)
+        
+      else
+        
     }
     else if(inputType[1] == 5)//Decameter
     {
-      
+      if(outputType[1] == 1)
+        
+      else if(outputType[1] == 2)
+        
+      else if(outputType[1] == 3)
+        
+      else
+        
     }
     else if(inputType[1] == 6)//Hectometer
     {
-      
+      if(outputType[1] == 1)
+        
+      else if(outputType[1] == 2)
+        
+      else if(outputType[1] == 3)
+        
+      else
+        
     }
     else//Kilometer
     {
-      
+      if(outputType[1] == 1)
+        
+      else if(outputType[1] == 2)
+        
+      else if(outputType[1] == 3)
+        
+      else
+        
     }
   }
 }
