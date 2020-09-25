@@ -41,8 +41,10 @@ public class converter
       output = convertVolumeMeasurement.measurementConvert(inputType, outputType, input);
     else if(measurementType == 4)
       output = convertLiquidMeasurement.measurementConvert(inputType, outputType, input);
-    else
+    else if(measurementType == 5)
       output = convertWeightMeasurement.measurementConvert(inputType, outputType, input);
+    else
+      output = convertTempratureMeasurement.measurementConvert(inputType, outputType, input);
   }
   
   /**
