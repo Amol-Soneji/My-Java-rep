@@ -14,7 +14,7 @@ public class convertLengthMeasurement implements measurementTypeConversion
   private static byte[] inputType;
   private static byte[] outputType;
   private static double input;
-  private static double ouput;
+  private static double output;
   
   /**
   *This method takes in the parameters and automatically calls the methods for calculating the conversion.  It then returns the double data type value represented by output.  
@@ -107,7 +107,7 @@ public class convertLengthMeasurement implements measurementTypeConversion
       else if(outputType[1] == 2)
         output = input * 5280;//A mile has 5,280 feet.  
       else
-        ouput = input * 1760;//A mile has 1,760 yards.  
+        output = input * 1760;//A mile has 1,760 yards.  
     }
   }
   
@@ -119,70 +119,70 @@ public class convertLengthMeasurement implements measurementTypeConversion
     if(inputType[1] == 1)//Inches
     {
       if(outputType[1] == 1)
-        
+        output = input * 25.4;//1 inch = 25.4 millimeters
       else if(outputType[1] == 2)
-        
+        output = input * 2.54;//inch to centimeter
       else if(outputType[1] == 3)
-        
+        output = input * 0.254;//inch to decimeter
       else if(outputType[1] == 4)
-        
+        output = input * 0.0254;//inch to meter
       else if(outputType[1] == 5)
-        
+        output = input * 0.00254;//inch to decameter
       else if(outputType[1] == 6)
-        
+        output = input * 0.000254;//inch to hectometer
       else
-        
+        output = input * 0.0000254;//inch to kilometer
     }
     else if(inputType[1] == 2)//Feet
     {
       if(outputType[1] == 1)
-        
+        output = input * 304.8;//1 feet = 304.8 millimeters
       else if(outputType[1] == 2)
-        
+        output = input * 30.48;//feet to centimeter
       else if(outputType[1] == 3)
-        
+        output = input * 3.048;//feet to decimeter
       else if(outputType[1] == 4)
-        
+        output = input * 0.3048;//feet to meter
       else if(outputType[1] == 5)
-        
+        output = input * 0.03048;//feet to decameter
       else if(outputType[1] == 6)
-        
+        output = input * 0.003048;//feet to hectometer
       else
-        
+        output = input * 0.0003048;//feet to meter
     }
     else if(inputType[1] == 3)//Yards
     {
       if(outputType[1] == 1)
-        
+        output = input * 914.4;//1 yard = 914.4 millimeters
       else if(outputType[1] == 2)
-        
+        output = input * 91.44;//yard to centimeter
       else if(outputType[1] == 3)
-        
+        output = input * 9.144;//yard to decimeter
       else if(outputType[1] == 4)
-        
+        output = input * 0.9144;//yard to meter
       else if(outputType[1] == 5)
-        
+        output = input * 0.09144;//yard to decameter
       else if(outputType[1] == 6)
-        
+        output = input * 0.009144;//yard to hectometer
       else
-        
+        output = input * 0.0009144;//yard to kilometer
     }
     else//Miles
     {
       if(outputType[1] == 1)
-        
+        output = input * 1609344;//1 mile = 1,609,344 millimeters
       else if(outputType[1] == 2)
-        
+        output = input * 160934.4;//mile to centimeter
       else if(outputType[1] == 3)
-        
+        output = input * 16093.44;//mile to decimeter
       else if(outputType[1] == 4)
-        
+        output = input * 1609.344;//mile to meter
       else if(outputType[1] == 5)
-        
+        output = input * 160.9344;//mile to decameter
       else if(outputType[1] == 6)
-        
+        output = input * 16.09344;//mile to hectometer
       else
-        
+        output = input * 1.609344;//mile to kilometer
     }
   }
   
@@ -307,79 +307,79 @@ public class convertLengthMeasurement implements measurementTypeConversion
     if(inputType[1] == 1)//Milimeter
     {
       if(outputType[1] == 1)
-        
+        output = input / 25.4;//millimeter to inches
       else if(outputType[1] == 2)
-        
+        output = input / 304.8;//millimeter to feet
       else if(outputType[1] == 3)
-        
+        output = input / 914.4;//millimeter to yards
       else
-        
+        output = input / 1609344;//millimeter to miles
     }
     else if(inputType[1] == 2)//Centimeter
     {
       if(outputType[1] == 1)
-        
+        output = input / 2.54;//centimeter to inches
       else if(outputType[1] == 2)
-        
+        output = input / 30.48;//centimeter to feet
       else if(outputType[1] == 3)
-        
+        output = input / 91.44;//centimeter to yards
       else
-        
+        output = input / 160934.4;//centimeter to miles
     }
     else if(inputType[1] == 3)//Decimeter
     {
       if(outputType[1] == 1)
-        
+        output = input / 0.254;//decimeter to inches
       else if(outputType[1] == 2)
-        
+        output = input / 3.048;//decimeter to feet
       else if(outputType[1] == 3)
-        
+        output = input / 9.144;//decimeter to yards
       else
-        
+        output = input / 16093.44;//decimeter to miles
     }
     else if(inputType[1] == 4)//Meter
     {
       if(outputType[1] == 1)
-        
+        output = input / 0.0254;//meter to inches
       else if(outputType[1] == 2)
-        
+        output = input / 0.3048;//meter to feet
       else if(outputType[1] == 3)
-        
+        output = input / 0.9144;//meter to yards
       else
-        
+        output = input / 1609.344;//meter to miles
     }
     else if(inputType[1] == 5)//Decameter
     {
       if(outputType[1] == 1)
-        
+        output = input / 0.00254;//decameter to inches
       else if(outputType[1] == 2)
-        
+        output = input / 0.03048;//decameter to feet
       else if(outputType[1] == 3)
-        
+        output = input / 0.09144;//decameter to yards
       else
-        
+        output = input / 160.9344;//decameter to miles
     }
     else if(inputType[1] == 6)//Hectometer
     {
       if(outputType[1] == 1)
-        
+        output = input / 0.000254;//hectometer to inches
       else if(outputType[1] == 2)
-        
+        output = input / 0.003048;//hectometer to feet
       else if(outputType[1] == 3)
-        
+        output = input / 0.009144;//hectometer to yards
       else
-        
+        output = input / 16.09344;//hectometer to miles
     }
     else//Kilometer
     {
       if(outputType[1] == 1)
-        
+        output = input / 0.0000254;//kilometer to inches
       else if(outputType[1] == 2)
-        
+        output = input / 0.0003048;//kilometer to feet
       else if(outputType[1] == 3)
-        
+        output = input / 0.0009144;//kilometer to yards
       else
-        
+        output = input / 1.609344;//kilometer to miles
     }
   }
 }
