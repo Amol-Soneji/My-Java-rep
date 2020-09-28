@@ -6,7 +6,7 @@ import java.util.Scanner;
 *<br>
 *
 *@author  Amol Soneji
-*@version 1.0,  14 Sept 2020
+*@version 1.1,  14 Sept 2020
 */
 
 
@@ -29,7 +29,7 @@ public class countInFile
   /**
   *The following method is used to count and find the number of instances the letters to search for appear in a text file.  
   */
-  public static void doCount()
+  protected static void doCount()
   {
     try
     {
@@ -62,7 +62,7 @@ public class countInFile
   /**
   *The following method returns the count of the number of instances the letters to search for, occured in the text file.  
   */
-  public static long getNumbInstances()
+  protected static long getNumbInstances()
   {
     return numbInstances;
   }
