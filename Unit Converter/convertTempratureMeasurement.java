@@ -73,7 +73,10 @@ public class convertTempratureMeasurement implements measurementTypeConversion
   */
   private static void usOnlyConvert()
   {
-    
+    if(inputType[1] == 1)//We are converting to Rankine
+      output = input + 459.67;
+    else//We are converting to Fahrenheit
+      output = input - 459.67;
   }
   
   /**
@@ -81,7 +84,20 @@ public class convertTempratureMeasurement implements measurementTypeConversion
   */
   private static void usToSiConvert()
   {
-    
+    if(inputType[1] == 1)//Fahrenheit
+    {
+      if(outputType[1] == 1)//To Celcius
+        output = (input - 32) * (5 / 9);
+      else//To Kelvin
+        output = (input + 459.67) * (5 / 9);
+    }
+    else//Rankine
+    {
+      if(outputType[1] == 1)//To Celcius
+        output = (input - 491.67) * (5 / 9);
+      else//To Kelvin
+        output = input * (5 / 9);
+    }
   }
   
   /**
@@ -90,7 +106,10 @@ public class convertTempratureMeasurement implements measurementTypeConversion
   */
   private static void siOnlyConvert()
   {
-    
+    if(inputType[1] == 1)//We are converting to Kelvin
+      output = input + 273.15;
+    else//We are converting to Celcius
+      output = input - 273.15;
   }
   
   /**
@@ -98,6 +117,19 @@ public class convertTempratureMeasurement implements measurementTypeConversion
   */
   private static void siToUsConvert()
   {
-    
+    if(inputType[1] == 1)//Celcius
+    {
+      if(outputType[1] == 1)//To Fahrenheit
+        output = (input * (9 / 5)) + 32;
+      else//To Rankine
+        output = (input + 273.15) * (9 / 5);
+    }
+    else//Kelvine
+    {
+      if(outputType[1] == 1)//To Fahrenheit
+        output = (input * (9 / 5)) - 459.67;
+      else//To Rankine
+        output = input * (9 / 5);
+    }
   }
 }
