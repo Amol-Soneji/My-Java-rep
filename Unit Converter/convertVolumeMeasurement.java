@@ -1,5 +1,5 @@
 /**
-*This class converts measurements of area, from one volume measurement to another volume measurement.  This class can also convert from US customary untis to SI units, and vice versa as well.  
+*This class converts measurements of volume, from one volume measurement to another volume measurement.  This class can also convert from US customary untis to SI units, and vice versa as well.  
 *This class also implements the measurementTypeConversion interface.  
 *<br>
 *
