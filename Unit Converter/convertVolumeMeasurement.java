@@ -4,12 +4,12 @@
 *<br>
 *
 *@author  Amol Soneji
-*@version 1.0, 29 Sept 2020
+*@version 1.0, 6 Oct 2020
 */
 
 
 
-public class convertAreaMeasurement implements measurementTypeConversion
+public class convertVolumeMeasurement implements measurementTypeConversion
 {
   private static byte[] inputType;
   private static byte[] outputType;
