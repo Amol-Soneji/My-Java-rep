@@ -124,7 +124,7 @@ public class convertTempratureMeasurement implements measurementTypeConversion
       else//To Rankine
         output = (input + 273.15) * (9 / 5);
     }
-    else//Kelvine
+    else//Kelvin
     {
       if(outputType[1] == 1)//To Fahrenheit
         output = (input * (9 / 5)) - 459.67;
