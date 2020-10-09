@@ -260,7 +260,30 @@ public class convertLiquidMeasurement implements measurementTypeConversion
   */
   private static void siOnlyConvert()
   {
-    
+    if(inputType[1] == 1)//Microlitres
+    {
+      
+    }
+    else if(inputType[1] == 2)//Millilitres
+    {
+      
+    }
+    else if(inputType[1] == 3)//Centilitres
+    {
+      
+    }
+    else if(inputType[1] == 4)//Litres
+    {
+      
+    }
+    else if(inputType[1] == 5)//Kilolitres
+    {
+      
+    }
+    else//Megalitres
+    {
+      
+    }
   }
   
   /**
