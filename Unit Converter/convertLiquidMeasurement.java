@@ -262,27 +262,81 @@ public class convertLiquidMeasurement implements measurementTypeConversion
   {
     if(inputType[1] == 1)//Microlitres
     {
-      
+      if(outputType[1] == 2)//To millilitres
+        
+      else if(outputType[1] == 3)//To centilitres
+        
+      else if(outputType[1] == 4)//To litres
+        
+      else if(outputType[1] == 5)//To kilolitres
+        
+      else//To megalitres
+        
     }
     else if(inputType[1] == 2)//Millilitres
     {
-      
+      if(outputType[1] == 1)//To microlitres
+        
+      else if(outputType[1] == 3)//To centilitres
+        
+      else if(outputType[1] == 4)//To litres
+        
+      else if(outputType[1] == 5)//To kilolitres
+        
+      else//To megalitres
+        
     }
     else if(inputType[1] == 3)//Centilitres
     {
-      
+      if(outputType[1] == 1)//To microlitres
+        
+      else if(outputType[1] == 2)//To millilitres
+        
+      else if(outputType[1] == 4)//To litres
+        
+      else if(outputType[1] == 5)//To kilolitres
+        
+      else//To megalitres
+        
     }
     else if(inputType[1] == 4)//Litres
     {
-      
+      if(outputType[1] == 1)//To microlitres
+        
+      else if(outputType[1] == 2)//To millilitres
+        
+      else if(outputType[1] == 3)//To centilitres
+        
+      else if(outputType[1] == 5)//To kilolitres
+        
+      else//To megalitres
+        
     }
     else if(inputType[1] == 5)//Kilolitres
     {
-      
+      if(outputType[1] == 1)//To microlitres
+        
+      else if(outputType[1] == 2)//To millilitres
+        
+      else if(outputType[1] == 3)//To centilitres
+        
+      else if(outputType[1] == 4)//To litres
+        
+      else//To megalitres
+        
     }
     else//Megalitres
     {
-      
+      if(outputType[1] == 1)//To microlitres
+        
+      else if(outputType[1] == 2)//To millilitres
+        
+      else if(outputType[1] == 3)//To centilitres
+        
+      else if(outputType[1] == 4)//To litres
+        
+      else//To kilolitres
+        
     }
   }
   
