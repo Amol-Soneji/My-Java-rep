@@ -251,7 +251,42 @@ public class convertLiquidMeasurement implements measurementTypeConversion
   */
   private static void usToSiConvert()
   {
-    
+    if(inputType[1] == 1)//Teaspoons
+    {
+      
+    }
+    else if(inputType[1] == 2)//Tablespoons
+    {
+      
+    }
+    else if(inputType[1] == 3)//Fluid ounces
+    {
+      
+    }
+    else if(inputType[1] == 4)//Cups
+    {
+      
+    }
+    else if(inputType[1] == 5)//Pints
+    {
+      
+    }
+    else if(inputType[1] == 6)//Quarts
+    {
+      
+    }
+    else if(inputType[1] == 7)//Gallons
+    {
+      
+    }
+    else if(inputType[1] == 8)//Barrels (Oil barrels)
+    {
+      
+    }
+    else//Hogsheads
+    {
+      
+    }
   }
   
   /**
