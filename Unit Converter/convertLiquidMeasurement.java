@@ -479,6 +479,131 @@ public class convertLiquidMeasurement implements measurementTypeConversion
   */
   private static void siToUsConvert()
   {
-    
+    if(inputType[1] == 1)//Microlitres
+    {
+      if(outputType[1] == 1)//To teaspoons
+        
+      else if(outputType[1] == 2)//To tablespoons
+        
+      else if(outputType[1] == 3)//To fluid ounces
+        
+      else if(outputType[1] == 4)//To cups
+        
+      else if(outputType[1] == 5)//To pints
+        
+      else if(outputType[1] == 6)//To quarts
+        
+      else if(outputType[1] == 7)//To gallons
+        
+      else if(outputType[1] == 8)//To barrels (oil barrels)
+        
+      else//To hogsheads
+        
+    }
+    else if(inputType[1] == 2)//Millilitres
+    {
+      if(outputType[1] == 1)//To teaspoons
+        
+      else if(outputType[1] == 2)//To tablespoons
+        
+      else if(outputType[1] == 3)//To fluid ounces
+        
+      else if(outputType[1] == 4)//To cups
+        
+      else if(outputType[1] == 5)//To pints
+        
+      else if(outputType[1] == 6)//To quarts
+        
+      else if(outputType[1] == 7)//To gallons
+        
+      else if(outputType[1] == 8)//To barrels (oil barrels)
+        
+      else//To hogsheads
+        
+    }
+    else if(inputType[1] == 3)//Centilitres
+    {
+      if(outputType[1] == 1)//To teaspoons
+        
+      else if(outputType[1] == 2)//To tablespoons
+        
+      else if(outputType[1] == 3)//To fluid ounces
+        
+      else if(outputType[1] == 4)//To cups
+        
+      else if(outputType[1] == 5)//To pints
+        
+      else if(outputType[1] == 6)//To quarts
+        
+      else if(outputType[1] == 7)//To gallons
+        
+      else if(outputType[1] == 8)//To barrels (oil barrels)
+        
+      else//To hogsheads
+        
+    }
+    else if(inputType[1] == 4)//Litres
+    {
+      if(outputType[1] == 1)//To teaspoons
+        
+      else if(outputType[1] == 2)//To tablespoons
+        
+      else if(outputType[1] == 3)//To fluid ounces
+        
+      else if(outputType[1] == 4)//To cups
+        
+      else if(outputType[1] == 5)//To pints
+        
+      else if(outputType[1] == 6)//To quarts
+        
+      else if(outputType[1] == 7)//To gallons
+        
+      else if(outputType[1] == 8)//To barrels (oil barrels)
+        
+      else//To hogsheads
+        
+    }
+    else if(inputType[1] == 5)//Kilolitres
+    {
+      if(outputType[1] == 1)//To teaspoons
+        
+      else if(outputType[1] == 2)//To tablespoons
+        
+      else if(outputType[1] == 3)//To fluid ounces
+        
+      else if(outputType[1] == 4)//To cups
+        
+      else if(outputType[1] == 5)//To pints
+        
+      else if(outputType[1] == 6)//To quarts
+        
+      else if(outputType[1] == 7)//To gallons
+        
+      else if(outputType[1] == 8)//To barrels (oil barrels)
+        
+      else//To hogsheads
+        
+    }
+    else//Megalitres
+    {
+      if(outputType[1] == 1)//To teaspoons
+        
+      else if(outputType[1] == 2)//To tablespoons
+        
+      else if(outputType[1] == 3)//To fluid ounces
+        
+      else if(outputType[1] == 4)//To cups
+        
+      else if(outputType[1] == 5)//To pints
+        
+      else if(outputType[1] == 6)//To quarts
+        
+      else if(outputType[1] == 7)//To gallons
+        
+      else if(outputType[1] == 8)//To barrels (oil barrels)
+        
+      else//To hogsheads
+        
+    }
   }
 }
