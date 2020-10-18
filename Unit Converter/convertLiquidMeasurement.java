@@ -76,154 +76,154 @@ public class convertLiquidMeasurement implements measurementTypeConversion
     if(inputType[1] == 1)//Teaspoons
     {
       if(outputType[1] == 2)//To tablespoons
-        
+        output = input / 3;
       else if(outputType[1] == 3)//To fluid ounces
-        
+        output = input / 6;
       else if(outputType[1] == 4)//To cups
-        
+        output = input / 48;
       else if(outputType[1] == 5)//To pints
-        
+        output = input / 96;
       else if(outputType[1] == 6)//To quarts
-        
+        output = input / 192;
       else if(outputType[1] == 7)//To gallons
-        
+        output = input / 768;
       else if(outputType[1] == 8)//To barrels (oil barrels)
-        
+        output = input / 32256;
       else//To hogsheads
-        
+        output = input / 48384;
     }
     else if(inputType[1] == 2)//Tablespoons
     {
       if(outputType[1] == 1)//To teaspoons
-        
+        output = input * 3;
       else if(outputType[1] == 3)//To fluid ounces
-        
+        output = input / 2;
       else if(outputType[1] == 4)//To cups
-        
+        output = input / 16;
       else if(outputType[1] == 5)//To pints
-        
+        output = input / 32;
       else if(outputType[1] == 6)//To quarts
-        
+        output = input / 64;
       else if(outputType[1] == 7)//To gallons
-        
+        output = input / 256;
       else if(outputType[1] == 8)//To barrels (oil barrels)
-        
+        output = input / 10752;
       else//To hogsheads
-        
+        output = input / 16128;
     }
     else if(inputType[1] == 3)//Fluid ounces
     {
       if(outputType[1] == 1)//To teaspoons
-        
+        output = input * 6;
       else if(outputType[1] == 2)//To tablespoons
-        
+        output = input * 2;
       else if(outputType[1] == 4)//To cups
-        
+        output = input / 8;
       else if(outputType[1] == 5)//To pints
-        
+        output = input / 16;
       else if(outputType[1] == 6)//To quarts
-        
+        output = input / 32;
       else if(outputType[1] == 7)//To gallons
-        
+        output = input / 128;
       else if(outputType[1] == 8)//To barrels (oil barrels)
-        
+        output = input / 5376;
       else//To hogsheads
-        
+        output = input / 8064;
     }
     else if(inputType[1] == 4)//Cups
     {
       if(outputType[1] == 1)//To teaspoons
-        
+        output = input * 48;
       else if(outputType[1] == 2)//To tablespoons
-        
+        output = input * 16;
       else if(outputType[1] == 3)//To fluid ounces
-        
+        output = input * 8;
       else if(outputType[1] == 5)//To pints
-        
+        output = input / 2;
       else if(outputType[1] == 6)//To quarts
-        
+        output = input / 4;
       else if(outputType[1] == 7)//To gallons
-        
+        output = input / 16;
       else if(outputType[1] == 8)//To barrels (oil barrels)
-        
+        output = input / 672;
       else//To hogsheads
-        
+        output = input / 1008;
     }
     else if(inputType[1] == 5)//Pints
     {
       if(outputType[1] == 1)//To teaspoons
-        
+        output = input * 96;
       else if(outputType[1] == 2)//To tablespoons
-        
+        output = input * 32;
       else if(outputType[1] == 3)//To fluid ounces
-        
+        output = input * 16;
       else if(outputType[1] == 4)//To cups
-        
+        output = input * 2;
       else if(outputType[1] == 6)//To quarts
-        
+        output = input / 2;
       else if(outputType[1] == 7)//To gallons
-        
+        output = input / 8;
       else if(outputType[1] == 8)//To barrels (oil barrels)
-        
+        output = input / 336;
       else//To hogsheads
-        
+        output = input / 504;
     }
     else if(inputType[1] == 6)//Quarts
     {
       if(outputType[1] == 1)//To teaspoons
-        
+        output = input * 192;
       else if(outputType[1] == 2)//To tablespoons
-        
+        output = input * 64;
       else if(outputType[1] == 3)//To fluid ounces
-        
+        output = input * 32;
       else if(outputType[1] == 4)//To cups
-        
+        output = input * 4;
       else if(outputType[1] == 5)//To pints
-        
+        output = input * 2;
       else if(outputType[1] == 7)//To gallons
-        
+        output = input / 4;
       else if(outputType[1] == 8)//To barrels (oil barrels)
-        
+        output = input / 168;
       else//To hogsheads
-        
+        output = input / 252;
     }
     else if(inputType[1] == 7)//Gallons
     {
       if(outputType[1] == 1)//To teaspoons
-        
+        output = input * 768;
       else if(outputType[1] == 2)//To tablespoons
-        
+        output = input * 256;
       else if(outputType[1] == 3)//To fluid ounces
-        
+        output = input * 128;
       else if(outputType[1] == 4)//To cups
-        
+        output = input * 16;
       else if(outputType[1] == 5)//To pints
-        
+        output = input * 8;
       else if(outputType[1] == 6)//To quarts
-        
+        output = input * 4;
       else if(outputType[1] == 8)//To barrels (oil barrels)
-        
+        output = input / 42;
       else//To hogsheads
-        
+        output = input / 63;
     }
     else if(inputType[1] == 8)//Barrels (Oil barrels)
     {
       if(outputType[1] == 1)//To teaspoons
-        
+        output = input * 32256;
       else if(outputType[1] == 2)//To tablespoons
-        
+        output = input * 10752;
       else if(outputType[1] == 3)//To fluid ounces
-        
+        output = input * 5376;
       else if(outputType[1] == 4)//To cups
-        
+        output = input * 672;
       else if(outputType[1] == 5)//To pints
-        
+        output = input * 336;
       else if(outputType[1] == 6)//To quarts
-        
+        output = input * 168;
       else if(outputType[1] == 7)//To gallons
-        
+        output = input * 42;
       else//To hogsheads
-        
+        output = input / (2 / 3);//Factor of 21.  
     }
     else//Hogsheads
     {
