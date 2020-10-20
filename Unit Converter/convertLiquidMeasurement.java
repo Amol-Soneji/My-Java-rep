@@ -397,80 +397,80 @@ public class convertLiquidMeasurement implements measurementTypeConversion
     if(inputType[1] == 1)//Microlitres
     {
       if(outputType[1] == 2)//To millilitres
-        
+        output = input / 1000;
       else if(outputType[1] == 3)//To centilitres
-        
+        output = input / 10000;
       else if(outputType[1] == 4)//To litres
-        
+        output = input / 1000000;
       else if(outputType[1] == 5)//To kilolitres
-        
+        output = input / 1000000000;
       else//To megalitres
-        
+        output = input / 1000000000000;
     }
     else if(inputType[1] == 2)//Millilitres
     {
       if(outputType[1] == 1)//To microlitres
-        
+        output = input * 1000;
       else if(outputType[1] == 3)//To centilitres
-        
+        output = input / 10;
       else if(outputType[1] == 4)//To litres
-        
+        output = input / 1000;
       else if(outputType[1] == 5)//To kilolitres
-        
+        output = input / 1000000;
       else//To megalitres
-        
+        output = input / 1000000000;
     }
     else if(inputType[1] == 3)//Centilitres
     {
       if(outputType[1] == 1)//To microlitres
-        
+        output = input * 10000;
       else if(outputType[1] == 2)//To millilitres
-        
+        output = input * 10;
       else if(outputType[1] == 4)//To litres
-        
+        output = input / 100;
       else if(outputType[1] == 5)//To kilolitres
-        
+        output = input / 100000;
       else//To megalitres
-        
+        output = input / 100000000;
     }
     else if(inputType[1] == 4)//Litres
     {
       if(outputType[1] == 1)//To microlitres
-        
+        output = input * 1000000;
       else if(outputType[1] == 2)//To millilitres
-        
+        output = input * 1000;
       else if(outputType[1] == 3)//To centilitres
-        
+        output = input * 100;
       else if(outputType[1] == 5)//To kilolitres
-        
+        output = input / 1000;
       else//To megalitres
-        
+        output = input / 1000000;
     }
     else if(inputType[1] == 5)//Kilolitres
     {
       if(outputType[1] == 1)//To microlitres
-        
+        output = input * 1000000000;
       else if(outputType[1] == 2)//To millilitres
-        
+        output = input * 1000000;
       else if(outputType[1] == 3)//To centilitres
-        
+        output = input * 100000;
       else if(outputType[1] == 4)//To litres
-        
+        output = input * 1000;
       else//To megalitres
-        
+        output = input / 1000;
     }
     else//Megalitres
     {
       if(outputType[1] == 1)//To microlitres
-        
+        output = input * 1000000000000;
       else if(outputType[1] == 2)//To millilitres
-        
+        output = input * 1000000000;
       else if(outputType[1] == 3)//To centilitres
-        
+        output = input * 100000000;
       else if(outputType[1] == 4)//To litres
-        
+        output = input * 1000000;
       else//To kilolitres
-        
+        output = input * 1000;
     }
   }
   
