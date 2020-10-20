@@ -228,21 +228,21 @@ public class convertLiquidMeasurement implements measurementTypeConversion
     else//Hogsheads
     {
       if(outputType[1] == 1)//To Teaspoons
-        
+        output = input * 48384;
       else if(outputType[1] == 2)//To Tablespoons
-        
+        output = input * 16128;
       else if(outputType[1] == 3)//To Fluid Ounces
-        
+        output = input * 8064;
       else if(outputType[1] == 4)//To Cups
-        
+        output = input * 1008;
       else if(outputType[1] == 5)//To Pints
-        
+        output = input * 504;
       else if(outputType[1] == 6)//To Quarts
-        
+        output = input * 252;
       else if(outputType[1] == 7)//To Gallons
-        
+        output = input * 63;
       else//To Barrels (Oil Barrels)
-        
+        output = input * (2 / 3);//Factor of 21.  
     }
   }
   
