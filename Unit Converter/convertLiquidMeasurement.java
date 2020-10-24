@@ -396,80 +396,80 @@ public class convertLiquidMeasurement implements measurementTypeConversion
   {
     if(inputType[1] == 1)//Microlitres
     {
-      if(outputType[1] == 2)//To millilitres
+      if(outputType[1] == 2)//To Millilitres
         output = input / 1000;
-      else if(outputType[1] == 3)//To centilitres
+      else if(outputType[1] == 3)//To Centilitres
         output = input / 10000;
-      else if(outputType[1] == 4)//To litres
+      else if(outputType[1] == 4)//To Litres
         output = input / 1000000;
-      else if(outputType[1] == 5)//To kilolitres
+      else if(outputType[1] == 5)//To Kilolitres
         output = input / 1000000000;
-      else//To megalitres
+      else//To Megalitres
         output = input / 1000000000000;
     }
     else if(inputType[1] == 2)//Millilitres
     {
-      if(outputType[1] == 1)//To microlitres
+      if(outputType[1] == 1)//To Microlitres
         output = input * 1000;
-      else if(outputType[1] == 3)//To centilitres
+      else if(outputType[1] == 3)//To Centilitres
         output = input / 10;
-      else if(outputType[1] == 4)//To litres
+      else if(outputType[1] == 4)//To Litres
         output = input / 1000;
-      else if(outputType[1] == 5)//To kilolitres
+      else if(outputType[1] == 5)//To Kilolitres
         output = input / 1000000;
-      else//To megalitres
+      else//To Megalitres
         output = input / 1000000000;
     }
     else if(inputType[1] == 3)//Centilitres
     {
-      if(outputType[1] == 1)//To microlitres
+      if(outputType[1] == 1)//To Microlitres
         output = input * 10000;
-      else if(outputType[1] == 2)//To millilitres
+      else if(outputType[1] == 2)//To Millilitres
         output = input * 10;
-      else if(outputType[1] == 4)//To litres
+      else if(outputType[1] == 4)//To Litres
         output = input / 100;
-      else if(outputType[1] == 5)//To kilolitres
+      else if(outputType[1] == 5)//To Kilolitres
         output = input / 100000;
-      else//To megalitres
+      else//To Megalitres
         output = input / 100000000;
     }
     else if(inputType[1] == 4)//Litres
     {
-      if(outputType[1] == 1)//To microlitres
+      if(outputType[1] == 1)//To Microlitres
         output = input * 1000000;
-      else if(outputType[1] == 2)//To millilitres
+      else if(outputType[1] == 2)//To Millilitres
         output = input * 1000;
-      else if(outputType[1] == 3)//To centilitres
+      else if(outputType[1] == 3)//To Centilitres
         output = input * 100;
-      else if(outputType[1] == 5)//To kilolitres
+      else if(outputType[1] == 5)//To Kilolitres
         output = input / 1000;
-      else//To megalitres
+      else//To Megalitres
         output = input / 1000000;
     }
     else if(inputType[1] == 5)//Kilolitres
     {
-      if(outputType[1] == 1)//To microlitres
+      if(outputType[1] == 1)//To Microlitres
         output = input * 1000000000;
-      else if(outputType[1] == 2)//To millilitres
+      else if(outputType[1] == 2)//To Millilitres
         output = input * 1000000;
-      else if(outputType[1] == 3)//To centilitres
+      else if(outputType[1] == 3)//To Centilitres
         output = input * 100000;
-      else if(outputType[1] == 4)//To litres
+      else if(outputType[1] == 4)//To Litres
         output = input * 1000;
-      else//To megalitres
+      else//To Megalitres
         output = input / 1000;
     }
     else//Megalitres
     {
-      if(outputType[1] == 1)//To microlitres
+      if(outputType[1] == 1)//To Microlitres
         output = input * 1000000000000;
-      else if(outputType[1] == 2)//To millilitres
+      else if(outputType[1] == 2)//To Millilitres
         output = input * 1000000000;
-      else if(outputType[1] == 3)//To centilitres
+      else if(outputType[1] == 3)//To Centilitres
         output = input * 100000000;
-      else if(outputType[1] == 4)//To litres
+      else if(outputType[1] == 4)//To Litres
         output = input * 1000000;
-      else//To kilolitres
+      else//To Kilolitres
         output = input * 1000;
     }
   }
@@ -481,128 +481,128 @@ public class convertLiquidMeasurement implements measurementTypeConversion
   {
     if(inputType[1] == 1)//Microlitres
     {
-      if(outputType[1] == 1)//To teaspoons
+      if(outputType[1] == 1)//To Teaspoons
         
-      else if(outputType[1] == 2)//To tablespoons
+      else if(outputType[1] == 2)//To Tablespoons
         
-      else if(outputType[1] == 3)//To fluid ounces
+      else if(outputType[1] == 3)//To Fluid Ounces
         
-      else if(outputType[1] == 4)//To cups
+      else if(outputType[1] == 4)//To Cups
         
-      else if(outputType[1] == 5)//To pints
+      else if(outputType[1] == 5)//To Pints
         
-      else if(outputType[1] == 6)//To quarts
+      else if(outputType[1] == 6)//To Quarts
         
-      else if(outputType[1] == 7)//To gallons
+      else if(outputType[1] == 7)//To Gallons
         
-      else if(outputType[1] == 8)//To barrels (oil barrels)
+      else if(outputType[1] == 8)//To Barrels (Oil Barrels)
         
-      else//To hogsheads
+      else//To Hogsheads
         
     }
     else if(inputType[1] == 2)//Millilitres
     {
-      if(outputType[1] == 1)//To teaspoons
+      if(outputType[1] == 1)//To Teaspoons
         
-      else if(outputType[1] == 2)//To tablespoons
+      else if(outputType[1] == 2)//To Tablespoons
         
-      else if(outputType[1] == 3)//To fluid ounces
+      else if(outputType[1] == 3)//To Fluid Ounces
         
-      else if(outputType[1] == 4)//To cups
+      else if(outputType[1] == 4)//To Cups
         
-      else if(outputType[1] == 5)//To pints
+      else if(outputType[1] == 5)//To Pints
         
-      else if(outputType[1] == 6)//To quarts
+      else if(outputType[1] == 6)//To Quarts
         
-      else if(outputType[1] == 7)//To gallons
+      else if(outputType[1] == 7)//To Gallons
         
-      else if(outputType[1] == 8)//To barrels (oil barrels)
+      else if(outputType[1] == 8)//To Barrels (Oil Barrels)
         
-      else//To hogsheads
+      else//To Hogsheads
         
     }
     else if(inputType[1] == 3)//Centilitres
     {
-      if(outputType[1] == 1)//To teaspoons
+      if(outputType[1] == 1)//To Teaspoons
         
-      else if(outputType[1] == 2)//To tablespoons
+      else if(outputType[1] == 2)//To Tablespoons
         
-      else if(outputType[1] == 3)//To fluid ounces
+      else if(outputType[1] == 3)//To Fluid Ounces
         
-      else if(outputType[1] == 4)//To cups
+      else if(outputType[1] == 4)//To Cups
         
-      else if(outputType[1] == 5)//To pints
+      else if(outputType[1] == 5)//To Pints
         
-      else if(outputType[1] == 6)//To quarts
+      else if(outputType[1] == 6)//To Quarts
         
-      else if(outputType[1] == 7)//To gallons
+      else if(outputType[1] == 7)//To Gallons
         
-      else if(outputType[1] == 8)//To barrels (oil barrels)
+      else if(outputType[1] == 8)//To Barrels (Oil Barrels)
         
-      else//To hogsheads
+      else//To Hogsheads
         
     }
     else if(inputType[1] == 4)//Litres
     {
-      if(outputType[1] == 1)//To teaspoons
+      if(outputType[1] == 1)//To Teaspoons
         
-      else if(outputType[1] == 2)//To tablespoons
+      else if(outputType[1] == 2)//To Tablespoons
         
-      else if(outputType[1] == 3)//To fluid ounces
+      else if(outputType[1] == 3)//To Fluid Ounces
         
-      else if(outputType[1] == 4)//To cups
+      else if(outputType[1] == 4)//To Cups
         
-      else if(outputType[1] == 5)//To pints
+      else if(outputType[1] == 5)//To Pints
         
-      else if(outputType[1] == 6)//To quarts
+      else if(outputType[1] == 6)//To Quarts
         
-      else if(outputType[1] == 7)//To gallons
+      else if(outputType[1] == 7)//To Gallons
         
-      else if(outputType[1] == 8)//To barrels (oil barrels)
+      else if(outputType[1] == 8)//To Barrels (Oil Barrels)
         
-      else//To hogsheads
+      else//To Hogsheads
         
     }
     else if(inputType[1] == 5)//Kilolitres
     {
-      if(outputType[1] == 1)//To teaspoons
+      if(outputType[1] == 1)//To Teaspoons
         
-      else if(outputType[1] == 2)//To tablespoons
+      else if(outputType[1] == 2)//To Tablespoons
         
-      else if(outputType[1] == 3)//To fluid ounces
+      else if(outputType[1] == 3)//To Fluid Ounces
         
-      else if(outputType[1] == 4)//To cups
+      else if(outputType[1] == 4)//To Cups
         
-      else if(outputType[1] == 5)//To pints
+      else if(outputType[1] == 5)//To Pints
         
-      else if(outputType[1] == 6)//To quarts
+      else if(outputType[1] == 6)//To Quarts
         
-      else if(outputType[1] == 7)//To gallons
+      else if(outputType[1] == 7)//To Gallons
         
-      else if(outputType[1] == 8)//To barrels (oil barrels)
+      else if(outputType[1] == 8)//To Barrels (Oil Barrels)
         
-      else//To hogsheads
+      else//To Hogsheads
         
     }
     else//Megalitres
     {
-      if(outputType[1] == 1)//To teaspoons
+      if(outputType[1] == 1)//To Teaspoons
         
-      else if(outputType[1] == 2)//To tablespoons
+      else if(outputType[1] == 2)//To Tablespoons
         
-      else if(outputType[1] == 3)//To fluid ounces
+      else if(outputType[1] == 3)//To Fluid Ounces
         
-      else if(outputType[1] == 4)//To cups
+      else if(outputType[1] == 4)//To Cups
         
-      else if(outputType[1] == 5)//To pints
+      else if(outputType[1] == 5)//To Pints
         
-      else if(outputType[1] == 6)//To quarts
+      else if(outputType[1] == 6)//To Quarts
         
-      else if(outputType[1] == 7)//To gallons
+      else if(outputType[1] == 7)//To Gallons
         
-      else if(outputType[1] == 8)//To barrels (oil barrels)
+      else if(outputType[1] == 8)//To Barrels (Oil Barrels)
         
-      else//To hogsheads
+      else//To Hogsheads
         
     }
   }
