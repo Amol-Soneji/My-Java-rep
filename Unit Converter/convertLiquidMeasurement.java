@@ -254,137 +254,137 @@ public class convertLiquidMeasurement implements measurementTypeConversion
     if(inputType[1] == 1)//Teaspoons
     {
       if(outputType[1] == 1)//To Microlitres
-        
+        output = input * 4928.92159;
       else if(outputType[1] == 2)//To Millilitres
-        
+        output = input * 4.92892159;
       else if(outputType[1] == 3)//To Centilitres
-        
+        output = input * 0.49289216;
       else if(outputType[1] == 4)//To Litres
-        
+        output = input * 0.00492892;
       else if(outputType[1] == 5)//To Kilolitres
-        
+        output = input * 0.00000493;
       else//To Megalitres
-        
+        output = input * 0.000000005;
     }
     else if(inputType[1] == 2)//Tablespoons
     {
       if(outputType[1] == 1)//To Microlitres
-        
+        output = input * 14786.7648;
       else if(outputType[1] == 2)//To Millilitres
-        
+        output = input * 14.7867648;
       else if(outputType[1] == 3)//To Centilitres
-        
+        output = input * 1.47867648;
       else if(outputType[1] == 4)//To Litres
-        
+        output = input * 0.01478676;
       else if(outputType[1] == 5)//To Kilolitres
-        
+        output = input * 0.00001479;
       else//To Megalitres
-        
+        output = input * 0.000000015;
     }
     else if(inputType[1] == 3)//Fluid ounces
     {
       if(outputType[1] == 1)//To Microlitres
-        
+        output = input * 29573.5295;
       else if(outputType[1] == 2)//To Millilitres
-        
+        output = input * 29.5735295;
       else if(outputType[1] == 3)//To Centilitres
-        
+        output = input * 2.95735295;
       else if(outputType[1] == 4)//To Litres
-        
+        output = input * 0.02957353;
       else if(outputType[1] == 5)//To Kilolitres
-        
+        output = input * 0.00002957;
       else//To Megalitres
-        
+        output = input * 0.00000003;
     }
     else if(inputType[1] == 4)//Cups
     {
       if(outputType[1] == 1)//To Microlitres
-        
+        output = input * 236588.236;
       else if(outputType[1] == 2)//To Millilitres
-        
+        output = input * 236.588236;
       else if(outputType[1] == 3)//To Centilitres
-        
+        output = input * 23.6588236;
       else if(outputType[1] == 4)//To Litres
-        
+        output = input * 0.23658824;
       else if(outputType[1] == 5)//To Kilolitres
-        
+        output = input * 0.00023659;
       else//To Megalitres
-        
+        output = input * 0.00000024;
     }
     else if(inputType[1] == 5)//Pints
     {
       if(outputType[1] == 1)//To Microlitres
-        
+        output = input * 473176.473;
       else if(outputType[1] == 2)//To Millilitres
-        
+        output = input * 473.176473;
       else if(outputType[1] == 3)//To Centilitres
-        
+        output = input * 47.3176473;
       else if(outputType[1] == 4)//To Litres
-        
+        output = input * 0.47317647;
       else if(outputType[1] == 5)//To Kilolitres
-        
+        output = input * 0.00047318;
       else//To Megalitres
-        
+        output = input * 0.00000047;
     }
     else if(inputType[1] == 6)//Quarts
     {
       if(outputType[1] == 1)//To Microlitres
-        
+        output = input * 946352.945;
       else if(outputType[1] == 2)//To Millilitres
-        
+        output = input * 946.352945;
       else if(outputType[1] == 3)//To Centilitres
-        
+        output = input * 94.6352945;
       else if(outputType[1] == 4)//To Litres
-        
+        output = input * 0.94635295;
       else if(outputType[1] == 5)//To Kilolitres
-        
+        output = input * 0.00094635;
       else//To Megalitres
-        
+        output = input * 0.00000095;
     }
     else if(inputType[1] == 7)//Gallons
     {
       if(outputType[1] == 1)//To Microlitres
-        
+        output = input * 3785411.78;
       else if(outputType[1] == 2)//To Millilitres
-        
+        output = input * 3785.41178;
       else if(outputType[1] == 3)//To Centilitres
-        
+        output = input * 378.541178;
       else if(outputType[1] == 4)//To Litres
-        
+        output = input * 3.78541178;
       else if(outputType[1] == 5)//To Kilolitres
-        
+        output = input * 0.00378541;
       else//To Megalitres
-        
+        output = input * 0.00000379;
     }
     else if(inputType[1] == 8)//Barrels (Oil barrels)
     {
       if(outputType[1] == 1)//To Microlitres
-        
+        output = input * 158987294.928;
       else if(outputType[1] == 2)//To Millilitres
-        
+        output = input * 158987.294928;
       else if(outputType[1] == 3)//To Centilitres
-        
+        output = input * 15898.7294928;
       else if(outputType[1] == 4)//To Litres
-        
+        output = input * 158.987294928;
       else if(outputType[1] == 5)//To Kilolitres
-        
+        output = input * 0.15898729493;
       else//To Megalitres
-        
+        output = input * 0.0001589873;
     }
     else//Hogsheads
     {
       if(outputType[1] == 1)//To Microlitres
-        
+        output = input * 238480942.39;
       else if(outputType[1] == 2)//To Millilitres
-        
+        output = input * 238480.94239;
       else if(outputType[1] == 3)//To Centilitres
-        
+        ouptut = input * 23848.094239;
       else if(outputType[1] == 4)//To Litres
-        
+        output = input * 238.48094239;
       else if(outputType[1] == 5)//To Kilolitres
-        
+        output = input * 0.2384809424;
       else//To Megalitres
-        
+        output = input * 0.0002384809;
     }
   }
   
