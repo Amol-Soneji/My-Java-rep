@@ -73,7 +73,27 @@ public class convertWeightMeasurement implements measurementTypeConversion
   */
   private static void usOnlyConvert()
   {
-    
+    if(inputType[1] == 1)//Ounces
+    {
+      if(outputType[1] == 2)//To Pounds
+        
+      else//To Tons
+        
+    }
+    else if(inputType[1] == 2)//Pounds
+    {
+      if(outputType[1] == 1)//To Ounces
+        
+      else//To Tons
+        
+    }
+    else//Tons
+    {
+      if(outputType[1] == 1)//To Ounces
+        
+      else//To Pounds
+        
+    }
   }
   
   /**
@@ -90,7 +110,111 @@ public class convertWeightMeasurement implements measurementTypeConversion
   */
   private static void siOnlyConvert()
   {
-    
+    if(inputType[1] == 1)//Picograms
+    {
+      if(outputType[1] == 2)//To Nanograms
+        
+      else if(outputType[1] == 3)//To Micrograms
+        
+      else if(outputType[1] == 4)//To Milligrams
+        
+      else if(outputType[1] == 5)//To Grams
+        
+      else if(outputType[1] == 6)//To Kilograms
+        
+      else//To Tonnes
+        
+    }
+    else if(inputType[1] == 2)//Nanograms
+    {
+      if(outputType[1] == 1)//To Picograms
+        
+      else if(outputType[1] == 3)//To Micrograms
+        
+      else if(outputType[1] == 4)//To Milligrams
+        
+      else if(outputType[1] == 5)//To Grams
+        
+      else if(outputType[1] == 6)//To Kilograms
+        
+      else//To Tonnes
+        
+    }
+    else if(inputType[1] == 3)//Micrograms
+    {
+      if(outputType[1] == 1)//To Picograms
+        
+      else if(outputType[1] == 2)//To Nanograms
+        
+      else if(outputType[1] == 4)//To Milligrams
+        
+      else if(outputType[1] == 5)//To Grams
+        
+      else if(outputType[1] == 6)//To Kilograms
+        
+      else//To Tonnes
+        
+    }
+    else if(inputType[1] == 4)//Milligrams
+    {
+      if(outputType[1] == 1)//To Picograms
+        
+      else if(outputType[1] == 2)//To Nanograms
+        
+      else if(outputType[1] == 3)//To Micrograms
+        
+      else if(outputType[1] == 5)//To Grams
+        
+      else if(outputType[1] == 6)//To Kilograms
+        
+      else//To Tonnes
+        
+    }
+    else if(inputType[1] == 5)//Grams
+    {
+      if(outputType[1] == 1)//To Picograms
+        
+      else if(outputType[1] == 2)//To Nanograms
+        
+      else if(outputType[1] == 3)//To Micrograms
+        
+      else if(outputType[1] == 4)//To Milligrams
+        
+      else if(outputType[1] == 6)//To Kilograms
+        
+      else//To Tonnes
+        
+    }
+    else if(inputType[1] == 6)//Kilograms
+    {
+      if(outputType[1] == 1)//To Picograms
+        
+      else if(outputType[1] == 2)//To Nanograms
+        
+      else if(outputType[1] == 3)//To Micrograms
+        
+      else if(outputType[1] == 4)//To Milligrams
+        
+      else if(outputType[1] == 5)//To Grams
+        
+      else//To Tonnes
+        
+    }
+    else//Tonnes
+    {
+      if(outputType[1] == 1)//To Picograms
+        
+      else if(outputType[1] == 2)//To Nanograms
+        
+      else if(outputType[1] == 3)//To Micrograms
+        
+      else if(outputType[1] == 4)//To Milligrams
+        
+      else if(outputType[1] == 5)//To Grams
+        
+      else//To Kilograms
+        
+    }
   }
   
   /**
