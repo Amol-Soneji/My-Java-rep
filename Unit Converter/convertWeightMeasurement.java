@@ -76,23 +76,23 @@ public class convertWeightMeasurement implements measurementTypeConversion
     if(inputType[1] == 1)//Ounces
     {
       if(outputType[1] == 2)//To Pounds
-        
+        output = input / 16;
       else//To Tons
-        
+        output = input / 32000;
     }
     else if(inputType[1] == 2)//Pounds
     {
       if(outputType[1] == 1)//To Ounces
-        
+        output = input * 16;
       else//To Tons
-        
+        output = input / 2000;
     }
     else//Tons
     {
       if(outputType[1] == 1)//To Ounces
-        
+        output = input * 32000;
       else//To Pounds
-        
+        output = input * 2000;
     }
   }
   
@@ -163,107 +163,107 @@ public class convertWeightMeasurement implements measurementTypeConversion
     if(inputType[1] == 1)//Picograms
     {
       if(outputType[1] == 2)//To Nanograms
-        
+        output = input / Math.pow(10, 3);
       else if(outputType[1] == 3)//To Micrograms
-        
+        output = input / Math.pow(10, 6);
       else if(outputType[1] == 4)//To Milligrams
-        
+        output = input / Math.pow(10, 9);
       else if(outputType[1] == 5)//To Grams
-        
+        output = input / Math.pow(10, 12);
       else if(outputType[1] == 6)//To Kilograms
-        
+        output = input / Math.pow(10, 15);
       else//To Tonnes
-        
+        output = input / Math.pow(10, 18);
     }
     else if(inputType[1] == 2)//Nanograms
     {
       if(outputType[1] == 1)//To Picograms
-        
+        output = input * Math.pow(10, 3);
       else if(outputType[1] == 3)//To Micrograms
-        
+        output = input / Math.pow(10, 3);
       else if(outputType[1] == 4)//To Milligrams
-        
+        output = input / Math.pow(10, 6);
       else if(outputType[1] == 5)//To Grams
-        
+        output = input / Math.pow(10, 9);
       else if(outputType[1] == 6)//To Kilograms
-        
+        output = input / Math.pow(10, 12);
       else//To Tonnes
-        
+        output = input / Math.pow(10, 15);
     }
     else if(inputType[1] == 3)//Micrograms
     {
       if(outputType[1] == 1)//To Picograms
-        
+        output = input * Math.pow(10, 6);
       else if(outputType[1] == 2)//To Nanograms
-        
+        output = input * Math.pow(10, 3);
       else if(outputType[1] == 4)//To Milligrams
-        
+        output = input / Math.pow(10, 3);
       else if(outputType[1] == 5)//To Grams
-        
+        output = input / Math.pow(10, 6);
       else if(outputType[1] == 6)//To Kilograms
-        
+        output = input / Math.pow(10, 9);
       else//To Tonnes
-        
+        output = input / Math.pow(10, 12);
     }
     else if(inputType[1] == 4)//Milligrams
     {
       if(outputType[1] == 1)//To Picograms
-        
+        output = input * Math.pow(10, 9);
       else if(outputType[1] == 2)//To Nanograms
-        
+        output = input * Math.pow(10, 6);
       else if(outputType[1] == 3)//To Micrograms
-        
+        output = input * Math.pow(10, 3);
       else if(outputType[1] == 5)//To Grams
-        
+        output = input / Math.pow(10, 3);
       else if(outputType[1] == 6)//To Kilograms
-        
+        output = input / Math.pow(10, 6);
       else//To Tonnes
-        
+        output = input / Math.pow(10, 9);
     }
     else if(inputType[1] == 5)//Grams
     {
       if(outputType[1] == 1)//To Picograms
-        
+        output = input * Math.pow(10, 12);
       else if(outputType[1] == 2)//To Nanograms
-        
+        output = input * Math.pow(10, 9);
       else if(outputType[1] == 3)//To Micrograms
-        
+        output = input * Math.pow(10, 6);
       else if(outputType[1] == 4)//To Milligrams
-        
+        output = input * Math.pow(10, 3);
       else if(outputType[1] == 6)//To Kilograms
-        
+        output = input / Math.pow(10, 3);
       else//To Tonnes
-        
+        output = input / Math.pow(10, 6);
     }
     else if(inputType[1] == 6)//Kilograms
     {
       if(outputType[1] == 1)//To Picograms
-        
+        output = input * Math.pow(10, 15);
       else if(outputType[1] == 2)//To Nanograms
-        
+        output = input * Math.pow(10, 12);
       else if(outputType[1] == 3)//To Micrograms
-        
+        output = input * Math.pow(10, 9);
       else if(outputType[1] == 4)//To Milligrams
-        
+        output = input * Math.pow(10, 6);
       else if(outputType[1] == 5)//To Grams
-        
+        output = input * Math.pow(10, 3);
       else//To Tonnes
-        
+        output = input / Math.pow(10, 3);
     }
     else//Tonnes
     {
       if(outputType[1] == 1)//To Picograms
-        
+        output = input * Math.pow(10, 18);
       else if(outputType[1] == 2)//To Nanograms
-        
+        output = input * Math.pow(10, 15);
       else if(outputType[1] == 3)//To Micrograms
-        
+        output = input * Math.pow(10, 12);
       else if(outputType[1] == 4)//To Milligrams
-        
+        output = input * Math.pow(10, 9);
       else if(outputType[1] == 5)//To Grams
-        
+        output = input * Math.pow(10, 6);
       else//To Kilograms
-        
+        output = input * Math.pow(10, 3);
     }
   }
   
