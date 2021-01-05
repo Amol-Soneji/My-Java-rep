@@ -18,7 +18,6 @@ public class convertCurrecny
   /**
   *This method takes in the parameters and calls methods required to carry out the calculation of conversion.  It then returns the double data type value represented by output.  
   */
-  
   public static double convertCurrency(byte inpCurrency, byte outCurrency, double inp)
   {
     inputCurrency = inpCurrency;
@@ -33,7 +32,6 @@ public class convertCurrecny
   /**
   *This method calls a method from the conversionData class to get the market conversion rate.  
   */
-  
   private static void getRate()
   {
     rate = conversionData.getRate(inputCurrency, outputCurrency);
