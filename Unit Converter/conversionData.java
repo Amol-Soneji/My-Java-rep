@@ -6,9 +6,20 @@
 *@version 1.0, 06 Jan 2021
 */
 
+private static double manualRate;
 
+/**
+*The following static class is only called if a manual static conversion rate is to be set.  
+*/
+public static void conversionData(double manRate)
+{
+  manualRate = manRate;
+}
 
-public class conversionData
+/**
+*The following class gets the currecny echange rate.  
+*/
+public static double getRate(byte inputCurrency)
 {
   
 }
