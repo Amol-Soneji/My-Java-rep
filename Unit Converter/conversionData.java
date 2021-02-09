@@ -17,9 +17,14 @@ public static void conversionData(double manRate)
 }
 
 /**
-*The following class gets the currecny echange rate.  
+*The following class gets the currency echange rate.  
 */
-public static double getRate(byte inputCurrency)
+public static double getRate(byte inputCurrency, byte outputCurrency)
 {
-  
+  if(inputCurrency == -1)
+    return manualRate;
+  else
+  {
+    
+  }
 }
