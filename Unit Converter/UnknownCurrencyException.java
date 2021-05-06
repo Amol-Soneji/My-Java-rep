@@ -12,7 +12,7 @@ public class UnknownCurrencyException extends Exception
 {
   public UnknownCurrencyException()
   {
-    
+    //Empty constructor.  
   }
   
   public UnknownCurrencyException(String message)
