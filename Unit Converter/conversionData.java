@@ -56,7 +56,7 @@ public class conversionData
   }
   
   /**
-  *The following class gets the currency rate data.  
+  *The following class gets the currency rate data.  This class will catch the UnknownCurrencyException exception, if an unknown/non-exsistant curreny has been entered.  
   */
   private static void getData()
   {
