@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
 *This class converts currency of one contry, to the currency of another country.  This class utilizes an the getCurrencyInfo class, to get the latest market exchange rate.  
 *<br>
