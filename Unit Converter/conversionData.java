@@ -17,20 +17,7 @@ public class conversionData
   private static double rate;
   private static String srcCurrencyName;
   private static String endCurrencyName;
-  private static double manualRate;
-
-  //Public fields in the class.  
-  public static boolean manual;
-
-  /**
-  *The following constructor is only called if a manual static conversion rate is to be set.  
-  */
-  public conversionData(double manualRate)
-  {
-    conversionData.manualRate = manRate;
-    manual = true;
-  }
-
+  
   /**
   *The following constructor is used when trying to get the actual conversion rate value.  
   */
@@ -38,7 +25,6 @@ public class conversionData
   {
     conversionData.srcCurrencyName = srcCurrencyName;
     conversionData.endCurrencyName = endCurrencyName;
-    manual = false;
   }
 
   /**
@@ -46,13 +32,8 @@ public class conversionData
   */
   public static double returnRate()
   {
-    if(manual)
-      return manualRate;
-    else
-    {
-      getData();
-      return rate;
-    }
+    getData();
+    return rate;
   }
   
   /**
