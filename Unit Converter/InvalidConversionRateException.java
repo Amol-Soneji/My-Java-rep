@@ -1,6 +1,6 @@
 /**
 *This class is a subclass of class Exception.  This exception is invoked when a manual conversion rate has been entered
-*in as a value that is equal to or less than 0.  Currently in this program, only conversionData could invoke
+*in as a value that is equal to or less than 0.  Currently in this program, only convertCurrency can invoke
 *this type of exception.  
 *<br>
 *
