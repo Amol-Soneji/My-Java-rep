@@ -14,6 +14,9 @@ public class converter
   private static byte[] outputType;//An array holding the desired output type to convert to.  
   private static double input;//The input measurement value.  
   private static double output;//The output measurement value from the result of conversion calculation.  
+  private static byte inpCur;//Input currency type.  
+  private static byte outCur;//Output currency type.  
+  private static double rate;//Currency conversion rate.  
   
   /**
   *The following method is used to set fields, as makeing this convert class into an object does not make sense.  
@@ -25,6 +28,31 @@ public class converter
     outputType = outType;
     input = inp;
     output = out;
+  }
+  
+  /**
+  *The following method is used to set fields when making currency conversions.  This method is used when manual rate is not applied.  
+  */
+  public static void setFields(byte mesType, byte inputCurrency, byte outputCurrency, double inp, double out)
+  {
+    measurementType = mesType;
+    inpCur = inputCurrency;
+    outCur = outputCurrency;
+    input = inp;
+    output = out;
+  }
+  
+  /**
+  *The following method is used to set fields when making currency conversions.  This method is used when manual rate is applied.  
+  */
+  public static void setFields(byte mesType, byte inputCurrency, byte outputCurrency, double inp, double out, double r)
+  {
+    measurementType = mesType;
+    inpCur = inputCurrency;
+    outCur = outputCurrency;
+    input = inp;
+    output = out;
+    rate = r;
   }
   
   /**
@@ -43,6 +71,10 @@ public class converter
       output = convertLiquidMeasurement.measurementConvert(inputType, outputType, input);
     else if(measurementType == 5)
       output = convertWeightMeasurement.measurementConvert(inputType, outputType, input);
+    else if(measurementType == 6)
+      output = convertCurrency.convertCurrency(inpCur, outCur, input);
+    else if(measurementType == 7)
+      output = convertCurrency.convertCurrency(inpCur, outCur, input, rate);
     else
       output = convertTempratureMeasurement.measurementConvert(inputType, outputType, input);
   }
