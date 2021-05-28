@@ -63,7 +63,7 @@ public class convertCurrency
     try
     {
       if((rate <= 0) && (manual))
-        throw InvalidConversionRateException
+        throw InvalidConversionRateException;
       return (input / rate);
     }
     catch(InvalidConversionRateException e)
