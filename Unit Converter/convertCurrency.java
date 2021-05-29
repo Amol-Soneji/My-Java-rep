@@ -21,12 +21,12 @@ public class convertCurrency
   /**
   *This method takes in the parameters and calls methods required to carry out the calculation of conversion.  It then returns the double data type value represented by output.  
   */
-  public static double convertCurrency(byte inpCurrency, byte outCurrency, double inp)
+  public static double convertCurrency(byte inputCurrency, byte outputCurrency, double input)
   {
     manual = false;
-    inputCurrency = inpCurrency;
-    outputCurrency = outCurrency;
-    input = inp;
+    convertCurrency.inputCurrency = inpCurrency;
+    convertCurrency.outputCurrency = outCurrency;
+    convertCurrency.input = inp;
     if((inputCurrency == outputCurrency) || (input == 0))
       return input;
     getRate();
@@ -36,12 +36,13 @@ public class convertCurrency
   /**
   *This method is similar to the above mentioned method, except it is used when a fixed pre-defined exchange rate is previously entered in.  
   */
-  public static double convertCurrency(byte inpCurrency, byte outCurrency, double inp, double rate)
+  public static double convertCurrency(byte inputCurrency, byte outputCurrency, double input, double rate)
   {
     manual = true;
-    inputCurrency = inpCurrency;
-    outputCurrency = outCurrency;
-    input = inp;
+    convertCurrency.inputCurrency = inpCurrency;
+    convertCurrency.outputCurrency = outCurrency;
+    convertCurrency.input = inp;
+    convertCurrency.rate = rate;
     if((inputCurrency == outputCurrency) || (input == 0))
       return input;
     return calculateConversion();
