@@ -1,0 +1,13 @@
+Must Support:
+-Encryption
+-Decryption
+-Key Generation
+-Key Storage
+
+Supported file encryption algorithms:
+-Caeser Cipher (32-bit instead of just 26 letters for UTF-32 support)
+-Affine Cipher (32-bit instead of just 26 letters for UTF-32 support)
+-Rail Fence
+-One-Time Pad
+-Vigenère Cipher (with UTF-32 support)
+-AES (CBC) (64, 128, and 256 bit)
