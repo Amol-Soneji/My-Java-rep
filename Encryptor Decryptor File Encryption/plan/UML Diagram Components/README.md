@@ -5,3 +5,6 @@ to create a UML diagram of the software.  The final UML diagram will be in the d
 one level up from this directory.  
 
 Here you will see component images of classes.  
+
+Note that the images were made with the use of MS Paint as I do not have flow or diagram chart 
+program like MS Office Visio nor do I have the money to purchase it.  
