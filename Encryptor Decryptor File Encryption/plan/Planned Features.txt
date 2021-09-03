@@ -10,4 +10,4 @@ Supported file encryption algorithms:
 -Rail Fence
 -One-Time Pad
 -Vigenère Cipher (with UTF-16 support)
--AES (CBC) (64, 128, and 256 bit)
+-AES (CBC and GCM) (64, 128, and 256-bit)
