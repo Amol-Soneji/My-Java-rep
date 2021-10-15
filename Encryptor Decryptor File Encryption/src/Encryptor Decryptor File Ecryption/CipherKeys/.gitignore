@@ -3,3 +3,5 @@
 /OneTImePadKey.class
 /OneTimePadKey.class
 /SubstitutionKey.class
+/KeyCreationError.class
+/KeyCreationException.class
