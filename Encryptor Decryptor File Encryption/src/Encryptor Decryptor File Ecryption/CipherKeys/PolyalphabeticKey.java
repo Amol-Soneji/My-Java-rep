@@ -42,8 +42,28 @@ public class PolyalphabeticKey
 				key = key + String.valueOf(charList.get(index));
 			}
 		}
-		else {
-			
+		else {//Only capital and lower case letters.  
+			char[][] charList = new char[10][1];
+			for(int index = 0; index < 10; index++) {
+				int val = random.nextInt(122) - 65;
+				while((val > 25) && (val < 32)) {
+					val = random.nextInt(122) - 65;
+				}
+				charList[index] = Character.toChars(val + 65);
+			}
+			for(int index = 0; index < 10; index++) {
+				key = key + String.valueOf(charList[index]);
+			}
 		}
+	}
+	
+	public String getKeyVal()
+	{
+		return key;
+	}
+	
+	public boolean getUsePunct()
+	{
+		return usePunct;
 	}
 }
