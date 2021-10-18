@@ -3,8 +3,9 @@ package CipherKeys;
 import java.security.SecureRandom;
 import java.util.ArrayList; //Array list for storing char array, since when using full UTF-16, there are characters that may use more than one char for once character.  
 
-/*
- * 
+/**
+ * @author Amol Soneji
+ *
  */
 
 public class PolyalphabeticKey 
