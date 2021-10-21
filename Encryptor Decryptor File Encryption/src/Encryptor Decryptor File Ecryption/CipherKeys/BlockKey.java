@@ -31,7 +31,7 @@ public class BlockKey {
 	{
 		this.key = key;
 		this.IV = IV;
-		this.authenticationTagLength = authenticationTagLength;
+		this.authenticationTagLength = authenticataionTagLength;
 		enDecryptionMethod = true; //True means GCM mode.  
 	}
 	
@@ -42,6 +42,54 @@ public class BlockKey {
 		enDecryptionMethod = false; //False means CBC mode.  
 	}
 	
+	private void createKey()
+	{
+		try
+		{
+			KeyGenerator keyGen = KeyGenerator.getInstance("AES");
+			keyGen.init(128);
+			key = keyGen.generateKey();
+			SecureRandom random = new SecureRandom();
+			if(enDecryptionMethod) {
+				IV = new byte[12]; //IV in GCM is 12 bytes.  
+				random.nextBytes(IV);
+				authenticationTagLength = 16;
+			}
+			else {
+				IV = new byte[16]; //IV in CBC for AES 128-bit is 16 bytes.
+				random.nextBytes(IV);
+			}
+		}
+		catch(Exception someException)
+		{
+			System.out.println("There was an error in the program.  This device does not support AES.  ");
+			System.out.println("Please use a different device to use AES.  ");
+			System.out.println("Program will close in a few seconds.  ");
+			for(int i = 0; i < 100000; i++) {
+				i = i;
+			}
+			System.exit(0);
+		}
+	}
 	
+	public SecretKey getKey()
+	{
+		return key;
+	}
+	
+	public byte[] getIV()
+	{
+		return IV;
+	}
+	
+	public int getAuthenticationTagLength()
+	{
+		return authenticationTagLength;
+	}
+	
+	public boolean getEnDecryptionMethod()
+	{
+		return enDecryptionMethod;
+	}
 
 }
