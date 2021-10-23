@@ -5,7 +5,7 @@ import java.security.SecureRandom;
 import java.math.BigInteger;
 
 /**
- * @author eon74
+ * @author Amol Soneji
  *
  */
 public class SubstitutionKey 

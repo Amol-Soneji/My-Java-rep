@@ -13,10 +13,10 @@ import java.security.SecureRandom;
  */
 public class BlockKey {
 
-	private SecretKey key;
-	private byte[] IV;
-	private int authenticationTagLength;
-	private boolean enDecryptionMethod;
+	private SecretKey key; //The key that will be used by block ciphers.  
+	private byte[] IV; //Initialization Vector.  
+	private int authenticationTagLength; //Length of the authentication tag used in AES-GCM.  
+	private boolean enDecryptionMethod; //Mode of key, true AES-GCM, false AES-CBC.  
 	
 	/**
 	 * 
