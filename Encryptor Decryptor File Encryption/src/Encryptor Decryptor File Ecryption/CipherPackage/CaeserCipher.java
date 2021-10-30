@@ -53,7 +53,7 @@ public class CaeserCipher extends SubstitutionCipher
 	{
 		for(int index = 0; index < plainText.length(); index++) {
 			int charValue = plainText.codePointAt(index);
-			charValue = (charValue + super.getKey().getKeyVal()) % 1112064;
+			charValue = (charValue + super.getKey().getKeyVal()) % 1112063;
 			cipherTextBuilder = cipherTextBuilder + String.copyValueOf(Character.toChars(charValue));
 		}
 		return cipherTextBuilder;
@@ -64,7 +64,7 @@ public class CaeserCipher extends SubstitutionCipher
 	{
 		for(int index = 0; index < plainText.length(); index++) {
 			int charValue = plainText.codePointAt(index);
-			charValue = (charValue + super.getKey().getKeyVal()) % 1112064;
+			charValue = (charValue + super.getKey().getKeyVal()) % 1112063;
 			if(index != (plainText.length() - 1))
 				cipherTextBuilder = String.valueOf(charValue) + " ";
 			else
@@ -78,7 +78,7 @@ public class CaeserCipher extends SubstitutionCipher
 	{
 		for(int index = 0; index < cipherText.length(); index++) {
 			int charValue = cipherText.codePointAt(index);
-			charValue = (charValue - super.getKey().getKeyVal()) % 1112064;
+			charValue = (charValue - super.getKey().getKeyVal()) % 1112063;
 			plainTextBuilder = plainTextBuilder + String.copyValueOf(Character.toChars(charValue));
 		}
 		return plainTextBuilder;
@@ -90,7 +90,7 @@ public class CaeserCipher extends SubstitutionCipher
 		String[] codes = plainText.split(" ");
 		for(int index = 0; index < codes.length; index++) {
 			int charValue = Integer.parseInt(codes[index]);
-			charValue = (charValue - super.getKey().getKeyVal()) % 1112064;
+			charValue = (charValue - super.getKey().getKeyVal()) % 1112063;
 			plainTextBuilder = plainTextBuilder + String.copyValueOf(Character.toChars(charValue));
 		}
 		return plainTextBuilder;

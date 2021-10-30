@@ -37,7 +37,7 @@ public class PolyalphabeticKey
 		if(usePunct) {
 			ArrayList<char[]> charList = new ArrayList<char[]>();
 			for(int index = 0; index < 10; index++) {//Key length is 10 if created via this program.  
-				charList.add(Character.toChars(random.nextInt(1112064)));
+				charList.add(Character.toChars(random.nextInt(1112063)));
 			}
 			for(int index = 0; index < 10; index++) {
 				key = key + String.valueOf(charList.get(index));

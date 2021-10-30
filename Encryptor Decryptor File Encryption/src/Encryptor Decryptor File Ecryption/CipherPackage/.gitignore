@@ -3,3 +3,5 @@
 /SubstitutionCipher.class
 /CaeserCipher.class
 /AffineCipher.class
+/PolyalphabeticCipher.class
+/VigenereCipher.class

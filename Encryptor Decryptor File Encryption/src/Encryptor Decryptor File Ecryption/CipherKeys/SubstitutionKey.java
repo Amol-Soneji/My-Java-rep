@@ -40,13 +40,13 @@ public class SubstitutionKey
 		SecureRandom random = new SecureRandom();
 		if(booleanMode) {
 			int randomInteger = -1;
-			while((randomInteger > 1112064) || (randomInteger < 2) || (gcd(randomInteger, 1112064) != 1)) {
+			while((randomInteger > 1112063) || (randomInteger < 2) || (gcd(randomInteger, 1112063) != 1)) {
 				randomInteger = random.nextInt(2097152);
 			}
 			key = randomInteger;
 			try
 			{
-				affineDecKey = (BigInteger.valueOf(key).modInverse(BigInteger.valueOf(1112064))).intValue();
+				affineDecKey = (BigInteger.valueOf(key).modInverse(BigInteger.valueOf(1112063))).intValue();
 			}
 			catch(ArithmeticException e)
 			{
@@ -54,7 +54,7 @@ public class SubstitutionKey
 				throw new KeyCreationException();
 			}
 			randomInteger = -1;
-			while((randomInteger > 1112064) || (randomInteger < 2) || (randomInteger == key) || (randomInteger == affineDecKey)) {
+			while((randomInteger > 1112063) || (randomInteger < 2) || (randomInteger == key) || (randomInteger == affineDecKey)) {
 				randomInteger = random.nextInt(2097152);
 			}
 			arbitraryB = randomInteger;
