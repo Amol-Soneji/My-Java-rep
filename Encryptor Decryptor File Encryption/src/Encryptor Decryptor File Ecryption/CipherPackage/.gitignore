@@ -5,3 +5,5 @@
 /AffineCipher.class
 /PolyalphabeticCipher.class
 /VigenereCipher.class
+/TranspositionCipher.class
+/RailFenceCipher.class
