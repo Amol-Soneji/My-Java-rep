@@ -7,3 +7,4 @@
 /VigenereCipher.class
 /TranspositionCipher.class
 /RailFenceCipher.class
+/InvalidCipherTextException.class

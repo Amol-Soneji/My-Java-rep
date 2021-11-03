@@ -22,12 +22,12 @@ public abstract class TranspositionCipher
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void clear()
+	public void clear() 
 	{
 		key = null;
 	}
 	
-	public abstract String compute(boolean resultType);
+	public abstract String compute(boolean resultType) throws Exception;
 	
 	protected void setKey(TranspositionKey key)
 	{

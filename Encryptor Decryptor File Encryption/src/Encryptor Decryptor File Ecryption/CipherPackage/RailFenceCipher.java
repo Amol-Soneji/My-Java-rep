@@ -53,7 +53,7 @@ public class RailFenceCipher extends TranspositionCipher
 	}
 
 	@Override
-	public String compute(boolean resultType)
+	public String compute(boolean resultType) throws InvalidCipherTextException
 	{
 		// TODO Auto-generated method stub
 		return null;
