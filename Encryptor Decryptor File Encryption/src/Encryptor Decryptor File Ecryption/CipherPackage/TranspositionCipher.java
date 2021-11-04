@@ -48,7 +48,7 @@ public abstract class TranspositionCipher
 	
 	protected abstract String encryptCharCodes();
 	
-	protected abstract String decrypt();
+	protected abstract String decrypt() throws Exception;
 	
-	protected abstract String decryptCharCodes();
+	protected abstract String decryptCharCodes() throws Exception;
 }

@@ -74,14 +74,14 @@ public class RailFenceCipher extends TranspositionCipher
 	}
 
 	@Override
-	protected String decrypt() 
+	protected String decrypt() throws InvalidCipherTextException
 	{
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected String decryptCharCodes() 
+	protected String decryptCharCodes() throws InvalidCipherTextException
 	{
 		// TODO Auto-generated method stub
 		return null;
