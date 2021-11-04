@@ -55,15 +55,24 @@ public class RailFenceCipher extends TranspositionCipher
 	@Override
 	public String compute(boolean resultType) throws InvalidCipherTextException
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if(mode) { // True means encryption mode.  
+			if(resultType) // True means to return a cipher text of characters.  
+				return encrypt();
+			else // Return a String of integers, where each integer represents the code point for each of the Cipher text characters, with the exception of /n special character.  
+				return encryptCharCodes();
+		}
+		else { // False means decrption mode.  
+			if(resultType) // True means that the result of decryption does not involve converting code points.  
+				return decrypt();
+			else // The decryption process will require converting code points of cipher text characters back to characters before decryption.  
+				return decryptCharCodes();
+		}
 	}
 
 	@Override
 	protected String encrypt() 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
@@ -86,5 +95,9 @@ public class RailFenceCipher extends TranspositionCipher
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	private boolean checkIfValid(String rail, int railSize) throws InvalidCipherTextException
+	{
+		
+	}
 }
