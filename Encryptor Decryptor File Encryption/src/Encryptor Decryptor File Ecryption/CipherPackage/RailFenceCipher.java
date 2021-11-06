@@ -13,8 +13,8 @@ import CipherKeys.TranspositionKey;
 public class RailFenceCipher extends TranspositionCipher 
 {
 	
-	private String[] cipherTextBuilder;
-	private String[] plainTextBuilder;
+	private String cipherTextBuilder;
+	private String plainTextBuilder;
 	private String plainText;
 	private String cipherText;
 	private boolean mode;
@@ -72,20 +72,7 @@ public class RailFenceCipher extends TranspositionCipher
 	@Override
 	protected String encrypt() 
 	{
-		int repititionMultiple = 2 * (super.getKey().getKeyVal() - 1);
-		if(textLength % repititionMultiple != 0) {
-			int paddingNeeded = textLength % repititionMultiple;
-			for(int index = 0; index < paddingNeeded; index++) {
-				plainText = plainText + " "; // Pad spaces to make the length of the String a multiple of 2(Number of Rails - 1).  
-			}
-			textLength = plainText.length(); // Faster runtime, instead of repeatedly calling the function.  
-		}
-		int topBottomRailSize = textLength / (2 * (super.getKey().getKeyVal() - 1));
-		for(int index = 0; index < super.getKey().getKeyVal(); index++) {
-			if((index == 0) || (index == (super.getKey().getKeyVal() - 1))) {
-				
-			}
-		}
+		
 	}
 
 	@Override
