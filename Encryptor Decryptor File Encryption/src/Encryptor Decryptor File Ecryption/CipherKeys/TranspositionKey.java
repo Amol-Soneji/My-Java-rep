@@ -46,7 +46,7 @@ public class TranspositionKey
 		key = val;
 	}
 	
-	public int getKey()
+	public int getKeyVal()
 	{
 		return key;
 	}
