@@ -13,8 +13,8 @@ import CipherKeys.TranspositionKey;
 public class RailFenceCipher extends TranspositionCipher 
 {
 	
-	private String cipherTextBuilder;
-	private String plainTextBuilder;
+	private String[] cipherTextBuilder;
+	private String[] plainTextBuilder;
 	private String plainText;
 	private String cipherText;
 	private boolean mode;
@@ -72,14 +72,35 @@ public class RailFenceCipher extends TranspositionCipher
 	@Override
 	protected String encrypt() 
 	{
-		
+		for(int index = 0; index < textLength; index++) {
+			for(int rail = 0; rail < super.getKey().getKeyVal(); rail++) {
+				cipherTextBuilder[rail] = cipherTextBuilder[rail] + plainText.substring(index, index + 1);
+			}
+		}
+		for(int rail = 0; rail < super.getKey().getKeyVal(); rail++) {
+			cipherText = cipherText + cipherTextBuilder[rail];
+		}
+		return cipherText;
 	}
 
 	@Override
 	protected String encryptCharCodes() 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		int nextRailPointer = 0;
+		for(int index = 0; index < textLength - 1; index++) {
+			for(int rail = 0; rail < super.getKey().getKeyVal(); rail++) {
+				cipherTextBuilder[rail] = cipherTextBuilder[rail] + String.valueOf(cipherText.codePointAt(index)) + " ";
+				if(rail == super.getKey().getKeyVal() - 1) // This is for determining which rail the last character will be in.  
+					nextRailPointer = 0;
+				else
+					nextRailPointer = rail;
+			}
+		}
+		cipherTextBuilder[nextRailPointer] = cipherTextBuilder[nextRailPointer] + String.valueOf(cipherText.codePointAt(textLength - 1));
+		for(int rail = 0; rail < super.getKey().getKeyVal(); rail++) {
+			cipherText = cipherText + cipherTextBuilder[rail];
+		}
+		return cipherText;
 	}
 
 	@Override
