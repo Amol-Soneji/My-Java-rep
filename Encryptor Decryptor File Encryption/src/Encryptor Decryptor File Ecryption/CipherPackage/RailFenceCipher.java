@@ -72,9 +72,33 @@ public class RailFenceCipher extends TranspositionCipher
 	@Override
 	protected String encrypt() 
 	{
-		for(int index = 0; index < textLength; index++) {
-			for(int rail = 0; rail < super.getKey().getKeyVal(); rail++) {
+		int currentRail = 0;
+		boolean direction = false; // False indicates the next rail will be bellow where as true means a rail above.  
+		int index = 0;
+		while(index < textLength) {
+			for(int rail = 0; (rail < super.getKey().getKeyVal()) && (index < textLength); rail++) {
 				cipherTextBuilder[rail] = cipherTextBuilder[rail] + plainText.substring(index, index + 1);
+				currentRail = rail;
+				direction = false;
+				index++;
+			}
+			for(int rail = super.getKey().getKeyVal() - 2; (rail > 0) && (index < textLength); rail--) {
+				cipherTextBuilder[rail] = cipherTextBuilder[rail] + plainText.substring(index, index + 1);
+				currentRail = rail;
+				direction = true;
+				index++;
+			}
+		}
+		while(currentRail < super.getKey().getKeyVal() - 1) { // Padding is needed to make the length a multiple of 2*(rails-1).  
+			while((currentRail < super.getKey().getKeyVal()) && (!direction)) {
+				cipherTextBuilder[currentRail + 1] = cipherTextBuilder[currentRail + 1] + " "; // Use blank space as padding.  
+				currentRail++;
+			}
+			while(!(currentRail < super.getKey().getKeyVal() - 1) && (currentRail > 0) && direction) {
+				cipherTextBuilder[currentRail - 1] = cipherTextBuilder[currentRail - 1] + " "; // Use blank space as padding.  
+				currentRail--;
+				if(currentRail == 0)
+					direction = false;
 			}
 		}
 		for(int rail = 0; rail < super.getKey().getKeyVal(); rail++) {
@@ -87,16 +111,49 @@ public class RailFenceCipher extends TranspositionCipher
 	protected String encryptCharCodes() 
 	{
 		int nextRailPointer = 0;
-		for(int index = 0; index < textLength - 1; index++) {
-			for(int rail = 0; rail < super.getKey().getKeyVal(); rail++) {
+		boolean direction = false;
+		int index = 0;
+		while(index < textLength - 1) {
+			for(int rail = 0; (rail < super.getKey().getKeyVal()) && (index < textLength - 1); rail++) {
 				cipherTextBuilder[rail] = cipherTextBuilder[rail] + String.valueOf(cipherText.codePointAt(index)) + " ";
-				if(rail == super.getKey().getKeyVal() - 1) // This is for determining which rail the last character will be in.  
-					nextRailPointer = 0;
-				else
-					nextRailPointer = rail;
+				if(rail == super.getKey().getKeyVal() - 1) { // This is for determining which rail the next character will be in.  
+					nextRailPointer = rail - 1;
+					direction = true;
+				}
+				else {
+					nextRailPointer = rail + 1;
+					direction = false;
+				}
+				index++;
+			}
+			for(int rail = super.getKey().getKeyVal() - 2; rail > 0; rail--) {
+				cipherTextBuilder[rail] = cipherTextBuilder[rail] + String.valueOf(cipherText.codePointAt(index)) + " ";
+				nextRailPointer = rail - 1;
+				index++;
 			}
 		}
 		cipherTextBuilder[nextRailPointer] = cipherTextBuilder[nextRailPointer] + String.valueOf(cipherText.codePointAt(textLength - 1));
+		if((nextRailPointer == 0) || (!direction && (nextRailPointer != super.getKey().getKeyVal() - 1))) { // Convert nextRailPointer into currentRailPointer
+			nextRailPointer++;
+			direction = false;
+		}
+		else if((nextRailPointer != super.getKey().getKeyVal() - 1) && (direction && (nextRailPointer < 0))) 
+			nextRailPointer--;
+		else
+			nextRailPointer = nextRailPointer; // Do nothing.  
+		int currentRail = nextRailPointer;
+		while(currentRail < super.getKey().getKeyVal() - 1) { // Padding is needed to make length a multiple of 2*(rail-1).  
+			while((currentRail < super.getKey().getKeyVal()) && !(direction)) {
+				cipherTextBuilder[currentRail] = cipherTextBuilder[currentRail] + String.valueOf(" ".codePointAt(0));
+				currentRail++;
+			}
+			while(!(currentRail < super.getKey().getKeyVal() - 1) && (currentRail > 0) && direction) {
+				cipherTextBuilder[currentRail] = cipherTextBuilder[currentRail] + String.valueOf(" ".codePointAt(0));
+				currentRail--;
+				if(currentRail == 0)
+					direction = false;
+			}
+		}
 		for(int rail = 0; rail < super.getKey().getKeyVal(); rail++) {
 			cipherText = cipherText + cipherTextBuilder[rail];
 		}
@@ -106,19 +163,34 @@ public class RailFenceCipher extends TranspositionCipher
 	@Override
 	protected String decrypt() throws InvalidCipherTextException
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if((textLength % (2 * (super.getKey().getKeyVal() - 1))) != 0)
+			throw new InvalidCipherTextException("Ciphertext length is not a multiple of 2(key-1).  ");
+		String[] cipherGrid = new String[super.getKey().getKeyVal()];
+		int firstAndLastRailLength = textLength / (2 * (super.getKey().getKeyVal() - 1));
+		requiredLengthsCheck = 2 * firstAndLastRailLength;
+		cipherGrid[0] = cipherText.substring(0, firstAndLastRailLength);
+		int pointer = firstAndLastRailLength;
+		for(int index = 1; index < super.getKey().getKeyVal() - 1; index++) {
+			cipherGrid[index] = cipherText.substring(pointer, pointer + requiredLengthsCheck);
+			pointer = pointer + requiredLengthsCheck;
+		}
+		cipherGrid[super.getKey().getKeyVal() - 1] = cipherText.substring(pointer);
+		for(int index = 0; index < textLength; index++) {
+			int railPointer = 0;
+			while(railPointer < super.getKey().getKeyVal()) {
+				plainTextBuilder[index = ]
+			}
+		}
 	}
 
 	@Override
 	protected String decryptCharCodes() throws InvalidCipherTextException
 	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	private boolean checkIfValid(String rail, int railSize) throws InvalidCipherTextException
-	{
 		
 	}
+	
+	//private boolean checkIfValid(String rail, int railSize) throws InvalidCipherTextException
+	//{
+		//
+	//}
 }
