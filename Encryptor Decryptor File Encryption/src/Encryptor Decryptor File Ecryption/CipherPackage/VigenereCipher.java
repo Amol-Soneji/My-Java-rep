@@ -34,13 +34,15 @@ public class VigenereCipher extends PolyalphabeticCipher
 	@Override
 	public String compute(boolean resultType) 
 	{
-		if(mode) {
+		if(mode) 
+		{
 			if(resultType) //Return as a String of encrypted chars.
 				return encrypt();
 			else //Return as a String of char codes of chars of encrypted String.  
 				return encryptCharCodes();
 		}
-		else {
+		else 
+		{
 			if(resultType) //Return plaintext with input being String of encrypted chars.  
 				return decrypt();
 			else //Return plaintext with input being String of char codes of chars of encrypted String.  
@@ -51,7 +53,8 @@ public class VigenereCipher extends PolyalphabeticCipher
 	@Override
 	protected String encrypt() 
 	{
-		for(int index = 0; index < plainText.length(); index++) {
+		for(int index = 0; index < plainText.length(); index++) 
+		{
 			int charCode = plainText.codePointAt(index);
 			int keyCharCode = super.getKey().getKeyVal().codePointAt(index);
 			charCode = (charCode + keyCharCode) % 1112063;
@@ -63,7 +66,8 @@ public class VigenereCipher extends PolyalphabeticCipher
 	@Override
 	protected String encryptCharCodes() 
 	{
-		for(int index = 0; index < plainText.length(); index++) {
+		for(int index = 0; index < plainText.length(); index++) 
+		{
 			int charCode = plainText.codePointAt(index);
 			int keyCharCode = super.getKey().getKeyVal().codePointAt(index);
 			charCode = (charCode + keyCharCode) % 1112063;
@@ -78,7 +82,8 @@ public class VigenereCipher extends PolyalphabeticCipher
 	@Override
 	protected String decrypt() 
 	{
-		for(int index = 0; index < cipherText.length(); index++) {
+		for(int index = 0; index < cipherText.length(); index++) 
+		{
 			int charCode = cipherText.codePointAt(index);
 			int keyCharCode = super.getKey().getKeyVal().codePointAt(index);
 			charCode = (charCode - keyCharCode) % 1112063;
@@ -91,7 +96,8 @@ public class VigenereCipher extends PolyalphabeticCipher
 	protected String decryptCharCodes() 
 	{
 		String[] charCodeStringArray = cipherText.split(" ");
-		for(int index = 0; index < charCodeStringArray.length; index++) {
+		for(int index = 0; index < charCodeStringArray.length; index++) 
+		{
 			int charCode = Integer.parseInt(charCodeStringArray[index]);
 			int keyCharCode = super.getKey().getKeyVal().codePointAt(index);
 			charCode = (charCode - keyCharCode) % 1112063;

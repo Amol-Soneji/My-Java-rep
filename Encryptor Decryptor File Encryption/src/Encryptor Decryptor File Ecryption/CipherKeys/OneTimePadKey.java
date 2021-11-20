@@ -30,7 +30,8 @@ public class OneTimePadKey
 	{
 		SecureRandom random = new SecureRandom();
 		char[] builder = new char[textLength];
-		for(int index = 0; index < textLength; index++) {
+		for(int index = 0; index < textLength; index++) 
+		{
 			char[] holding = Character.toChars(random.nextInt());
 			builder[index] = holding[0];
 		}

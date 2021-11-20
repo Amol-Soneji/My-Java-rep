@@ -38,9 +38,11 @@ public class SubstitutionKey
 	private void createKey() throws KeyCreationException
 	{
 		SecureRandom random = new SecureRandom();
-		if(booleanMode) {
+		if(booleanMode) 
+		{
 			int randomInteger = -1;
-			while((randomInteger > 1112063) || (randomInteger < 2) || (gcd(randomInteger, 1112063) != 1)) {
+			while((randomInteger > 1112063) || (randomInteger < 2) || (gcd(randomInteger, 1112063) != 1)) 
+			{
 				randomInteger = random.nextInt(2097152);
 			}
 			key = randomInteger;
@@ -54,12 +56,14 @@ public class SubstitutionKey
 				throw new KeyCreationException();
 			}
 			randomInteger = -1;
-			while((randomInteger > 1112063) || (randomInteger < 2) || (randomInteger == key) || (randomInteger == affineDecKey)) {
+			while((randomInteger > 1112063) || (randomInteger < 2) || (randomInteger == key) || (randomInteger == affineDecKey)) 
+			{
 				randomInteger = random.nextInt(2097152);
 			}
 			arbitraryB = randomInteger;
 		}
-		else {
+		else 
+		{
 			key = random.nextInt();
 		}
 	}

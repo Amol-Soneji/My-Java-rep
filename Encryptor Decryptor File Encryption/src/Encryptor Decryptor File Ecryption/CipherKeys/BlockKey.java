@@ -11,7 +11,8 @@ import java.security.SecureRandom;
  * @author Amol Soneji
  *
  */
-public class BlockKey {
+public class BlockKey 
+{
 
 	private SecretKey key; //The key that will be used by block ciphers.  
 	private byte[] IV; //Initialization Vector.  
@@ -50,12 +51,14 @@ public class BlockKey {
 			keyGen.init(128);
 			key = keyGen.generateKey();
 			SecureRandom random = new SecureRandom();
-			if(enDecryptionMethod) {
+			if(enDecryptionMethod) 
+			{
 				IV = new byte[12]; //IV in GCM is 12 bytes.  
 				random.nextBytes(IV);
 				authenticationTagLength = 16;
 			}
-			else {
+			else 
+			{
 				IV = new byte[16]; //IV in CBC for AES 128-bit is 16 bytes.
 				random.nextBytes(IV);
 			}
@@ -65,7 +68,8 @@ public class BlockKey {
 			System.out.println("There was an error in the program.  This device does not support AES.  ");
 			System.out.println("Please use a different device to use AES.  ");
 			System.out.println("Program will close in a few seconds.  ");
-			for(int i = 0; i < 100000; i++) {
+			for(int i = 0; i < 100000; i++) 
+			{
 				i = i;
 			}
 			System.exit(0);

@@ -9,7 +9,8 @@ import CipherKeys.SubstitutionKey;
  * @author Amol Soneji
  *
  */
-public class AffineCipher extends SubstitutionCipher {
+public class AffineCipher extends SubstitutionCipher 
+{
 
 	private String cipherTextBuilder;
 	private String plainTextBuilder;
@@ -33,13 +34,15 @@ public class AffineCipher extends SubstitutionCipher {
 	@Override
 	public String compute(boolean resultType) 
 	{
-		if(mode) {
+		if(mode) 
+		{
 			if(resultType)
 				return encrypt();
 			else
 				return encryptCharCodes();
 		}
-		else {
+		else 
+		{
 			if(resultType)
 				return decrypt();
 			else
@@ -50,7 +53,8 @@ public class AffineCipher extends SubstitutionCipher {
 	@Override
 	protected String encrypt() 
 	{
-		for(int index = 0; index < plainText.length(); index++) {
+		for(int index = 0; index < plainText.length(); index++) 
+		{
 			int charCode = plainText.codePointAt(index);
 			charCode = ((super.getKey().getKeyVal() * charCode) + super.getKey().getArbitraryB()) % 1112063;
 			cipherTextBuilder = cipherTextBuilder + String.copyValueOf(Character.toChars(charCode));
@@ -61,7 +65,8 @@ public class AffineCipher extends SubstitutionCipher {
 	@Override
 	protected String encryptCharCodes() 
 	{
-		for(int index = 0; index < plainText.length(); index++) {
+		for(int index = 0; index < plainText.length(); index++) 
+		{
 			int charCode = plainText.codePointAt(index);
 			charCode = ((super.getKey().getKeyVal() * charCode) + super.getKey().getArbitraryB()) % 1112063;
 			if(index == (plainText.length() + 1))
@@ -75,7 +80,8 @@ public class AffineCipher extends SubstitutionCipher {
 	@Override
 	protected String decrypt() 
 	{
-		for(int index = 0; index < cipherText.length(); index++) {
+		for(int index = 0; index < cipherText.length(); index++) 
+		{
 			int charCode = cipherText.codePointAt(index);
 			charCode = (super.getKey().getAffineDecKey() * (charCode - super.getKey().getArbitraryB())) % 1112063;
 			plainTextBuilder = plainTextBuilder + String.copyValueOf(Character.toChars(charCode));
@@ -87,7 +93,8 @@ public class AffineCipher extends SubstitutionCipher {
 	protected String decryptCharCodes() 
 	{
 		String[] charCodeStringArray = cipherText.split(" ");
-		for(int index = 0; index < charCodeStringArray.length; index++) {
+		for(int index = 0; index < charCodeStringArray.length; index++) 
+		{
 			int charCode = Integer.parseInt(charCodeStringArray[index]);
 			charCode = (super.getKey().getAffineDecKey() * (charCode - super.getKey().getArbitraryB())) % 1112063;
 			plainTextBuilder = plainTextBuilder + String.copyValueOf(Character.toChars(charCode));

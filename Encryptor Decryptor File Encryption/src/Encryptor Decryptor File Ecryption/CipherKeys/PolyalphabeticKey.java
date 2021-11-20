@@ -34,25 +34,32 @@ public class PolyalphabeticKey
 	private void createKey()
 	{
 		SecureRandom random = new SecureRandom();
-		if(usePunct) {
+		if(usePunct) 
+		{
 			ArrayList<char[]> charList = new ArrayList<char[]>();
-			for(int index = 0; index < 10; index++) {//Key length is 10 if created via this program.  
+			for(int index = 0; index < 10; index++) //Key length is 10 if created via this program.  
+			{
 				charList.add(Character.toChars(random.nextInt(1112063)));
 			}
-			for(int index = 0; index < 10; index++) {
+			for(int index = 0; index < 10; index++) 
+			{
 				key = key + String.valueOf(charList.get(index));
 			}
 		}
-		else {//Only capital and lower case letters.  
+		else //Only capital and lower case letters.  
+		{
 			char[][] charList = new char[10][1];
-			for(int index = 0; index < 10; index++) {
+			for(int index = 0; index < 10; index++) 
+			{
 				int val = random.nextInt(122) - 65;
-				while((val > 25) && (val < 32)) {
+				while((val > 25) && (val < 32)) 
+				{
 					val = random.nextInt(122) - 65;
 				}
 				charList[index] = Character.toChars(val + 65);
 			}
-			for(int index = 0; index < 10; index++) {
+			for(int index = 0; index < 10; index++) 
+			{
 				key = key + String.valueOf(charList[index]);
 			}
 		}

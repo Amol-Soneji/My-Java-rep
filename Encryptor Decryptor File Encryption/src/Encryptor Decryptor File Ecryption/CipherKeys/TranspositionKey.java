@@ -40,7 +40,8 @@ public class TranspositionKey
 	{
 		SecureRandom random = new SecureRandom();
 		int val = random.nextInt(128);
-		while(val < 10) {//10 or larger is better.  
+		while(val < 10) //10 or larger is better.  
+		{
 			val = random.nextInt(128);
 		}
 		key = val;
