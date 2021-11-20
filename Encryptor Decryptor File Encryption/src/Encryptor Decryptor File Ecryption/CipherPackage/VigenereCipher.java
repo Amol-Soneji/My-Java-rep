@@ -87,7 +87,7 @@ public class VigenereCipher extends PolyalphabeticCipher
 			int charCode = cipherText.codePointAt(index);
 			int keyCharCode = super.getKey().getKeyVal().codePointAt(index);
 			charCode = (charCode - keyCharCode) % 1112063;
-			plainTextBuilder = plainTextBuilder + String.copyValueOf(Character.toChars(charCode));
+			plainTextBuilder = plainTextBuilder + Character.toString(charCode);
 		}
 		return plainTextBuilder;
 	}
@@ -101,7 +101,7 @@ public class VigenereCipher extends PolyalphabeticCipher
 			int charCode = Integer.parseInt(charCodeStringArray[index]);
 			int keyCharCode = super.getKey().getKeyVal().codePointAt(index);
 			charCode = (charCode - keyCharCode) % 1112063;
-			plainTextBuilder = plainTextBuilder + String.copyValueOf(Character.toChars(charCode));
+			plainTextBuilder = plainTextBuilder + Character.toString(charCode);
 		}
 		return plainTextBuilder;
 	}

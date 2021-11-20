@@ -84,7 +84,7 @@ public class AffineCipher extends SubstitutionCipher
 		{
 			int charCode = cipherText.codePointAt(index);
 			charCode = (super.getKey().getAffineDecKey() * (charCode - super.getKey().getArbitraryB())) % 1112063;
-			plainTextBuilder = plainTextBuilder + String.copyValueOf(Character.toChars(charCode));
+			plainTextBuilder = plainTextBuilder + Character.toString(charCode);
 		}
 		return plainTextBuilder;
 	}
@@ -97,7 +97,7 @@ public class AffineCipher extends SubstitutionCipher
 		{
 			int charCode = Integer.parseInt(charCodeStringArray[index]);
 			charCode = (super.getKey().getAffineDecKey() * (charCode - super.getKey().getArbitraryB())) % 1112063;
-			plainTextBuilder = plainTextBuilder + String.copyValueOf(Character.toChars(charCode));
+			plainTextBuilder = plainTextBuilder + Character.toString(charCode);
 		}
 		return plainTextBuilder;
 	}

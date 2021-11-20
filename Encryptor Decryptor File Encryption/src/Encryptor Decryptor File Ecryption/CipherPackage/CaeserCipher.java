@@ -84,7 +84,7 @@ public class CaeserCipher extends SubstitutionCipher
 		{
 			int charValue = cipherText.codePointAt(index);
 			charValue = (charValue - super.getKey().getKeyVal()) % 1112063;
-			plainTextBuilder = plainTextBuilder + String.copyValueOf(Character.toChars(charValue));
+			plainTextBuilder = plainTextBuilder + Character.toString(charValue);
 		}
 		return plainTextBuilder;
 	}
@@ -97,7 +97,7 @@ public class CaeserCipher extends SubstitutionCipher
 		{
 			int charValue = Integer.parseInt(codes[index]);
 			charValue = (charValue - super.getKey().getKeyVal()) % 1112063;
-			plainTextBuilder = plainTextBuilder + String.copyValueOf(Character.toChars(charValue));
+			plainTextBuilder = plainTextBuilder + Character.toString(charValue);
 		}
 		return plainTextBuilder;
 	}
