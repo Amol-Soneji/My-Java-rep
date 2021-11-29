@@ -140,8 +140,56 @@ public class AESCipher extends BlockCipher
 	@Override
 	protected String decrypt() throws Exception 
 	{
-		// TODO Auto-generated method stub
-		return null;
+		if(EnDecryptionMethod) // AES-GCM
+		{
+			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
+			try
+			{
+				SecretKeySpec keySpec = new SecretKeySpec(super.getBlockKey().getKey().getEncoded(), "AES");
+				GCMParameterSpec parameterSpec = new GCMParameterSpec(super.getBlockKey().getAuthenticationTagLength(), super.getBlockKey().getIV());
+				cipher.init(Cipher.DECRYPT_MODE, keySpec, parameterSpec);
+				rawPlainText = cipher.doFinal(rawCipherText);
+			}
+			catch(InvalidKeyException e)
+			{
+				e.printStackTrace();
+				System.out.println("There was an issue with the key that was provided, plase make sure the correct \n"
+								 + "key was supplied.  ");
+				throw new Exception();
+			}
+			catch(IllegalArgumentException e)
+			{
+				e.printStackTrace();
+				System.out.println("There was an internal error in the program.  ");
+				throw new Exception();
+			}
+		}
+		else // AES-CBC
+		{
+			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+			try
+			{
+				SecretKeySpec keySpec = new SecretKeySpec(super.getBlockKey().getKey().getEncoded(), "AES");
+				IvParameterSpec ivSpec = new IvParameterSpec(super.getBlockKey().getIV());
+				cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
+				rawPlainText = cipher.doFinal(rawCipherText);
+			}
+			catch(InvalidKeyException e)
+			{
+				e.printStackTrace();
+				System.out.println("There was an issue with the key that was provided, please make sure the correct \n"
+								 + "key was supplied.  ");
+				throw new Exception();
+			}
+			catch(IllegalArgumentException e)
+			{
+				e.printStackTrace();
+				System.out.println("There was an internal error in the program.  ");
+				throw new Exception();
+			}
+		}
+		plainText = new String(rawPlainText, "UTF-16");
+		return plainText;
 	}
 
 }
