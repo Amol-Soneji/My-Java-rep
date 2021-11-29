@@ -8,3 +8,5 @@
 /TranspositionCipher.class
 /RailFenceCipher.class
 /InvalidCipherTextException.class
+/BlockCipher.class
+/AESCipher.class
