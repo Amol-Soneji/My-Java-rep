@@ -19,11 +19,10 @@ import javax.crypto.spec.IvParameterSpec;
 public class AESCipher extends BlockCipher 
 {
 	
-	private String cipherTextBuilder;
-	private String plainTextBuilder;
 	private byte[] rawCipherText;
 	private byte[] rawPlainText;
 	private String plainText;
+	private String cipherText;
 	private boolean EnDecryptionMethod;
 	private boolean mode;
 
@@ -94,7 +93,7 @@ public class AESCipher extends BlockCipher
 				SecretKeySpec keySpec = new SecretKeySpec(super.getBlockKey().getKey().getEncoded(), "AES");
 				GCMParameterSpec parameterSpec = new GCMParameterSpec(super.getBlockKey().getAuthenticationTagLength(), super.getBlockKey().getIV());
 				cipher.init(Cipher.ENCRYPT_MODE, keySpec, parameterSpec);
-				
+				rawCipherText = cipher.doFinal(rawPlainText);
 			}
 			catch(InvalidKeyException e)
 			{
@@ -134,6 +133,8 @@ public class AESCipher extends BlockCipher
 				throw new Exception();
 			}
 		}
+		cipherText = new String(rawCipherText, "UTF-16");
+		return cipherText;
 	}
 
 	@Override
