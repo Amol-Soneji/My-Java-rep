@@ -27,7 +27,7 @@ public abstract class BlockCipher
 		key = null;
 	}
 	
-	public abstract String compute(boolean resultType) throws Exception;
+	public abstract String compute() throws Exception;
 	
 	protected void setKey(BlockKey key)
 	{
@@ -43,5 +43,4 @@ public abstract class BlockCipher
 	
 	protected abstract String decrypt() throws Exception;
 	
-	protected abstract String decryptCharCodes() throws Exception;
 }
