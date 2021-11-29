@@ -72,7 +72,7 @@ public class BlockKey
 			{
 				i = i;
 			}
-			System.exit(0);
+			System.exit(1);
 		}
 	}
 	

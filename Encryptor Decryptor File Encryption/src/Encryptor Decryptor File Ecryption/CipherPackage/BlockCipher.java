@@ -29,12 +29,12 @@ public abstract class BlockCipher
 	
 	public abstract String compute() throws Exception;
 	
-	protected void setKey(BlockKey key)
+	protected void setBlockKey(BlockKey key)
 	{
 		this.key = key;
 	}
 	
-	protected BlockKey getKey()
+	protected BlockKey getBlockKey()
 	{
 		return key;
 	}

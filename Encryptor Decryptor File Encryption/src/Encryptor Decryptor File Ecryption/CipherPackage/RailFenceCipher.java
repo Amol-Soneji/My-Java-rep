@@ -4,7 +4,6 @@
 package CipherPackage;
 
 import java.util.stream.IntStream;
-import java.util.ArrayList;
 import CipherKeys.TranspositionKey;
 
 /**
