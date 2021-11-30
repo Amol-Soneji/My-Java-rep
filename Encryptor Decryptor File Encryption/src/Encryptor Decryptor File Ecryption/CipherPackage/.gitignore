@@ -10,3 +10,4 @@
 /InvalidCipherTextException.class
 /BlockCipher.class
 /AESCipher.class
+/OneTimePadCipher.class

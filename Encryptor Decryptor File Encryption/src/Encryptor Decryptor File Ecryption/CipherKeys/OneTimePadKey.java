@@ -11,8 +11,8 @@ import java.security.SecureRandom;
  */
 public class OneTimePadKey 
 {
-	private int textLength;
-	private String key;
+	private int textLength; // Text length in terms of number of number of bytes.  
+	private byte[] key;
 	
 	public OneTimePadKey(int textLength)
 	{
@@ -29,13 +29,12 @@ public class OneTimePadKey
 	private void createKey()
 	{
 		SecureRandom random = new SecureRandom();
-		char[] builder = new char[textLength];
+		String 
+		String keyBuilder = "";
 		for(int index = 0; index < textLength; index++) 
 		{
-			char[] holding = Character.toChars(random.nextInt());
-			builder[index] = holding[0];
+			keyBuilder = keyBuilder + Character.toChars(random.);
 		}
-		key = new String(builder);
 	}
 	
 	public String getKey()
