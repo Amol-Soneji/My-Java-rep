@@ -1,13 +1,13 @@
 Must Support:
--Encryption
--Decryption
--Key Generation
+-Encryption [Done]  
+-Decryption [Done]  
+-Key Generation [Done]  
 -Key Storage
 
 Supported file encryption algorithms:
--Caeser Cipher (32-bit instead of just 26 letters for UTF-16 support)
--Affine Cipher (32-bit instead of just 26 letters for UTF-16 support)
--Rail Fence
--One-Time Pad
--Vigenère Cipher (with UTF-16 support)
--AES (CBC and GCM) (128-bit)
+-Caeser Cipher (32-bit instead of just 26 letters for UTF-16 support) [Done]  
+-Affine Cipher (32-bit instead of just 26 letters for UTF-16 support) [Done]  
+-Rail Fence [Done]  
+-One-Time Pad [Done]  
+-Vigenère Cipher (with UTF-16 support) [Done]  
+-AES (CBC and GCM) (128-bit) [Done]  
