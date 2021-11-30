@@ -20,7 +20,7 @@ public class OneTimePadKey
 		createKey();
 	}
 	
-	public OneTimePadKey(String key, int textLength)
+	public OneTimePadKey(byte[] key, int textLength)
 	{
 		this.key = key;
 		this.textLength = textLength;
@@ -29,15 +29,11 @@ public class OneTimePadKey
 	private void createKey()
 	{
 		SecureRandom random = new SecureRandom();
-		String 
-		String keyBuilder = "";
-		for(int index = 0; index < textLength; index++) 
-		{
-			keyBuilder = keyBuilder + Character.toChars(random.);
-		}
+		key = new byte[textLength];
+		random.nextBytes(key);
 	}
 	
-	public String getKey()
+	public byte[] getKey()
 	{
 		return key;
 	}
