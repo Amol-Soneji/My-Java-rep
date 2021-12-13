@@ -1,0 +1,4 @@
+For the key storage I will use SQLite with it's JDBC driver.  
+I will get the JDBC driver.  [Done]
+Then from there I will create a class that will interact with the SQLite databse.  
+Then I will create a class that will send and interpret data to and from the class above, to store key objects as well as create specific key objects.  
