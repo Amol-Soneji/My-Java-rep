@@ -1,4 +1,6 @@
 For the key storage I will use SQLite with it's JDBC driver.  
 I will get the JDBC driver.  [Done]
+-Will be using the JDBC Driver provided by Xerial at GitHub - https://github.com/xerial/sqlite-jdbc
+Create a UML Diagram for Java classes that I have to create, that will be used to interact with the the JDBC Driver and SQLite database.  
 Then from there I will create a class that will interact with the SQLite databse.  
 Then I will create a class that will send and interpret data to and from the class above, to store key objects as well as create specific key objects.  
