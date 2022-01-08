@@ -3,12 +3,13 @@ package CipherKeys;
 
 import java.security.SecureRandom;
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 
 /**
  * @author Amol Soneji
  *
  */
-public class SubstitutionKey 
+public class SubstitutionKey extends InheritableKey
 {
 	private int key;
 	private int affineDecKey;
@@ -68,6 +69,22 @@ public class SubstitutionKey
 		}
 	}
 	
+	@Override
+	protected void setComponents() 
+	{
+		ByteBuffer firstArg = ByteBuffer.allocate(4);
+		if(booleanMode)
+		{
+			ByteBuffer secondArg = ByteBuffer.allocate(4);
+			ByteBuffer thirdArg = ByteBuffer.allocate(4);
+			super.keyComponents.add(firstArg.putInt(key));
+			super.keyComponents.add(secondArg.putInt(affineDecKey));
+			super.keyComponents.add(thirdArg.putInt(arbitraryB));
+		}
+		else
+			super.keyComponents.add(firstArg.putInt(key));
+	}
+	
 	public int getKeyVal()
 	{
 		return key;
@@ -89,4 +106,6 @@ public class SubstitutionKey
 			return a;
 		return gcd(b, a % b);
 	}
+
+	
 }

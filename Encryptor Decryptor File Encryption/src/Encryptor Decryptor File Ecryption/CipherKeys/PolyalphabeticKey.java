@@ -1,14 +1,17 @@
 package CipherKeys;
 
 import java.security.SecureRandom;
-import java.util.ArrayList; //Array list for storing char array, since when using full UTF-16, there are characters that may use more than one char for once character.  
+import java.util.ArrayList; //Array list for storing char array, since when using full UTF-16, there are characters that may use more than one char for once character.
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.util.BitSet; //Usefull when converting a boolean to a byte for ByteBuffer.  
 
 /**
  * @author Amol Soneji
  *
  */
 
-public class PolyalphabeticKey 
+public class PolyalphabeticKey extends InheritableKey
 {
 	private String key;
 	private boolean usePunct;
@@ -65,6 +68,32 @@ public class PolyalphabeticKey
 		}
 	}
 	
+	@Override
+	protected void setComponents() 
+	{
+			ByteBuffer firstArg = ByteBuffer.allocate(key.length());
+			ByteBuffer secondArg = ByteBuffer.allocate(1);
+			BitSet boolInBits = new BitSet();
+			if(usePunct)
+				boolInBits.set(0);
+			byte[] boolInBytes = boolInBits.toByteArray();
+			try
+			{
+				super.keyComponents.add(firstArg.put(key.getBytes("UTF-16")));
+			}
+			catch(UnsupportedEncodingException e)
+			{
+				System.out.println("There was an error.  Please run the program in a different");
+				System.out.println("computer.  Program will close in 10 seconds.  ");
+				for(int i = 0; i < 10000; i++)
+				{
+					i = i;  
+				}
+				System.exit(0);
+			}
+			super.keyComponents.add(secondArg.put(boolInBytes[0]));
+	}
+	
 	public String getKeyVal()
 	{
 		return key;
@@ -74,4 +103,6 @@ public class PolyalphabeticKey
 	{
 		return usePunct;
 	}
+
+	
 }

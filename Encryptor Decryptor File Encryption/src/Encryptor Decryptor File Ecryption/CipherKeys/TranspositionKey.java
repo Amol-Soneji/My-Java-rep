@@ -4,12 +4,14 @@
 package CipherKeys;
 
 import java.security.SecureRandom;
+import java.nio.ByteBuffer;
+import java.util.BitSet;
 
 /**
  * @author Amol Soneji
  *
  */
-public class TranspositionKey 
+public class TranspositionKey extends InheritableKey
 {
 
 	private int key;
@@ -47,6 +49,19 @@ public class TranspositionKey
 		key = val;
 	}
 	
+	@Override
+	protected void setComponents() 
+	{
+			ByteBuffer firstArg = ByteBuffer.allocate(4);
+			ByteBuffer secondArg = ByteBuffer.allocate(1);
+			BitSet boolInBits = new BitSet();
+			if(usePunct)
+				boolInBits.set(0);
+			byte[] boolInBytes = boolInBits.toByteArray();
+			super.keyComponents.add(firstArg.putInt(key));
+			super.keyComponents.add(secondArg.put(boolInBytes));
+	}
+	
 	public int getKeyVal()
 	{
 		return key;
@@ -56,4 +71,6 @@ public class TranspositionKey
 	{
 		return usePunct;
 	}
+
+	
 }

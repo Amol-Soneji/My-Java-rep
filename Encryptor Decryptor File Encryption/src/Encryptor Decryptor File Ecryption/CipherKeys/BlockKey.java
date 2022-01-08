@@ -6,12 +6,13 @@ package CipherKeys;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.SecureRandom;
+import java.nio.ByteBuffer;
 
 /**
  * @author Amol Soneji
  *
  */
-public class BlockKey 
+public class BlockKey extends InheritableKey
 {
 
 	private SecretKey key; //The key that will be used by block ciphers.  
@@ -76,6 +77,27 @@ public class BlockKey
 		}
 	}
 	
+	@Override
+	protected void setComponents() 
+	{
+		ByteBuffer firstArg = ByteBuffer.allocate(16);
+		if(enDecryptionMethod)
+		{
+			ByteBuffer secondArg = ByteBuffer.allocate(IV.length);
+			ByteBuffer thirdArg = ByteBuffer.allocate(4);
+			super.keyComponents.add(firstArg.put(key.getEncoded()));
+			super.keyComponents.add(secondArg.put(IV));
+			super.keyComponents.add(thirdArg.putInt(authenticationTagLength));
+		}
+		else
+		{
+			ByteBuffer secondArg = ByteBuffer.allocate(IV.length);
+			super.keyComponents.add(firstArg.put(key.getEncoded()));
+			super.keyComponents.add(secondArg.put(IV));
+		}
+		
+	}
+	
 	public SecretKey getKey()
 	{
 		return key;
@@ -95,5 +117,7 @@ public class BlockKey
 	{
 		return enDecryptionMethod;
 	}
+
+	
 
 }
