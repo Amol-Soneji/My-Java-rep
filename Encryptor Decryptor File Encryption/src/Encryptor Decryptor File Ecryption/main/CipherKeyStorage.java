@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -130,10 +131,21 @@ public class CipherKeyStorage
 								   + "use_punct BLOB NOT NULL, "
 								   + "PRIMARY KEY (document_name))");
 			}
+			rSet.close();
+			stmt.close();
 		}
 		catch(SQLException e)
 		{
 			e.printStackTrace();
+			try 
+			{
+				this.conn.close(); //Release resource.  
+			} 
+			catch (SQLException e1) 
+			{
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			System.out.println("There was an internal error with the program.  \n"
 							  + "The program will exit in 10 seconds.  ");
 			for(int i = 0; i < 10000; i++)
@@ -147,33 +159,157 @@ public class CipherKeyStorage
 	protected void addKey(InheritableKey key, int keyType, String docName)
 	{
 		ArrayList<ByteBuffer> components = key.getComponents();
-		if(keyType == 1)
+		components.forEach((n) -> n.rewind());
+		try 
 		{
-			
+			if(keyType == 1)
+			{
+				Blob keyVal = conn.createBlob();
+				Blob IV = conn.createBlob();
+				keyVal.setBytes(1, components.get(0).array());
+				IV.setBytes(1, components.get(1).array());
+				int authTagLength = components.get(2).getInt();
+				String stmt = "INSERT INTO AES-GCM "
+							  + "values(?, ?, ?, ?)";
+				PreparedStatement pStmt = conn.prepareStatement(stmt);
+				pStmt.setString(1, docName);
+				pStmt.setBlob(2, keyVal);
+				pStmt.setBlob(3, IV);
+				pStmt.setInt(4, authTagLength);
+				pStmt.executeUpdate();
+				pStmt.close();
+			}
+			else if(keyType == 2)
+			{
+				Blob keyVal = conn.createBlob();
+				Blob IV = conn.createBlob();
+				keyVal.setBytes(1, components.get(0).array());
+				IV.setBytes(1, components.get(1).array());
+				String stmt = "INSERT INTO AES-CBC "
+							  + "values(?, ?, ?)";
+				PreparedStatement pStmt = conn.prepareStatement(stmt);
+				pStmt.setString(1, docName);
+				pStmt.setBlob(2, keyVal);
+				pStmt.setBlob(3, IV);
+				pStmt.executeUpdate();
+				pStmt.close();
+			}
+			else if(keyType == 3)
+			{
+				int keyVal = components.get(0).getInt();
+				int affineDecKey = components.get(1).getInt();
+				int arbitraryB = components.get(2).getInt();
+				Statement stmt = conn.createStatement();
+				stmt.executeUpdate("INSERT INTO Affine "
+								   + "values("+ docName + ", " + keyVal + ", " + affineDecKey + ", " + arbitraryB + ")");
+				stmt.close();
+			}
+			else if(keyType == 4)
+			{
+				int keyVal = components.get(0).getInt();
+				Statement stmt = conn.createStatement();
+				stmt.executeUpdate("INSERT INTO Caeser "
+								   + "values(" + docName + ", " + keyVal + ")");
+				stmt.close();
+			}
+			else if(keyType == 5)
+			{
+				int textLength = components.get(0).getInt();
+				Blob keyVal = conn.createBlob();
+				keyVal.setBytes(1, components.get(1).array());
+				String stmt = "INSERT INTO OneTimePad "
+							  + "values(?, ?, ?)";
+				PreparedStatement pStmt = conn.prepareStatement(stmt);
+				pStmt.setString(1, docName);
+				pStmt.setInt(2, textLength);
+				pStmt.setBlob(3, keyVal);
+				pStmt.executeUpdate();
+				pStmt.close();
+			}
+			else if(keyType == 6)
+			{
+				int keyVal = components.get(0).getInt();
+				Blob usePunct = conn.createBlob();
+				usePunct.setBytes(1, components.get(1).array());
+				String stmt = "INSERT INTO RailFence "
+							  + "values(?, ?, ?)";
+				PreparedStatement pStmt = conn.prepareStatement(stmt);
+				pStmt.setString(1, docName);
+				pStmt.setInt(2, keyVal);
+				pStmt.setBlob(3, usePunct);
+				pStmt.executeUpdate();
+				pStmt.close();
+			}
+			else
+			{
+				String keyVal = new String(components.get(0).array(), "UTF-16");
+				Blob usePunct = conn.createBlob();
+				usePunct.setBytes(1, components.get(1).array());
+				String stmt = "INSERT INTO Vigenere "
+							  + "values(?, ?, ?)";
+				PreparedStatement pStmt = conn.prepareStatement(stmt);
+				pStmt.setString(1, docName);
+				pStmt.setString(2, keyVal);
+				pStmt.setBlob(3, usePunct);
+				pStmt.executeUpdate();
+				pStmt.close();
+			}
 		}
-		else if(keyType == 2)
+		catch (Exception e)
 		{
-			
-		}
-		else if(keyType == 3)
-		{
-			
-		}
-		else if(keyType == 4)
-		{
-			
-		}
-		else if(keyType == 5)
-		{
-			
-		}
-		else if(keyType == 6)
-		{
-			
-		}
-		else
-		{
-			
+			e.printStackTrace();
+			System.out.println("There was an internal program error in adding the key to the database.  \n"
+							   + "copy and save the following information as the key in ByteBuffer \n"
+							   + "format.  ");
+			if(keyType == 1)
+			{
+				System.out.println("key: " + components.get(0).toString() + "\n"
+								   + "IV: " + components.get(1).toString() + "\n"
+								   + "authTagLength: " + components.get(2).toString());
+			}
+			else if(keyType == 2)
+			{
+				System.out.println("key: " + components.get(0).toString() + "\n"
+								   + "IV: " + components.get(1).toString());
+			}
+			else if(keyType == 3)
+			{
+				System.out.println("key: " + components.get(0).toString() + "\n"
+								   + "affineDecKey: " + components.get(1).toString() + "\n"
+								   + "arbitraryB: " + components.get(2).toString());
+			}
+			else if(keyType == 4)
+			{
+				System.out.println("key: " + components.get(0).toString());
+			}
+			else if(keyType == 5)
+			{
+				System.out.println("key: " + components.get(1).toString() + "\n"
+								   + "textLength: " + components.get(0).toString());
+			}
+			else if(keyType == 6)
+			{
+				System.out.println("key: " + components.get(0).toString() + "\n"
+								   + "usePunct: " + components.get(1).toString());
+			}
+			else
+			{
+				System.out.println("key: " + components.get(0).toString() + "\n"
+								   + "usePunct: " + components.get(1).toString());
+			}
+			for(int i = 0; i < 600000; i++)
+			{
+				i = i; //Wait for 60 seconds to let person copy info to another place.  
+			}
+			try
+			{
+				conn.close();
+			}
+			catch(SQLException eTwo)
+			{
+				eTwo.printStackTrace();
+			}
+			System.exit(1);
 		}
 	}
 }

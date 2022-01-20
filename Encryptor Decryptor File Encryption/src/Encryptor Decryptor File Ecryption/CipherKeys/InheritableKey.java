@@ -12,7 +12,7 @@ import java.nio.ByteBuffer;
  */
 public abstract class InheritableKey 
 {
-	protected ArrayList<ByteBuffer> keyComponents;
+	protected ArrayList<ByteBuffer> keyComponents; //Although byte[] could be used, but not everything can be listed as a byte[], ex: int.
 	
 	public InheritableKey()
 	{
