@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.sql.ResultSet;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.sql.Blob;
 
 /**
  * @author Amol Soneji
