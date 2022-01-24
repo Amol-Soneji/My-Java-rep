@@ -6,6 +6,7 @@ package CipherKeys;
 import java.security.SecureRandom;
 import java.nio.ByteBuffer;
 import java.util.BitSet;
+import java.util.ArrayList;
 
 /**
  * @author Amol Soneji
@@ -16,6 +17,7 @@ public class TranspositionKey extends InheritableKey
 
 	private int key;
 	private boolean usePunct;
+	private ArrayList<ByteBuffer> components = null;
 	
 	/**
 	 * 
@@ -30,6 +32,11 @@ public class TranspositionKey extends InheritableKey
 	{
 		this.usePunct = usePunct;
 		createKey();
+	}
+	
+	public TranspositionKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey.  
+	{
+		this.components.addAll(components);
 	}
 	
 	public TranspositionKey(int key, boolean usePunct)
@@ -50,8 +57,10 @@ public class TranspositionKey extends InheritableKey
 	}
 	
 	@Override
-	protected void setComponents() 
+	public void setComponents() 
 	{
+		if(components == null)
+		{
 			ByteBuffer firstArg = ByteBuffer.allocate(4);
 			ByteBuffer secondArg = ByteBuffer.allocate(1);
 			BitSet boolInBits = new BitSet();
@@ -60,6 +69,9 @@ public class TranspositionKey extends InheritableKey
 			byte[] boolInBytes = boolInBits.toByteArray();
 			super.keyComponents.add(firstArg.putInt(key));
 			super.keyComponents.add(secondArg.put(boolInBytes));
+		}
+		else
+			super.keyComponents.addAll(components); //Adds all to InheritableKey. 
 	}
 	
 	public int getKeyVal()

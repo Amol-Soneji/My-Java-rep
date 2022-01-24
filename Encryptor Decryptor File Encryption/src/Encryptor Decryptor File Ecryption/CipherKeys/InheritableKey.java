@@ -24,5 +24,5 @@ public abstract class InheritableKey
 		return this.keyComponents;
 	}
 	
-	protected abstract void setComponents();
+	public abstract void setComponents();
 }

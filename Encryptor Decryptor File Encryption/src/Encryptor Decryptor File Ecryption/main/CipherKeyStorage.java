@@ -3,7 +3,7 @@
  */
 package main;
 
-import CipherKeys.InheritableKey;
+import CipherKeys.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -310,6 +310,19 @@ public class CipherKeyStorage
 				eTwo.printStackTrace();
 			}
 			System.exit(1);
+		}
+	}
+	
+	protected InheritableKey getKey(String docName, int keyType)
+	{
+		try
+		{
+			Statement stmt = conn.createStatement();
+			
+		}
+		catch(Exception e)
+		{
+			
 		}
 	}
 }

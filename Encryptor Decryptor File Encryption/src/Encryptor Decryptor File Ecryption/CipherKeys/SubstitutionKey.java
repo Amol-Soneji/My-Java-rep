@@ -4,6 +4,7 @@ package CipherKeys;
 import java.security.SecureRandom;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 /**
  * @author Amol Soneji
@@ -15,6 +16,7 @@ public class SubstitutionKey extends InheritableKey
 	private int affineDecKey;
 	private int arbitraryB;
 	private boolean booleanMode;
+	private ArrayList<ByteBuffer> components = null;
 	
 	public SubstitutionKey(boolean booleanMode) throws KeyCreationException
 	{
@@ -26,6 +28,11 @@ public class SubstitutionKey extends InheritableKey
 	{
 		this.key = key;
 		booleanMode = false;
+	}
+	
+	public SubstitutionKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey.  
+	{
+		this.components.addAll(components);
 	}
 	
 	public SubstitutionKey(int key, int affineDecKey, int arbitraryB)
@@ -70,19 +77,24 @@ public class SubstitutionKey extends InheritableKey
 	}
 	
 	@Override
-	protected void setComponents() 
+	public void setComponents() 
 	{
-		ByteBuffer firstArg = ByteBuffer.allocate(4);
-		if(booleanMode)
+		if(components == null)
 		{
-			ByteBuffer secondArg = ByteBuffer.allocate(4);
-			ByteBuffer thirdArg = ByteBuffer.allocate(4);
-			super.keyComponents.add(firstArg.putInt(key));
-			super.keyComponents.add(secondArg.putInt(affineDecKey));
-			super.keyComponents.add(thirdArg.putInt(arbitraryB));
+			ByteBuffer firstArg = ByteBuffer.allocate(4);
+			if(booleanMode)
+			{
+				ByteBuffer secondArg = ByteBuffer.allocate(4);
+				ByteBuffer thirdArg = ByteBuffer.allocate(4);
+				super.keyComponents.add(firstArg.putInt(key));
+				super.keyComponents.add(secondArg.putInt(affineDecKey));
+				super.keyComponents.add(thirdArg.putInt(arbitraryB));
+			}
+			else
+				super.keyComponents.add(firstArg.putInt(key));
 		}
 		else
-			super.keyComponents.add(firstArg.putInt(key));
+			super.keyComponents.addAll(components); //Adds all to InheritableKey.  
 	}
 	
 	public int getKeyVal()

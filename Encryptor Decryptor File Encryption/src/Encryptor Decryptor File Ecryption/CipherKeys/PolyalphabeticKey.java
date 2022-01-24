@@ -15,6 +15,7 @@ public class PolyalphabeticKey extends InheritableKey
 {
 	private String key;
 	private boolean usePunct;
+	private ArrayList<ByteBuffer> components = null;
 
 	public PolyalphabeticKey() 
 	{
@@ -26,6 +27,11 @@ public class PolyalphabeticKey extends InheritableKey
 	{
 		this.usePunct = usePunct;
 		createKey();
+	}
+	
+	public PolyalphabeticKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey.  
+	{
+		this.components.addAll(components);
 	}
 	
 	public PolyalphabeticKey(String key, boolean usePunct)
@@ -69,29 +75,34 @@ public class PolyalphabeticKey extends InheritableKey
 	}
 	
 	@Override
-	protected void setComponents() 
+	public void setComponents() 
 	{
-			ByteBuffer firstArg = ByteBuffer.allocate(key.length());
-			ByteBuffer secondArg = ByteBuffer.allocate(1);
-			BitSet boolInBits = new BitSet();
-			if(usePunct)
-				boolInBits.set(0);
-			byte[] boolInBytes = boolInBits.toByteArray();
-			try
+			if(components == null)
 			{
-				super.keyComponents.add(firstArg.put(key.getBytes("UTF-16")));
-			}
-			catch(UnsupportedEncodingException e)
-			{
-				System.out.println("There was an error.  Please run the program in a different");
-				System.out.println("computer.  Program will close in 10 seconds.  ");
-				for(int i = 0; i < 10000; i++)
+				ByteBuffer firstArg = ByteBuffer.allocate(key.length());
+				ByteBuffer secondArg = ByteBuffer.allocate(1);
+				BitSet boolInBits = new BitSet();
+				if(usePunct)
+					boolInBits.set(0);
+				byte[] boolInBytes = boolInBits.toByteArray();
+				try
 				{
-					i = i;  
+					super.keyComponents.add(firstArg.put(key.getBytes("UTF-16")));
 				}
-				System.exit(0);
+				catch(UnsupportedEncodingException e)
+				{
+					System.out.println("There was an error.  Please run the program in a different");
+					System.out.println("computer.  Program will close in 10 seconds.  ");
+					for(int i = 0; i < 10000; i++)
+					{
+						i = i;  
+					}
+					System.exit(0);
+				}
+				super.keyComponents.add(secondArg.put(boolInBytes[0]));
 			}
-			super.keyComponents.add(secondArg.put(boolInBytes[0]));
+			else
+				super.keyComponents.addAll(components); //Adds all to InheritableKey.  
 	}
 	
 	public String getKeyVal()

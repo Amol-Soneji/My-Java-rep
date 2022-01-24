@@ -7,6 +7,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import java.security.SecureRandom;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 
 /**
  * @author Amol Soneji
@@ -19,6 +20,7 @@ public class BlockKey extends InheritableKey
 	private byte[] IV; //Initialization Vector.  
 	private int authenticationTagLength; //Length of the authentication tag used in AES-GCM.  
 	private boolean enDecryptionMethod; //Mode of key, true AES-GCM, false AES-CBC.  
+	private ArrayList<ByteBuffer> components = null;
 	
 	/**
 	 * 
@@ -27,6 +29,11 @@ public class BlockKey extends InheritableKey
 	{
 		this.enDecryptionMethod = enDecryptionMethod;
 		createKey();
+	}
+	
+	public BlockKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey.  
+	{
+		this.components.addAll(components);
 	}
 	
 	public BlockKey(SecretKey key, byte[] IV, int authenticataionTagLength)
@@ -78,24 +85,28 @@ public class BlockKey extends InheritableKey
 	}
 	
 	@Override
-	protected void setComponents() 
+	public void setComponents() 
 	{
-		ByteBuffer firstArg = ByteBuffer.allocate(16);
-		if(enDecryptionMethod)
+		if(components == null)
 		{
-			ByteBuffer secondArg = ByteBuffer.allocate(IV.length);
-			ByteBuffer thirdArg = ByteBuffer.allocate(4);
-			super.keyComponents.add(firstArg.put(key.getEncoded()));
-			super.keyComponents.add(secondArg.put(IV));
-			super.keyComponents.add(thirdArg.putInt(authenticationTagLength));
+			ByteBuffer firstArg = ByteBuffer.allocate(16);
+			if(enDecryptionMethod)
+			{
+				ByteBuffer secondArg = ByteBuffer.allocate(IV.length);
+				ByteBuffer thirdArg = ByteBuffer.allocate(4);
+				super.keyComponents.add(firstArg.put(key.getEncoded()));
+				super.keyComponents.add(secondArg.put(IV));
+				super.keyComponents.add(thirdArg.putInt(authenticationTagLength));
+			}
+			else
+			{
+				ByteBuffer secondArg = ByteBuffer.allocate(IV.length);
+				super.keyComponents.add(firstArg.put(key.getEncoded()));
+				super.keyComponents.add(secondArg.put(IV));
+			}
 		}
 		else
-		{
-			ByteBuffer secondArg = ByteBuffer.allocate(IV.length);
-			super.keyComponents.add(firstArg.put(key.getEncoded()));
-			super.keyComponents.add(secondArg.put(IV));
-		}
-		
+			super.keyComponents.addAll(components); //Adds all to InheritableKey. 
 	}
 	
 	public SecretKey getKey()
