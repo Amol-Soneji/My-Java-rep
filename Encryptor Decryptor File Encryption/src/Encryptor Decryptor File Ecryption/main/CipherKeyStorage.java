@@ -318,11 +318,75 @@ public class CipherKeyStorage
 		try
 		{
 			Statement stmt = conn.createStatement();
-			
+			if(keyType == 1)
+			{
+				ArrayList<ByteBuffer> byteBuffArr = null;
+			        ByteBuffer firstComp = ByteBuffer.allocate(16);
+				ByteBuffer thirdComp = ByteBuffer.allocate(4);
+				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES-GCM "
+								   + "WHERE document_name = " + docName);
+				String toIgnore = rSet.getString(1); //Doc name.  
+				Blob keyVal = rSet.getBlob(2);
+				Blob IVVal = rSet.getBlob(3);
+				int authLenVal = rSet.getInt(4);
+			       	byte[] IVbytes = IVVal.getBytes(1, (int)IVVal.length());
+				ByteBuffer secondComp = ByteBuffer.allocate(IVbytes.length);
+				byte[] keyBytes = keyVal.getBytes(1, (int)keyVal.length());
+				byteBuffArr.add(firstComp.put(keyBytes));
+				byteBuffArr.add(secondComp.put(IVbytes));
+				byteBuffArr.add(thirdComp.putInt(authLenVal));
+				InheritableKey toReturn = new BlockKey(byteBuffArr);
+				toReturn.setComponents();
+				rSet.close();
+				stmt.close();
+				return toReturn;
+			}
+			else if(keyType == 2)
+			{
+
+			}
+			else if(keyType == 3)
+			{
+
+			}
+			else if(keyType == 4)
+			{
+
+			}
+			else if(keyType == 5)
+			{
+
+			}
+			else if(keyType == 6)
+			{
+
+			}
+			else
+			{
+
+			}
 		}
 		catch(Exception e)
 		{
-			
+			e.printStackTrace();
+			System.out.println("There was an internal error in the program.  We are \n"
+					   + "sorry.  If you are trying to unencrypt a file, \n" 
+					   + "and have written down the key and other info, \n"
+					   + "try to use the option of manual key entry.  The \n"
+					   + "program will close in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++)
+			{
+				i = i; //Do nothing.  
+			}
+			try
+			{
+				conn.close();
+			}
+			catch(SQLException eTwo)
+			{
+				e.printStackTrace();
+			}
+			System.exit(1);
 		}
 	}
 }
