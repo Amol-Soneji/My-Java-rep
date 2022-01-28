@@ -317,10 +317,11 @@ public class CipherKeyStorage
 	{
 		try
 		{
+			ArrayList<ByteBuffer> byteBuffArr = new ArrayList<ByteBuffer>();
 			Statement stmt = conn.createStatement();
 			if(keyType == 1)
 			{
-				ArrayList<ByteBuffer> byteBuffArr = new ArrayList<ByteBuffer>();
+				
 			    ByteBuffer firstComp = ByteBuffer.allocate(16);
 				ByteBuffer thirdComp = ByteBuffer.allocate(4);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES-GCM "
@@ -329,7 +330,7 @@ public class CipherKeyStorage
 				Blob keyVal = rSet.getBlob(2);
 				Blob IVVal = rSet.getBlob(3);
 				int authLenVal = rSet.getInt(4);
-			       	byte[] IVbytes = IVVal.getBytes(1, (int)IVVal.length());
+			    byte[] IVbytes = IVVal.getBytes(1, (int)IVVal.length());
 				ByteBuffer secondComp = ByteBuffer.allocate(IVbytes.length);
 				byte[] keyBytes = keyVal.getBytes(1, (int)keyVal.length());
 				byteBuffArr.add(firstComp.put(keyBytes));
@@ -343,7 +344,6 @@ public class CipherKeyStorage
 			}
 			else if(keyType == 2)
 			{
-				ArrayList<ByteBuffer> byteBuffArr = new ArrayList<ByteBuffer>();
 				ByteBuffer firstComp = ByteBuffer.allocate(16);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES-CBC "
 								   + "WHERE document_name = " + docName);
@@ -363,7 +363,6 @@ public class CipherKeyStorage
 			}
 			else if(keyType == 3)
 			{
-				ArrayList<ByteBuffer> byteBuffArr = new ArrayList<ByteBuffer>();
 				ByteBuffer firstComp = ByteBuffer.allocate(4);
 				ByteBuffer secondComp = ByteBuffer.allocate(4);
 				ByteBuffer thirdComp = ByteBuffer.allocate(4);
@@ -384,7 +383,6 @@ public class CipherKeyStorage
 			}
 			else if(keyType == 4)
 			{
-				ArrayList<ByteBuffer> byteBuffArr = new ArrayList<ByteBuffer>();
 				ByteBuffer firstComp = ByteBuffer.allocate(4);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM Caser "  
 								   + "WHERE document_name = " + docName);
@@ -393,27 +391,71 @@ public class CipherKeyStorage
 				byteBuffArr.add(firstComp.putInt(keyVal));
 				InheritableKey toReturn = new SubstitutionKey(byteBuffArr);
 				toReturn.getComponents();
+				rSet.close();
+				stmt.close();
 				return toReturn;
 			}
 			else if(keyType == 5)
 			{
-				ArrayList<ByteBuffer> byteBuffArr = new ArrayList<ByteBuffer>();
-				
+				ByteBuffer firstComp = ByteBuffer.allocate(4);
+				ResultSet rSet = stmt.executeQuery("SELECT * FROM OneTimePad "
+									+ "WHERE document_name = " + docName);
+				String toIgnore = rSet.getString(1);
+				int textLenVal = rSet.getInt(2);
+				Blob keyBlob = rSet.getBlob(3);
+				byte[] keyBytes = keyBlob.getBytes(1, (int)keyBlob.length());
+				ByteBuffer secondComp = ByteBuffer.allocate(keyBytes.length);
+				byteBuffArr.add(firstComp.putInt(textLenVal));
+				byteBuffArr.add(secondComp.put(keyBytes));
+				InheritableKey toReturn = new OneTimePadKey(byteBuffArr);
+				toReturn.getComponents();
+				rSet.close();
+				stmt.close();
+				return toReturn;
 			}
 			else if(keyType == 6)
 			{
-
+				ByteBuffer firstComp = ByteBuffer.allocate(4);
+				ResultSet rSet = stmt.executeQuery("SELECT * FROM RailFence "
+									+ "WHERE document_name = " + docName);
+				String toIgnore = rSet.getString(1);
+				int keyVal = rSet.getInt(2);
+				Blob usePunctVal = rSet.getBlob(3);
+				byte[] usePunctBytes = usePunctVal.getBytes(1, (int)usePunctVal.length());
+				ByteBuffer secondComp = ByteBuffer.allocate(usePunctBytes.length);
+				byteBuffArr.add(firstComp.putInt(keyVal));
+				byteBuffArr.add(secondComp.put(usePunctBytes));
+				InheritableKey toReturn = new TranspositionKey(byteBuffArr);
+				toReturn.getComponents();
+				rSet.close();
+				stmt.close();
+				return toReturn;
 			}
 			else
 			{
-
+				ResultSet rSet = stmt.executeQuery("SELECT * FROM Vigenere "
+									+ "WHERE document_name = " + docName);
+				String toIgnore = rSet.getString(1);
+				String keyVal = rSet.getString(2);
+				Blob usePunctVal = rSet.getBlob(3);
+				ByteBuffer firstComp = ByteBuffer.allocate(keyVal.length());
+				byte[] usePunctBytes = usePunctVal.getBytes(1, (int)usePunctVal.length());
+				ByteBuffer secondComp = ByteBuffer.allocate(usePunctBytes.length);
+				byteBuffArr.add(firstComp.put(keyVal.getBytes("UTF-16")));
+				byteBuffArr.add(secondComp.put(usePunctBytes));
+				InheritableKey toReturn = new PolyalphabeticKey(byteBuffArr);
+				toReturn.getComponents();
+				rSet.close();
+				stmt.close();
+				return toReturn;
 			}
+			
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			System.out.println("There was an internal error in the program.  We are \n"
-					   + "sorry.  If you are trying to unencrypt a file, \n" 
+			System.out.println("There was an internal error in the program.  Sorry .  "
+					   + "If you are trying to unencrypt a file, \n" 
 					   + "and have written down the key and other info, \n"
 					   + "try to use the option of manual key entry.  The \n"
 					   + "program will close in 10 seconds.  ");
@@ -427,7 +469,91 @@ public class CipherKeyStorage
 			}
 			catch(SQLException eTwo)
 			{
-				e.printStackTrace();
+				eTwo.printStackTrace();
+			}
+			System.exit(1);
+		}
+		return null; //Some compilers complain.  There does not seem to be any logic leak in this method.  
+	}
+	
+	protected void removeKey(String docName, int keyType)
+	{
+		try
+		{
+			Statement stmt = conn.createStatement();
+			if(keyType == 1)
+			{
+				stmt.executeUpdate("DELETE FROM AES-GCM WHERE document_name = " + docName);
+				System.out.println("Key for document " + docName + "successfully deleted.  ");
+			}
+			else if(keyType == 2)
+			{
+				stmt.executeUpdate("DELETE FROM AES-CBC WHERE document_name = " + docName);
+				System.out.println("Key for document " + docName + "successfully deleted.  ");
+			}
+			else if(keyType == 3)
+			{
+				stmt.executeUpdate("DELETE FROM Affine WHERE document_name = " + docName);
+				System.out.println("Key for document " + docName + "successfully deleted.  ");
+			}
+			else if(keyType == 4)
+			{
+				stmt.executeUpdate("DELETE FROM Caeser WHERE document_name = " + docName);
+				System.out.println("Key for document " + docName + "successfully deleted.  ");
+			}
+			else if(keyType == 5)
+			{
+				stmt.executeUpdate("DELETE FROM OneTimePad WHERE document_name = " + docName);
+				System.out.println("Key for document " + docName + "successfully deleted.  ");
+			}
+			else if(keyType == 6)
+			{
+				stmt.executeUpdate("DELETE FROM RailFence WHERE document_name = " + docName);
+				System.out.println("Key for document " + docName + "successfully deleted.  ");
+			}
+			else
+			{
+				stmt.executeUpdate("DELETE FROM Vigenere WHERE document_name = " + docName);
+				System.out.println("Key for document " + docName + "successfully deleted.  ");
+			}
+			stmt.close();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("There was an internal error int the program.  Sorry.  \n"
+							   + "Unable to remove key.  \n"
+							   + "Program will close in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++)
+			{
+				i = i; //Do nothing.  
+			}
+			try
+			{
+				conn.close();
+			}
+			catch(SQLException eTwo)
+			{
+				eTwo.printStackTrace();
+			}
+			System.exit(1);
+		}
+	}
+	
+	protected void closeDB()
+	{
+		try
+		{
+			conn.close();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+			System.out.println("There was an error closing the database.  \n"
+							   + "Program will close in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++)
+			{
+				i = i; //Do nothing.  
 			}
 			System.exit(1);
 		}
