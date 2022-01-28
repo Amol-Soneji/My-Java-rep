@@ -320,8 +320,8 @@ public class CipherKeyStorage
 			Statement stmt = conn.createStatement();
 			if(keyType == 1)
 			{
-				ArrayList<ByteBuffer> byteBuffArr = null;
-			        ByteBuffer firstComp = ByteBuffer.allocate(16);
+				ArrayList<ByteBuffer> byteBuffArr = new ArrayList<ByteBuffer>();
+			    ByteBuffer firstComp = ByteBuffer.allocate(16);
 				ByteBuffer thirdComp = ByteBuffer.allocate(4);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES-GCM "
 								   + "WHERE document_name = " + docName);
@@ -343,7 +343,7 @@ public class CipherKeyStorage
 			}
 			else if(keyType == 2)
 			{
-				ArrayList<ByteBuffer> byteBuffArr = null;
+				ArrayList<ByteBuffer> byteBuffArr = new ArrayList<ByteBuffer>();
 				ByteBuffer firstComp = ByteBuffer.allocate(16);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES-CBC "
 								   + "WHERE document_name = " + docName);
@@ -352,17 +352,17 @@ public class CipherKeyStorage
 				Blob IVVal = rSet.getBlob(3);
 				byte[] IVbytes = IVVal.getBytes(1, (int)IVVal.length());
 				ByteBuffer secondComp = ByteBuffer.allocate(IVbytes.length);
-				byte[] keyBytes = keyVal.getBytes(1, (int)keyVal.length);
+				byte[] keyBytes = keyVal.getBytes(1, (int)keyVal.length());
 				byteBuffArr.add(firstComp.put(keyBytes));
 				byteBuffArr.add(secondComp.put(IVbytes));
-				InheritableKey toReturn = new BlockKey(ByteBuffArr);
+				InheritableKey toReturn = new BlockKey(byteBuffArr);
 				toReturn.setComponents();
 				rSet.close();
 				stmt.close();
 			}
 			else if(keyType == 3)
 			{
-				ArrayList<ByteBuffer> byteBuffArr = null;
+				ArrayList<ByteBuffer> byteBuffArr = new ArrayList<ByteBuffer>();
 				ByteBuffer firstComp = ByteBuffer.allocate(4);
 				ByteBuffer secondComp = ByteBuffer.allocate(4);
 				ByteBuffer thirdComp = ByteBuffer.allocate(4);
@@ -373,19 +373,19 @@ public class CipherKeyStorage
 				int affDecKeyVal = rSet.getInt(3);
 				int arbittraryBVal = rSet.getInt(4);
 				byteBuffArr.add(firstComp.putInt(keyVal));
-				byteBuffArr.add(secondComp.putInt(addDecKeyVal));
+				byteBuffArr.add(secondComp.putInt(affDecKeyVal));
 				byteBuffArr.add(thirdComp.putInt(arbittraryBVal));
-				InheritableKey toReturn = new SubstitutionKey(ByteBuffArr);
+				InheritableKey toReturn = new SubstitutionKey(byteBuffArr);
 				toReturn.setComponents();
 				rSet.close();
 				stmt.close();
 			}
 			else if(keyType == 4)
 			{
-				ArrayList<ByteBuffer> byteBuffArr = null;
+				ArrayList<ByteBuffer> byteBuffArr = new ArrayList<ByteBuffer>();
 				ByteBuffer firstComp = ByteBuffer.allocate(4);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM Caser "  
-								   + "WHERE document_name )
+								   + "WHERE document_name = " + docName);
 			}
 			else if(keyType == 5)
 			{
