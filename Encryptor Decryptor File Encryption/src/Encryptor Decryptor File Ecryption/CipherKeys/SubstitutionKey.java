@@ -32,6 +32,10 @@ public class SubstitutionKey extends InheritableKey
 	
 	public SubstitutionKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey.  
 	{
+		if(components.size() == 3)
+			booleanMode = true;
+		else
+			booleanMode = false;
 		this.components.addAll(components);
 	}
 	

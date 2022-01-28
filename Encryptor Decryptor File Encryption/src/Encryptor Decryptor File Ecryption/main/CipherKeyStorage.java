@@ -343,6 +343,19 @@ public class CipherKeyStorage
 			}
 			else if(keyType == 2)
 			{
+				ArrayList<ByteBuffer> byteBuffArr  null;
+				ByteBuffer firstComp = ByteBuffer.allocate(16);
+				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES-CBC "
+								   + "WHERE document_name = " + docName);
+				String toIgnore = rSet.getString(1); //Doc name;
+				Blob keyVal = rSet.getBlob(2);
+				Blob IVVal = rSet.getBlob(3);
+				byte[] IVbytes = IVVal.getBytes(1, (int)IVVal.length());
+				ByteBuffer secondComp = ByteBuffer.allocate(IVbytes.length);
+				byte[] keyBytes = keyVal.getBytes(1, (int)keyVal.length);
+				byteBuffArr.add(firstComp.put(keyBytes));
+				byteBuffArr.add(secondComp.put(IVbytes));
+				InheritableKey toReturn = new BlockKey(ByteBuffer);
 
 			}
 			else if(keyType == 3)

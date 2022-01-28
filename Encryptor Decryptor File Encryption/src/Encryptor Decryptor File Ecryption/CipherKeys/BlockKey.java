@@ -33,6 +33,10 @@ public class BlockKey extends InheritableKey
 	
 	public BlockKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey.  
 	{
+		if(components.size() == 3)
+			enDecryptionMethod = true;
+		else
+			enDecryptionMethod = false;
 		this.components.addAll(components);
 	}
 	
