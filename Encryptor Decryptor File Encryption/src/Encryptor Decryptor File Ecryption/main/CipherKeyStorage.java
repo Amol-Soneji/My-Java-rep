@@ -343,7 +343,7 @@ public class CipherKeyStorage
 			}
 			else if(keyType == 2)
 			{
-				ArrayList<ByteBuffer> byteBuffArr  null;
+				ArrayList<ByteBuffer> byteBuffArr = null;
 				ByteBuffer firstComp = ByteBuffer.allocate(16);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES-CBC "
 								   + "WHERE document_name = " + docName);
@@ -355,16 +355,37 @@ public class CipherKeyStorage
 				byte[] keyBytes = keyVal.getBytes(1, (int)keyVal.length);
 				byteBuffArr.add(firstComp.put(keyBytes));
 				byteBuffArr.add(secondComp.put(IVbytes));
-				InheritableKey toReturn = new BlockKey(ByteBuffer);
-
+				InheritableKey toReturn = new BlockKey(ByteBuffArr);
+				toReturn.setComponents();
+				rSet.close();
+				stmt.close();
 			}
 			else if(keyType == 3)
 			{
-				
+				ArrayList<ByteBuffer> byteBuffArr = null;
+				ByteBuffer firstComp = ByteBuffer.allocate(4);
+				ByteBuffer secondComp = ByteBuffer.allocate(4);
+				ByteBuffer thirdComp = ByteBuffer.allocate(4);
+				ResultSet rSet = stmt.executeQuery("SELECT * FROM Affine " 
+								   + "WHERE document_name = " + docName);
+				String toIgnore = rSet.getString(1);
+				int keyVal = rSet.getInt(2);
+				int affDecKeyVal = rSet.getInt(3);
+				int arbittraryBVal = rSet.getInt(4);
+				byteBuffArr.add(firstComp.putInt(keyVal));
+				byteBuffArr.add(secondComp.putInt(addDecKeyVal));
+				byteBuffArr.add(thirdComp.putInt(arbittraryBVal));
+				InheritableKey toReturn = new SubstitutionKey(ByteBuffArr);
+				toReturn.setComponents();
+				rSet.close();
+				stmt.close();
 			}
 			else if(keyType == 4)
 			{
-				
+				ArrayList<ByteBuffer> byteBuffArr = null;
+				ByteBuffer firstComp = ByteBuffer.allocate(4);
+				ResultSet rSet = stmt.executeQuery("SELECT * FROM Caser "  
+								   + "WHERE document_name )
 			}
 			else if(keyType == 5)
 			{
