@@ -97,7 +97,7 @@ public class CipherKeyStorage
 								   + "document_name varchar(255) NOT NULL, "
 								   + "key integer NOT NULL, "
 								   + "affine_dec_key integer NOT NULL, "
-								   + "arbitrary_b integer NOT NULL, "
+								   + "arbitrary_x integer NOT NULL, "
 								   + "PRIMARY KEY (document_name))");
 			}
 			if(!(tblsExistant[3]))
@@ -198,10 +198,10 @@ public class CipherKeyStorage
 			{
 				int keyVal = components.get(0).getInt();
 				int affineDecKey = components.get(1).getInt();
-				int arbitraryB = components.get(2).getInt();
+				int arbitraryX = components.get(2).getInt();
 				Statement stmt = conn.createStatement();
 				stmt.executeUpdate("INSERT INTO Affine "
-								   + "values("+ docName + ", " + keyVal + ", " + affineDecKey + ", " + arbitraryB + ")");
+								   + "values("+ docName + ", " + keyVal + ", " + affineDecKey + ", " + arbitraryX + ")");
 				stmt.close();
 			}
 			else if(keyType == 4)
@@ -276,7 +276,7 @@ public class CipherKeyStorage
 			{
 				System.out.println("key: " + components.get(0).toString() + "\n"
 								   + "affineDecKey: " + components.get(1).toString() + "\n"
-								   + "arbitraryB: " + components.get(2).toString());
+								   + "arbitraryX: " + components.get(2).toString());
 			}
 			else if(keyType == 4)
 			{
@@ -359,6 +359,7 @@ public class CipherKeyStorage
 				toReturn.setComponents();
 				rSet.close();
 				stmt.close();
+				return toReturn;
 			}
 			else if(keyType == 3)
 			{
@@ -371,14 +372,15 @@ public class CipherKeyStorage
 				String toIgnore = rSet.getString(1);
 				int keyVal = rSet.getInt(2);
 				int affDecKeyVal = rSet.getInt(3);
-				int arbittraryBVal = rSet.getInt(4);
+				int arbittraryXVal = rSet.getInt(4);
 				byteBuffArr.add(firstComp.putInt(keyVal));
 				byteBuffArr.add(secondComp.putInt(affDecKeyVal));
-				byteBuffArr.add(thirdComp.putInt(arbittraryBVal));
+				byteBuffArr.add(thirdComp.putInt(arbittraryXVal));
 				InheritableKey toReturn = new SubstitutionKey(byteBuffArr);
 				toReturn.setComponents();
 				rSet.close();
 				stmt.close();
+				return toReturn;
 			}
 			else if(keyType == 4)
 			{
@@ -386,10 +388,17 @@ public class CipherKeyStorage
 				ByteBuffer firstComp = ByteBuffer.allocate(4);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM Caser "  
 								   + "WHERE document_name = " + docName);
+				String toIgnore = rSet.getString(1);
+				int keyVal = rSet.getInt(2);
+				byteBuffArr.add(firstComp.putInt(keyVal));
+				InheritableKey toReturn = new SubstitutionKey(byteBuffArr);
+				toReturn.getComponents();
+				return toReturn;
 			}
 			else if(keyType == 5)
 			{
-
+				ArrayList<ByteBuffer> byteBuffArr = new ArrayList<ByteBuffer>();
+				
 			}
 			else if(keyType == 6)
 			{

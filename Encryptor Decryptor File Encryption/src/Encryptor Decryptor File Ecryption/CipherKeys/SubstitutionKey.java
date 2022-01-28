@@ -14,7 +14,7 @@ public class SubstitutionKey extends InheritableKey
 {
 	private int key;
 	private int affineDecKey;
-	private int arbitraryB;
+	private int arbitraryX;
 	private boolean booleanMode;
 	private ArrayList<ByteBuffer> components = null;
 	
@@ -39,11 +39,11 @@ public class SubstitutionKey extends InheritableKey
 		this.components.addAll(components);
 	}
 	
-	public SubstitutionKey(int key, int affineDecKey, int arbitraryB)
+	public SubstitutionKey(int key, int affineDecKey, int arbitraryX)
 	{
 		this.key = key;
 		this.affineDecKey = affineDecKey;
-		this.arbitraryB = arbitraryB;
+		this.arbitraryX = arbitraryX;
 		booleanMode = true;
 	}
 	
@@ -72,7 +72,7 @@ public class SubstitutionKey extends InheritableKey
 			{
 				randomInteger = random.nextInt(2097152);
 			}
-			arbitraryB = randomInteger;
+			arbitraryX = randomInteger;
 		}
 		else 
 		{
@@ -92,7 +92,7 @@ public class SubstitutionKey extends InheritableKey
 				ByteBuffer thirdArg = ByteBuffer.allocate(4);
 				super.keyComponents.add(firstArg.putInt(key));
 				super.keyComponents.add(secondArg.putInt(affineDecKey));
-				super.keyComponents.add(thirdArg.putInt(arbitraryB));
+				super.keyComponents.add(thirdArg.putInt(arbitraryX));
 			}
 			else
 				super.keyComponents.add(firstArg.putInt(key));
@@ -111,9 +111,9 @@ public class SubstitutionKey extends InheritableKey
 		return affineDecKey;
 	}
 	
-	public int getArbitraryB()
+	public int getArbitraryX()
 	{
-		return arbitraryB;
+		return arbitraryX;
 	}
 	
 	private int gcd(int a, int b)

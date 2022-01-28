@@ -56,7 +56,7 @@ public class AffineCipher extends SubstitutionCipher
 		for(int index = 0; index < plainText.length(); index++) 
 		{
 			int charCode = plainText.codePointAt(index);
-			charCode = ((super.getKey().getKeyVal() * charCode) + super.getKey().getArbitraryB()) % 1112063;
+			charCode = ((super.getKey().getKeyVal() * charCode) + super.getKey().getArbitraryX()) % 1112063;
 			cipherTextBuilder = cipherTextBuilder + String.copyValueOf(Character.toChars(charCode));
 		}
 		return cipherTextBuilder;
@@ -68,7 +68,7 @@ public class AffineCipher extends SubstitutionCipher
 		for(int index = 0; index < plainText.length(); index++) 
 		{
 			int charCode = plainText.codePointAt(index);
-			charCode = ((super.getKey().getKeyVal() * charCode) + super.getKey().getArbitraryB()) % 1112063;
+			charCode = ((super.getKey().getKeyVal() * charCode) + super.getKey().getArbitraryX()) % 1112063;
 			if(index == (plainText.length() + 1))
 				cipherTextBuilder = cipherTextBuilder + String.valueOf(charCode);
 			else
@@ -83,7 +83,7 @@ public class AffineCipher extends SubstitutionCipher
 		for(int index = 0; index < cipherText.length(); index++) 
 		{
 			int charCode = cipherText.codePointAt(index);
-			charCode = (super.getKey().getAffineDecKey() * (charCode - super.getKey().getArbitraryB())) % 1112063;
+			charCode = (super.getKey().getAffineDecKey() * (charCode - super.getKey().getArbitraryX())) % 1112063;
 			plainTextBuilder = plainTextBuilder + Character.toString(charCode);
 		}
 		return plainTextBuilder;
@@ -96,7 +96,7 @@ public class AffineCipher extends SubstitutionCipher
 		for(int index = 0; index < charCodeStringArray.length; index++) 
 		{
 			int charCode = Integer.parseInt(charCodeStringArray[index]);
-			charCode = (super.getKey().getAffineDecKey() * (charCode - super.getKey().getArbitraryB())) % 1112063;
+			charCode = (super.getKey().getAffineDecKey() * (charCode - super.getKey().getArbitraryX())) % 1112063;
 			plainTextBuilder = plainTextBuilder + Character.toString(charCode);
 		}
 		return plainTextBuilder;
