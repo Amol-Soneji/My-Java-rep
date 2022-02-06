@@ -2,7 +2,8 @@ Must Support:
 -Encryption [Done]  
 -Decryption [Done]  
 -Key Generation [Done]  
--Key Storage
+-Key Storage [Done]
+-Main 
 
 Supported file encryption algorithms:
 -Caeser Cipher (32-bit instead of just 26 letters for UTF-16 support) [Done]  
