@@ -51,26 +51,70 @@ public class main
 					input = userInput.nextInt();
 				}
 			}
+			
 			if(input == 1)
 			{
 				dbAccess = new CipherKeyStorage();
+				int toDo = 0;
+				while(toDo != 5)
+				{
+					toDo = askAction(1);
+				}
 			}
 			else if(input == 2)
 			{
-				
+				String ignore = userInput.nextLine(); //Flush the next line character that may remain in Scanner.  
+				System.out.println("Enter the file path with the name of the database file.  :  ");
+				String thePath = userInput.nextLine();
+				dbAccess = new CipherKeyStorage(thePath);
+				toDo = askAction(1);
 			}
 			else if(input == 3)
 			{
-				
+				System.out.println("Creating and setting to use the default database.  ");
+				dbAccess = new CipherKeyStorage();
+				System.out.println("Default database created successfully.  ");
+				int toDo = 0;
+				while(toDo != 5)
+				{
+					toDo = askAction(2);
+				}
 			}
 			else
 				break;
 		}
+		System.out.println("Closing the program.  ");
+		userInput.close();
+		System.exit(0);
 	}
 	
 	private static int askAction(int availOptionRefferer)
 	{
-		
+		int inputSelection = 0;
+		Scanner userInput = new Scanner(System.in);
+		if(availOptionRefferer == 1) //There are keys for files in db.  
+		{
+			while((inputSelection < 1) || (inputSelection > 5))
+			{
+				System.out.println("Enter 1 to decrypt a file.  Enter 2 to encrypt a file.  Enter 3 to remove "
+								   + "a key.  Enter 4 to enter a key manually.  Note that this program does "
+								   + "not yet allow the simulatanious use of two different key databases.  "
+								   + "To use another key database enter 5. :  ");
+				inputSelection = userInput.nextInt();
+			}
+		}
+		else //No keys in db
+		{
+			while(((inputSelection < 2) || (inputSelection == 3)) || (inputSelection > 5))
+			{
+				System.out.println("Enter 2 to encrypt a file.  Enter 4 to enter a key manually.  Note that "
+								   + "this program does not yet allow the simulatanious use of two "
+								   + "different key databases.  To use another key database enter 5.  :  ");
+				inputSelection = userInput.nextInt();
+			}
+		}
+		userInput.close();
+		return inputSelection;
 	}
 	
 	private static boolean encryptDecrypt(int option, int keyType)

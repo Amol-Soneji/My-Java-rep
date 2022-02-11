@@ -244,6 +244,8 @@ public class CipherKeyStorage
 				ByteBuffer thirdComp = ByteBuffer.allocate(4);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES-GCM "
 								   + "WHERE document_name = " + docName);
+				if(!rSet.next())
+					return null;
 				String toIgnore = rSet.getString(1); //Doc name.  
 				Blob keyVal = rSet.getBlob(2);
 				Blob IVVal = rSet.getBlob(3);
@@ -265,6 +267,8 @@ public class CipherKeyStorage
 				ByteBuffer firstComp = ByteBuffer.allocate(16);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES-CBC "
 								   + "WHERE document_name = " + docName);
+				if(!rSet.next())
+					return null;
 				String toIgnore = rSet.getString(1); //Doc name;
 				Blob keyVal = rSet.getBlob(2);
 				Blob IVVal = rSet.getBlob(3);
@@ -286,6 +290,8 @@ public class CipherKeyStorage
 				ByteBuffer thirdComp = ByteBuffer.allocate(4);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM Affine " 
 								   + "WHERE document_name = " + docName);
+				if(!rSet.next())
+					return null;
 				String toIgnore = rSet.getString(1);
 				int keyVal = rSet.getInt(2);
 				int affDecKeyVal = rSet.getInt(3);
@@ -304,6 +310,8 @@ public class CipherKeyStorage
 				ByteBuffer firstComp = ByteBuffer.allocate(4);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM Caser "  
 								   + "WHERE document_name = " + docName);
+				if(!rSet.next())
+					return null;
 				String toIgnore = rSet.getString(1);
 				int keyVal = rSet.getInt(2);
 				byteBuffArr.add(firstComp.putInt(keyVal));
@@ -318,6 +326,8 @@ public class CipherKeyStorage
 				ByteBuffer firstComp = ByteBuffer.allocate(4);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM OneTimePad "
 									+ "WHERE document_name = " + docName);
+				if(!rSet.next())
+					return null;
 				String toIgnore = rSet.getString(1);
 				int textLenVal = rSet.getInt(2);
 				Blob keyBlob = rSet.getBlob(3);
@@ -336,6 +346,8 @@ public class CipherKeyStorage
 				ByteBuffer firstComp = ByteBuffer.allocate(4);
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM RailFence "
 									+ "WHERE document_name = " + docName);
+				if(!rSet.next())
+					return null;
 				String toIgnore = rSet.getString(1);
 				int keyVal = rSet.getInt(2);
 				Blob usePunctVal = rSet.getBlob(3);
@@ -353,6 +365,8 @@ public class CipherKeyStorage
 			{
 				ResultSet rSet = stmt.executeQuery("SELECT * FROM Vigenere "
 									+ "WHERE document_name = " + docName);
+				if(!rSet.next())
+					return null;
 				String toIgnore = rSet.getString(1);
 				String keyVal = rSet.getString(2);
 				Blob usePunctVal = rSet.getBlob(3);
