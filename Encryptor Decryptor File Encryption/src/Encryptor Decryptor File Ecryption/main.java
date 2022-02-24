@@ -223,6 +223,12 @@ public class main
 				String clearNewLines = userInput.nextLine();
 			}
 			System.out.println("Enter the Base-64 string of the initialization vector.  :  ");
+			byte[] initVect = Base64.getDecoder().decode(userInput.nextLine());
+			System.out.println("Enter the Base-64 string of the secret key.  :  ");
+			byte[] secKeyBytes = Base64.getDecoder().decode(userInput.nextLine());
+			SecretKey secKey = new SecretKeySpec(secKeyBytes, 0, secKeyBytes.length, "AES");
+			theKey = new BlockKey(secKey, initVect);
+			theKey.setComponents();
 		}
 		else if(keyType == 3) //Create Affine key.  
 		{
