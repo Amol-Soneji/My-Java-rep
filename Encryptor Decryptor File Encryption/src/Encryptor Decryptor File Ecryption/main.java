@@ -204,10 +204,7 @@ public class main
 		{
 			System.out.println("Enter the authentication tag length.  :  ");
 			int authTagLength = userInput.nextInt();
-			while(userInput.hasNextLine()) //Flush any /n characters that may remain from next ints.  
-			{
-				String clearNewLines = userInput.nextLine();
-			}
+			String clearNewLines = userInput.nextLine(); //Flush any /n characters that may remain from next ints
 			System.out.println("Enter the Base-64 string of the initialization vector.  :  ");
 			byte[] initVect = Base64.getDecoder().decode(userInput.nextLine());
 			System.out.println("Enter the Base-64 string of the secret key.  :  ");
@@ -218,32 +215,88 @@ public class main
 		}
 		else if(keyType == 2) //Create AES-CBC key.  
 		{
-			while(userInput.hasNextLine()) //Flush any /n characters that may remain from next ints.  
-			{
-				String clearNewLines = userInput.nextLine();
-			}
 			System.out.println("Enter the Base-64 string of the initialization vector.  :  ");
+			byte[] initVect = Base64.getDecoder().decode(userInput.nextLine());
+			System.out.println("Enter the Base-64 string of the secret key.  :  ");
+			byte[] secKeyBytes = Base64.getDecoder().decode(userInput.nextLine());
+			SecretKey secKey = new SecretKeySpec(secKeyBytes, 0, secKeyBytes.length, "AES");
+			theKey = new BlockKey(secKey, initVect);
+			theKey.setComponents();
 		}
 		else if(keyType == 3) //Create Affine key.  
 		{
-			
+			System.out.println("Enter the Affine key value.  :  ");
+			int affKey = userInput.nextInt();
+			System.out.println("Enter the Affine decreyption key value.  :  ");
+			int affDecKey = userInput.nextInt();
+			System.out.println("Enter the arbitrary x value.  :  ");
+			int arbX = userInput.nextInt();
+			theKey = new SubstitutionKey(affKey, affDecKey, arbX);
+			theKey.setComponents();
 		}
 		else if(keyType == 4) //Create Caeser key.  
 		{
-			
+			System.out.println("Enter the Caeser key value.  :  ");
+			int keyVal = userInput.nextInt();
+			theKey = new SubstitutionKey(keyVal);
+			theKey.setComponents();
 		}
 		else if(keyType == 5) //Create One Time Pad key.  
 		{
-			
+			System.out.println("Enter the Base-64 string value of the One Time Pad key.  :  ");
+			byte[] keyBytes = Base64.getDecoder().decode(userInput.nextLine());
+			System.out.println("Enter the text length.  :  ");
+			int textLen = userInput.nextInt();
+			theKey = new OneTimePadKey(keyBytes, textLen);
+			theKey.setComponents();
 		}
 		else if(keyType == 6) //Create Rail Fence key.  
 		{
-			
+			System.out.println("Enter the key value of the Rail Fence key.  :  ");
+			int keyVal = userInput.nextInt();
+			int usePunctInt = 0;
+			while((usePunctInt < 1) || (usePunctInt > 2))
+			{
+				System.out.println("Enter 1 if the key is to be used with files that have punctuation or other \n"
+							   	   + "characters.  Enter 2 if otherwise.  :  ");
+				usePunctInt = userInput.nextInt();
+			}
+			boolean usePunct;
+			if(usePunctInt == 1)
+				usePunct = true;
+			else
+				usePunct = false;
+			theKey = new TranspositionKey(keyVal, usePunct);
+			theKey.setComponents();
 		}
 		else //Create Vigenere key.  
 		{
-			
+			System.out.println("Enter the key string for the Vigenere key.  :  ");
+			String keyVal = userInput.nextLine();
+			int usePunctInt = 0;
+			while((usePunctInt < 1) || (usePunctInt > 2))
+			{
+				System.out.println("Enter 1 if the key is to be used with files that have punctuation or other \n"
+								   + "characters.  Enter 2 if otherwise.  :  ");
+				usePunctInt = userInput.nextInt();
+			}
+			boolean usePunct;
+			if(usePunctInt == 1)
+				usePunct = true;
+			else
+				usePunct = false;
+			theKey = new PolyalphabeticKey(keyVal, usePunct);
+			theKey.setComponents();
 		}
+		while(userInput.hasNextLine())
+		{
+			String clearNewLines = userInput.nextLine(); //Flush any /n characters that may remain from next ints
+		}
+		System.out.println("Enter the name/path of the file that this key is to be associated with.  :  ");
+		String docName = userInput.nextLine();
+		userInput.close();
+		dbAccess.addKey(theKey, keyType, docName);
+		return true;
 	}
 	
 	private static boolean encryptDecrypt(int option, int keyType)
