@@ -38,7 +38,7 @@ public class CipherKeyStorage
 							  + "The program will exit in 10 seconds.  ");
 			for(int i = 0; i < 10000; i++)
 			{
-				i = i; //Do nothing.  
+				//Do nothing.  
 			}
 			System.exit(1);
 		}
@@ -68,7 +68,7 @@ public class CipherKeyStorage
 							  + "The program will exit in 10 seconds.  ");
 			for(int i = 0; i < 10000; i++)
 			{
-				i = i; //Do nothing.  
+				//Do nothing.  
 			}
 			System.exit(1);
 		}
@@ -217,7 +217,7 @@ public class CipherKeyStorage
 			}
 			for(int i = 0; i < 600000; i++)
 			{
-				i = i; //Wait for 60 seconds to let person copy info to another place.  
+				//Wait for 60 seconds to let person copy info to another place.  
 			}
 			try
 			{
@@ -393,7 +393,7 @@ public class CipherKeyStorage
 					   + "program will close in 10 seconds.  ");
 			for(int i = 0; i < 10000; i++)
 			{
-				i = i; //Do nothing.  
+				//Do nothing.  
 			}
 			try
 			{
@@ -458,7 +458,7 @@ public class CipherKeyStorage
 							   + "Program will close in 10 seconds.  ");
 			for(int i = 0; i < 10000; i++)
 			{
-				i = i; //Do nothing.  
+				//Do nothing.  
 			}
 			try
 			{
@@ -485,7 +485,7 @@ public class CipherKeyStorage
 							   + "Program will close in 10 seconds.  ");
 			for(int i = 0; i < 10000; i++)
 			{
-				i = i; //Do nothing.  
+				//Do nothing.  
 			}
 			System.exit(1);
 		}
@@ -596,7 +596,7 @@ public class CipherKeyStorage
 							  + "The program will exit in 10 seconds.  ");
 			for(int i = 0; i < 10000; i++)
 			{
-				i = i; //Do nothing.  
+				//Do nothing.  
 			}
 			System.exit(1);
 		}

@@ -3,6 +3,8 @@ import CipherPackage.*;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -301,17 +303,228 @@ public class main
 	
 	private static boolean encryptDecrypt(int option, int keyType)
 	{
-		
+		Scanner userInput = new Scanner(System.in);
+		if(option == 1)
+			System.out.println("Enter the name of the file/path to be encrypted.  :  ");
+		else
+			System.out.println("Enter the name of the file/path to be decrypted.  :  ");
+		String inputFileName = userInput.nextLine();
+		userInput.close();
+		try
+		{
+			//First try to see if file exists.  
+			File testExists = new File(inputFileName);
+			if(!testExists.isFile())
+				return false;
+			if(option == 1)
+			{
+				String encryptedFileName = inputFileName.substring(0, inputFileName.indexOf(".")) 
+										   + "Encrypted" + inputFileName.substring(inputFileName.indexOf("."));
+				int outputType = 0;
+				if(((keyType > 2) && (keyType < 5)) || (keyType > 5))
+				{
+					Scanner outputTypeInput = new Scanner(System.in);
+					while((outputType < 1) || (outputType > 2))
+					{
+						System.out.println("Enter 1 if you would like a normal encryption process.  Enter \n"
+									   	   + "2 if you would like the output cipher text in char-code \n"
+									   	   + "integers.  This method is more reliable as it can be used \n"
+									   	   + "to write non-printable characters by numeric char-codes.  \n"
+									   	   + "Do note however that this method will lead to a much larger \n"
+									   	   + "encrypted file.  :  ");
+						outputType = outputTypeInput.nextInt();
+					}
+					outputTypeInput.close();
+				}
+				System.out.println("Creating new key for file to be encrypted.  ");
+				switch(keyType)
+				{
+					case 1: //Create an encrypted file using AES-GCM.  
+					{
+						BlockKey theKey = new BlockKey(true);
+						System.out.println("Reading content of file to be encrypted.  ");
+						BlockCipher theCipher = new AESCipher(readFile(inputFileName), theKey, true);
+						System.out.println("Encrypting.  Please wait.  ");
+						String cipherText = theCipher.compute();
+						System.out.println("Creating new encrypted file.  ");
+						if(!writeFile(encryptedFileName, cipherText))
+							throw new Exception();
+						System.out.println("Created new encrypted file.  Now adding key to database.  ");
+						InheritableKey keyToAdd = theKey;
+						keyToAdd.setComponents();
+						dbAccess.addKey(keyToAdd, keyType, encryptedFileName);
+					}
+						break;
+					case 2: //Create an encrypted file using AES-CBC
+					{
+						BlockKey theKey = new BlockKey(false);
+						System.out.println("Reading content of the file to be encrypted.  ");
+						BlockCipher theCipher = new AESCipher(readFile(inputFileName), theKey, true);
+						System.out.println("Encrypting.  Please wait.  ");
+						String cipherText = theCipher.compute();
+						System.out.println("Creating new encrypted file.  ");
+						if(!writeFile(encryptedFileName, cipherText))
+							throw new Exception();
+						System.out.println("Created new encrypted file.  Now adding key to database.  ");
+						InheritableKey keyToAdd = theKey;
+						keyToAdd.setComponents();
+						dbAccess.addKey(keyToAdd, keyType, encryptedFileName);
+					}
+						break;
+					case 3: //Create an encrypted file using Affine
+					{
+						SubstitutionKey theKey = new SubstitutionKey(true);
+						System.out.println("Reading content of the file to be encrypted.  ");
+						SubstitutionCipher theCipher = new AffineCipher(readFile(inputFileName), theKey, true);
+						System.out.println("Encrypting.  Please wait.  ");
+						String cipherText = "";
+						if(outputType == 1)
+							cipherText = theCipher.compute(true);
+						else
+							cipherText = theCipher.compute(false);
+						System.out.println("Creating new encrypted file.  ");
+						if(!writeFile(encryptedFileName, cipherText))
+							throw new Exception();
+						System.out.println("Created new encrypted file.  Now adding key to database.  ");
+						InheritableKey keyToAdd = theKey;
+						keyToAdd.setComponents();
+						dbAccess.addKey(keyToAdd, keyType, encryptedFileName);
+					}
+						break;
+					case 4: //Create an encrypted file using Caeser
+					{
+						SubstitutionKey theKey = new SubstitutionKey(false);
+						System.out.println("Reading the content of the file to be encrypted.  ");
+						SubstitutionCipher theCipher = new CaeserCipher(readFile(inputFileName), theKey, true);
+						System.out.println("Encrypting.  Please wait.  ");
+						String cipherText = "";
+						if(outputType == 1)
+							cipherText = theCipher.compute(true);
+						else
+							cipherText = theCipher.compute(false);
+						System.out.println("Creating new encrypted file.  ");
+						if(!writeFile(encryptedFileName, cipherText))
+							throw new Exception();
+						System.out.println("Created new encrypted file.  Now adding key to database.  ");
+						InheritableKey keyToAdd = theKey;
+						keyToAdd.setComponents();
+						dbAccess.addKey(keyToAdd, keyType, encryptedFileName);
+					}
+						break;
+					case 5:
+					{
+						
+					}
+						break;
+					case 6:
+					{
+						
+					}
+						break;
+					case 7:
+					{
+						
+					}
+						break;
+				}
+			}
+			else
+			{
+				
+			}
+		}
+		catch(SecurityException e)
+		{
+			e.printStackTrace();
+			System.out.println("There has been an error in creating the encrypted file.  \n"
+							   + "The program has insuffecient privleges to create the file.  ");
+			return false;
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+			System.out.println("There has been an error in creating the encrypted file.  \n"
+							   + "Please run this program on a computer that supports UTF-16 encoding.  ");
+			return false;
+		}
+		//Catch anything else.  
+		catch(Exception someException)
+		{
+			someException.printStackTrace();
+			System.out.print("There was an internal error with the program, and thus the program will \n"
+							 + "close in 10 seconds.  \n");
+			for(int i = 0; i < 10000; i++)
+			{
+				//Do nothing
+			}
+			dbAccess.closeDB();
+			System.exit(0);
+		}
+		return true;
 	}
 	
 	private static String readFile(String fileName)
 	{
-		
+		String fileContents = "";
+		try
+		{
+			File fileToRead = new File(fileName);
+			Scanner fileReader = new Scanner(fileToRead);
+			while(fileReader.hasNextLine())
+			{
+				fileContents = fileContents + fileReader.nextLine() + "\n";
+			}
+			fileReader.close();
+		}
+		catch(Exception someException)
+		{
+			someException.printStackTrace();
+			System.out.println("There was an internal error in the program.  Exiting in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++)
+			{
+				//Do nothing.  
+			}
+			System.exit(1);
+		}
+		return fileContents;
 	}
 	
 	private static boolean writeFile(String fileName, String contents)
 	{
-		
-
+		try
+		{
+			File newFile = new File(fileName);
+			PrintWriter fileWriter = new PrintWriter(newFile, "UTF-16");
+			fileWriter.print(contents);
+			fileWriter.close();
+			return true;
+		}
+		catch(SecurityException e)
+		{
+			e.printStackTrace();
+			System.out.println("There has been an error in creating the encrypted file.  \n"
+							   + "The program has insuffecient privleges to create the file.  ");
+			return false;
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+			System.out.println("There has been an error in creating the encrypted file.  \n"
+							   + "Please run this program on a computer that supports UTF-16 encoding.  ");
+			return false;
+		}
+		catch(Exception someException)
+		{
+			someException.printStackTrace();
+			System.out.print("There was an internal error with the program, and thus the program will \n"
+							 + "close in 10 seconds.  \n");
+			for(int i = 0; i < 10000; i++)
+			{
+				//Do nothing
+			}
+			dbAccess.closeDB();
+			System.exit(0);
+		}
+		return false;
 	}
 }
