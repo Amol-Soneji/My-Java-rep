@@ -67,7 +67,7 @@ public class RailFenceCipher extends TranspositionCipher
 			else // Return a String of integers, where each integer represents the code point for each of the Cipher text characters, with the exception of /n special character.  
 				return encryptCharCodes();
 		}
-		else // False means decrption mode.  
+		else // False means decryption mode.  
 		{
 			if(resultType) // True means that the result of decryption does not involve converting code points.  
 				return decrypt();

@@ -320,7 +320,7 @@ public class main
 			{
 				String encryptedFileName = inputFileName.substring(0, inputFileName.indexOf(".")) 
 										   + "Encrypted" + inputFileName.substring(inputFileName.indexOf("."));
-				int outputType = 0;
+				int outputType = 0, usePunctuation = 0;
 				if(((keyType > 2) && (keyType < 5)) || (keyType > 5))
 				{
 					Scanner outputTypeInput = new Scanner(System.in);
@@ -335,6 +335,17 @@ public class main
 						outputType = outputTypeInput.nextInt();
 					}
 					outputTypeInput.close();
+				}
+				if(keyType > 5)
+				{
+					Scanner usePunctuationInput = new Scanner(System.in);
+					while((usePunctuation < 1) || (usePunctuation > 2))
+					{
+						System.out.println("Enter 1 if you would like to keep punctuations during encryption \n"
+										   + "and decryption.  Enter 2 if you don't want to.  :  ");
+						usePunctuation = usePunctuationInput.nextInt();
+					}
+					usePunctuationInput.close();
 				}
 				System.out.println("Creating new key for file to be encrypted.  ");
 				switch(keyType)
@@ -411,19 +422,70 @@ public class main
 						dbAccess.addKey(keyToAdd, keyType, encryptedFileName);
 					}
 						break;
-					case 5:
+					case 5: //Create an encrypted file using One Time Pad
 					{
-						
+						System.out.println("Reading the contents of the file to be encrypted.  ");
+						String fileContents = readFile(inputFileName);
+						int contentLength = fileContents.length();
+						OneTimePadKey theKey = new OneTimePadKey(contentLength);
+						OneTimePadCipher theCipher = new OneTimePadCipher(fileContents, theKey, true);
+						System.out.println("Encrypting.  Please wait.  ");
+						String cipherText = theCipher.compute(true);
+						System.out.println("Creating new encrypted file.  ");
+						if(!writeFile(encryptedFileName, cipherText))
+							throw new Exception();
+						System.out.println("Created new encrypted file.  Now adding key to database.  ");
+						InheritableKey keyToAdd = theKey;
+						keyToAdd.setComponents();
+						dbAccess.addKey(keyToAdd, keyType, encryptedFileName);
 					}
 						break;
-					case 6:
+					case 6: //Create an encrypted file using Rail Fence
 					{
-						
+						TranspositionKey theKey = null;
+						if(usePunctuation == 1)
+							theKey = new TranspositionKey(true);
+						else
+							theKey = new TranspositionKey(false);
+						System.out.println("Reading the contents of the file to be encrypted.  ");
+						RailFenceCipher theCipher = new RailFenceCipher(readFile(inputFileName), theKey, true);
+						System.out.println("Encrypting.  Please wait.  ");
+						String cipherText = "";
+						if(outputType == 1)
+							cipherText = theCipher.compute(true);
+						else
+							cipherText = theCipher.compute(false);
+						System.out.println("Creating new encrypted file.  ");
+						if(!writeFile(encryptedFileName, cipherText))
+							throw new Exception();
+						System.out.println("Created new encrypted file.  Now adding key to database.  ");
+						InheritableKey keyToAdd = theKey;
+						keyToAdd.setComponents();
+						dbAccess.addKey(keyToAdd, keyType, encryptedFileName);
 					}
 						break;
-					case 7:
+					case 7: //Create an encrypted file using Vigenere
 					{
-						
+						PolyalphabeticKey theKey = null;
+						if(usePunctuation == 1)
+							theKey = new PolyalphabeticKey(true);
+						else
+							theKey = new PolyalphabeticKey(false);
+						System.out.println("Reading the contents of the file to be encrypted.  ");
+						VigenereCipher theCipher = new VigenereCipher(readFile(inputFileName), theKey, true);
+						System.out.println("Encrypting.  Please wait.  ");
+						String cipherText = "";
+						if(usePunctuation == 1)
+							cipherText = theCipher.compute(true);
+						else
+							cipherText = theCipher.compute(false);
+						System.out.println("Creating new encrypted file.  ");
+						if(!writeFile(encryptedFileName, cipherText))
+							throw new Exception();
+						System.out.println("Created new encrypted file.  Now adding key to database.  ");
+						InheritableKey keyToAdd = theKey;
+						keyToAdd.setComponents();
+						dbAccess.addKey(keyToAdd, keyType, encryptedFileName);
 					}
 						break;
 				}
@@ -433,32 +495,13 @@ public class main
 				
 			}
 		}
-		catch(SecurityException e)
-		{
-			e.printStackTrace();
-			System.out.println("There has been an error in creating the encrypted file.  \n"
-							   + "The program has insuffecient privleges to create the file.  ");
-			return false;
-		}
-		catch(UnsupportedEncodingException e)
-		{
-			e.printStackTrace();
-			System.out.println("There has been an error in creating the encrypted file.  \n"
-							   + "Please run this program on a computer that supports UTF-16 encoding.  ");
-			return false;
-		}
 		//Catch anything else.  
 		catch(Exception someException)
 		{
 			someException.printStackTrace();
-			System.out.print("There was an internal error with the program, and thus the program will \n"
-							 + "close in 10 seconds.  \n");
-			for(int i = 0; i < 10000; i++)
-			{
-				//Do nothing
-			}
-			dbAccess.closeDB();
-			System.exit(0);
+			System.out.print("There was an internal error with the program, and thus the requested \n"
+							 + "action might not have been completed.  \n");
+			return false;
 		}
 		return true;
 	}

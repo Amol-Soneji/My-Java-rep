@@ -95,7 +95,7 @@ public class PolyalphabeticKey extends InheritableKey
 					System.out.println("computer.  Program will close in 10 seconds.  ");
 					for(int i = 0; i < 10000; i++)
 					{
-						i = i;  
+						//Do nothing.    
 					}
 					System.exit(0);
 				}

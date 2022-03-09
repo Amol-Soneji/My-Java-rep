@@ -59,7 +59,7 @@ public class OneTimePadCipher
 					System.out.println("Fatal program error, programm will close in 10 seconds.  ");
 					for(int i = 0; i < 100000; i++)
 					{
-						i = i; // Do nothing.  
+						// Do nothing.  
 					}
 					System.exit(1);
 				}
