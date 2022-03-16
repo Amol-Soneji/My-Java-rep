@@ -308,7 +308,7 @@ public class CipherKeyStorage
 			else if(keyType == 4)
 			{
 				ByteBuffer firstComp = ByteBuffer.allocate(4);
-				ResultSet rSet = stmt.executeQuery("SELECT * FROM Caser "  
+				ResultSet rSet = stmt.executeQuery("SELECT * FROM Caeser "  
 								   + "WHERE document_name = " + docName);
 				if(!rSet.next())
 					return null;

@@ -5,6 +5,8 @@ package CipherKeys;
 
 import java.security.SecureRandom;
 import java.nio.ByteBuffer;
+import java.nio.ReadOnlyBufferException;
+import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 
 /**
@@ -23,9 +25,33 @@ public class OneTimePadKey extends InheritableKey
 		createKey();
 	}
 	
-	public OneTimePadKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey.  
+	public OneTimePadKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey and also used by main.  
 	{
-		this.components.addAll(components);
+		components.forEach((n) -> n.rewind());
+		try
+		{
+			textLength = components.get(0).getInt();
+			if(components.get(1).hasArray())
+				key = components.get(1).array();
+			else
+				throw new Exception();
+			this.components.addAll(components);
+		}
+		catch(ReadOnlyBufferException e)
+		{
+			e.printStackTrace();
+			System.out.println("There was an internal problem in the program.  ");
+		}
+		catch(BufferUnderflowException e)
+		{
+			e.printStackTrace();
+			System.out.println("There was an error in how some parts of the key was stored in the database.  ");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("Some contents of the key were not stored in the database.  ");
+		}
 	}
 	
 	public OneTimePadKey(byte[] key, int textLength)

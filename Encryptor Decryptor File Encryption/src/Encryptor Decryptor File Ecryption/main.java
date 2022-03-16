@@ -492,7 +492,87 @@ public class main
 			}
 			else
 			{
-				
+				String decryptedFileName = inputFileName.substring(0, inputFileName.indexOf("Encrypted"))
+										   + inputFileName.substring(inputFileName.indexOf("."));
+				int encryptedTextTypeInt = 0;
+				if(((keyType > 2) && (keyType < 5)) || (keyType > 5))
+				{
+					Scanner textTypeInput = new Scanner(System.in);
+					while((encryptedTextTypeInt < 1) || (encryptedTextTypeInt > 2))
+					{
+						System.out.println("Enter 1 if the cipher text is in normal Base-64 format.  Else enter 2 if the \n"
+									   	   + "cipher text is in char-code format.  ");
+						encryptedTextTypeInt = textTypeInput.nextInt();
+					}
+					textTypeInput.close();	
+				}
+				boolean encryptedTextType = true;
+				if(encryptedTextTypeInt == 2)
+					encryptedTextType = false;
+				System.out.println("Getting key to decrypt file.  ");
+				switch(keyType)
+				{
+					case 1: //Decrypt using AES-GCM.  
+					{
+						BlockKey theKey = new BlockKey(dbAccess.getKey(inputFileName, keyType).getComponents());
+						System.out.println("Reading contents of encrypted file.  ");
+						AESCipher theCipher = new AESCipher(readFile(inputFileName), theKey, false);
+						System.out.println("Decrypting the encrypted file contents.  ");
+						String plainText = theCipher.compute();
+						System.out.println("Creating the plain text file.  ");
+						writeFile(decryptedFileName, plainText);
+					}
+						break;
+					case 2: //Decrypt using AES-CBC.  
+					{
+						BlockKey theKey = new BlockKey(dbAccess.getKey(inputFileName, keyType).getComponents());
+						System.out.println("Reading contents of the encrypted file.  ");
+						AESCipher theCipher = new AESCipher(readFile(inputFileName), theKey, false);
+						System.out.println("Decrypting the encrypted file contents.  ");
+						String plainText = theCipher.compute();
+						System.out.println("Creating the plain text file.  ");
+						writeFile(decryptedFileName, plainText);
+					}
+						break;
+					case 3: //Decrypt using Affine.  
+					{
+						SubstitutionKey theKey = new SubstitutionKey(dbAccess.getKey(inputFileName, keyType).getComponents());
+						System.out.println("Reading contents of the encrypted file.  ");
+						AffineCipher theCipher = new AffineCipher(readFile(inputFileName), theKey, false);
+						System.out.println("Decrypting the encrypted file contents.  ");
+						String plainText = theCipher.compute(encryptedTextType);
+						System.out.println("Creating the plain text file.  ");
+						writeFile(decryptedFileName, plainText);
+					}
+						break;
+					case 4: //Decrypt using Caeser.  
+					{
+						SubstitutionKey theKey = new SubstitutionKey(dbAccess.getKey(inputFileName, keyType).getComponents());
+						System.out.println("Reading contents of the encrypted file.  ");
+						CaeserCipher theCipher = new CaeserCipher(readFile(inputFileName), theKey, false);
+						System.out.println("Decrypting the encrypted file contents.  ");
+						String plainText = theCipher.compute(encryptedTextType);
+						System.out.println("Creating the plain text file.  ");
+						writeFile(decryptedFileName, plainText);
+					}
+						break;
+					case 5: //Decrypt using One Time Pad.  
+					{
+						OneTimePadKey theKey = new OneTimePadKey(dbAccess.getKey(inputFileName, keyType).getComponents());
+						
+					}
+						break;
+					case 6: //Decrypt using Rail Fence.  
+					{
+						
+					}
+						break;
+					case 7: //Decrypt using Vigenere.  
+					{
+						
+					}
+						break;
+				}
 			}
 		}
 		//Catch anything else.  
@@ -512,12 +592,24 @@ public class main
 		try
 		{
 			File fileToRead = new File(fileName);
-			Scanner fileReader = new Scanner(fileToRead);
+			Scanner fileReader = new Scanner(fileToRead, "UTF-16");
 			while(fileReader.hasNextLine())
 			{
 				fileContents = fileContents + fileReader.nextLine() + "\n";
 			}
 			fileReader.close();
+		}
+		catch(IllegalArgumentException e)
+		{
+			e.printStackTrace();
+			System.out.println("There has been an error in reading the file.  \n"
+							   + "Please run this program on a computer that supports UTF-16 encoding.  "
+							   + "Exiting in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++)
+			{
+				//Do noting.  
+			}
+			System.exit(1);
 		}
 		catch(Exception someException)
 		{

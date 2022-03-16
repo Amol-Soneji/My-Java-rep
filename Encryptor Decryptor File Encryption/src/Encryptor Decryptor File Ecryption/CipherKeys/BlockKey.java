@@ -82,7 +82,7 @@ public class BlockKey extends InheritableKey
 			System.out.println("Program will close in a few seconds.  ");
 			for(int i = 0; i < 100000; i++) 
 			{
-				i = i;
+				//Do nothing.  
 			}
 			System.exit(1);
 		}

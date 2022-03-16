@@ -4,6 +4,7 @@ package CipherKeys;
 import java.security.SecureRandom;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
+import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 
 /**
@@ -30,13 +31,30 @@ public class SubstitutionKey extends InheritableKey
 		booleanMode = false;
 	}
 	
-	public SubstitutionKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey.  
+	public SubstitutionKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey, and used by main.  
 	{
-		if(components.size() == 3)
-			booleanMode = true;
-		else
-			booleanMode = false;
-		this.components.addAll(components);
+		try
+		{
+			components.forEach((n) -> n.rewind());
+			if(components.size() == 3)
+			{
+				booleanMode = true;
+				key = components.get(0).getInt();
+				affineDecKey = components.get(1).getInt();
+				arbitraryX = components.get(2).getInt();
+			}
+			else
+			{
+				booleanMode = false;
+				key = components.get(0).getInt();
+			}
+			this.components.addAll(components);
+		}
+		catch(BufferUnderflowException e)
+		{
+			e.printStackTrace();
+			System.out.println("There is a malformat with the key in the database.  ");
+		}
 	}
 	
 	public SubstitutionKey(int key, int affineDecKey, int arbitraryX)
