@@ -5,8 +5,11 @@ package CipherKeys;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.security.SecureRandom;
 import java.nio.ByteBuffer;
+import java.nio.ReadOnlyBufferException;
+import java.nio.BufferUnderflowException;
 import java.util.ArrayList;
 
 /**
@@ -33,11 +36,50 @@ public class BlockKey extends InheritableKey
 	
 	public BlockKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey.  
 	{
-		if(components.size() == 3)
-			enDecryptionMethod = true;
-		else
-			enDecryptionMethod = false;
-		this.components.addAll(components);
+		try
+		{
+			components.forEach((n) -> n.rewind());
+			if(components.size() == 3)
+			{
+				enDecryptionMethod = true;
+				if((components.get(0).hasArray()) && (components.get(1).hasArray()))
+				{
+					byte[] keyBytes = components.get(0).array();
+					key = new SecretKeySpec(keyBytes, 0, keyBytes.length, "AES");
+					IV = components.get(1).array();
+					authenticationTagLength = components.get(2).getInt();
+				}
+				else
+					throw new Exception();
+			}
+			else
+			{
+				enDecryptionMethod = false;
+				if((components.get(0).hasArray()) && (components.get(1).hasArray()))
+				{
+					byte[] keyBytes = components.get(0).array();
+					key = new SecretKeySpec(keyBytes, 0, keyBytes.length, "AES");
+					IV = components.get(1).array();
+				}
+			}
+			this.components.addAll(components);
+		}
+		catch(ReadOnlyBufferException e)
+		{
+			e.printStackTrace();
+			System.out.println("There was an internal problem with the program.  ");
+		}
+		catch(BufferUnderflowException e)
+		{
+			e.printStackTrace();
+			System.out.println("There is a malformat with the key in the database.  ");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("Some contents of the key were not stored in the database.  ");
+		}
+		
 	}
 	
 	public BlockKey(SecretKey key, byte[] IV, int authenticataionTagLength)

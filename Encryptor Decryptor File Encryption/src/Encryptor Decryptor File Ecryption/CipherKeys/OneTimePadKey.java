@@ -27,9 +27,9 @@ public class OneTimePadKey extends InheritableKey
 	
 	public OneTimePadKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey and also used by main.  
 	{
-		components.forEach((n) -> n.rewind());
 		try
 		{
+			components.forEach((n) -> n.rewind());
 			textLength = components.get(0).getInt();
 			if(components.get(1).hasArray())
 				key = components.get(1).array();

@@ -29,9 +29,22 @@ public class PolyalphabeticKey extends InheritableKey
 		createKey();
 	}
 	
-	public PolyalphabeticKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey.  
+	public PolyalphabeticKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey and main.  
 	{
-		this.components.addAll(components);
+		try
+		{
+			components.forEach((n) -> n.rewind());
+			key = new String(components.get(0).array(), "UTF-16");
+			byte[] boolByte = components.get(0).array();
+			BitSet boolBit = BitSet.valueOf(boolByte);
+			usePunct = boolBit.get(0);
+			this.components.addAll(components);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("There was an internal problem with this program.  ");
+		}
 	}
 	
 	public PolyalphabeticKey(String key, boolean usePunct)

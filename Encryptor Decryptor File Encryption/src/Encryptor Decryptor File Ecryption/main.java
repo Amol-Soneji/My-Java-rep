@@ -559,17 +559,34 @@ public class main
 					case 5: //Decrypt using One Time Pad.  
 					{
 						OneTimePadKey theKey = new OneTimePadKey(dbAccess.getKey(inputFileName, keyType).getComponents());
-						
+						System.out.println("Reading contents of the encrypted file.  ");
+						OneTimePadCipher theCipher = new OneTimePadCipher(readFile(inputFileName), theKey, false);
+						System.out.println("Decrypting the encrypted file contents.  ");
+						String plainText = theCipher.compute(true);
+						System.out.println("Creating the plain text file.  ");
+						writeFile(decryptedFileName, plainText);
 					}
 						break;
 					case 6: //Decrypt using Rail Fence.  
 					{
-						
+						TranspositionKey theKey = new TranspositionKey(dbAccess.getKey(inputFileName, keyType).getComponents());
+						System.out.println("Reading contents of the encrypted file.  ");
+						RailFenceCipher theCipher = new RailFenceCipher(readFile(inputFileName), theKey, false);
+						System.out.println("Decrypting the encrypted file contents.  ");
+						String plainText = theCipher.compute(encryptedTextType);
+						System.out.println("Creating the plain text file.  ");
+						writeFile(decryptedFileName, plainText);
 					}
 						break;
 					case 7: //Decrypt using Vigenere.  
 					{
-						
+						PolyalphabeticKey theKey = new PolyalphabeticKey(dbAccess.getKey(inputFileName, keyType).getComponents());
+						System.out.println("Reading contents of the encrypted file.  ");
+						VigenereCipher theCipher = new VigenereCipher(readFile(inputFileName), theKey, false);
+						System.out.println("Decrypting the encrypted file contents.  ");
+						String plainText = theCipher.compute(encryptedTextType);
+						System.out.println("Creating the plain text file.  ");
+						writeFile(decryptedFileName, plainText);
 					}
 						break;
 				}

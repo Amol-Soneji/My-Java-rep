@@ -5,6 +5,7 @@ package CipherKeys;
 
 import java.security.SecureRandom;
 import java.nio.ByteBuffer;
+import java.nio.ReadOnlyBufferException;
 import java.util.BitSet;
 import java.util.ArrayList;
 
@@ -34,9 +35,32 @@ public class TranspositionKey extends InheritableKey
 		createKey();
 	}
 	
-	public TranspositionKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey.  
+	public TranspositionKey(ArrayList<ByteBuffer> components) //Called by CipherKeyStorage for use in returning a InheritableKey and main.  
 	{
-		this.components.addAll(components);
+		try
+		{
+			components.forEach((n) -> n.rewind());
+			key = components.get(0).getInt();
+			if(components.get(1).hasArray())
+			{
+				byte[] boolInBytes = components.get(1).array();
+				BitSet boolInBits = BitSet.valueOf(boolInBytes);
+				usePunct = boolInBits.get(0);
+			}
+			else
+				throw new Exception();
+			this.components.addAll(components);
+		}
+		catch(ReadOnlyBufferException e)
+		{
+			e.printStackTrace();
+			System.out.println("There was an internal problem with the program.  ");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("Some contents of the key were not stored in the database.  ");
+		}
 	}
 	
 	public TranspositionKey(int key, boolean usePunct)
