@@ -109,7 +109,7 @@ public class BlockKey extends InheritableKey
 			{
 				IV = new byte[12]; //IV in GCM is 12 bytes.  
 				random.nextBytes(IV);
-				authenticationTagLength = 16;
+				authenticationTagLength = 96;
 			}
 			else 
 			{

@@ -92,15 +92,16 @@ public class PolyalphabeticKey extends InheritableKey
 	{
 			if(components == null)
 			{
-				ByteBuffer firstArg = ByteBuffer.allocate(key.length());
-				ByteBuffer secondArg = ByteBuffer.allocate(1);
-				BitSet boolInBits = new BitSet();
-				if(usePunct)
-					boolInBits.set(0);
-				byte[] boolInBytes = boolInBits.toByteArray();
 				try
 				{
+					ByteBuffer firstArg = ByteBuffer.allocate(key.getBytes("UTF-16").length);
+					ByteBuffer secondArg = ByteBuffer.allocate(1);
+					BitSet boolInBits = new BitSet();
+					if(usePunct)
+						boolInBits.set(0);
+					byte[] boolInBytes = boolInBits.toByteArray();
 					super.keyComponents.add(firstArg.put(key.getBytes("UTF-16")));
+					super.keyComponents.add(secondArg.put(boolInBytes[0]));
 				}
 				catch(UnsupportedEncodingException e)
 				{
@@ -112,7 +113,6 @@ public class PolyalphabeticKey extends InheritableKey
 					}
 					System.exit(0);
 				}
-				super.keyComponents.add(secondArg.put(boolInBytes[0]));
 			}
 			else
 				super.keyComponents.addAll(components); //Adds all to InheritableKey.  

@@ -87,7 +87,7 @@ public class CipherKeyStorage
 				keyVal.setBytes(1, components.get(0).array());
 				IV.setBytes(1, components.get(1).array());
 				int authTagLength = components.get(2).getInt();
-				String stmt = "INSERT INTO AES-GCM "
+				String stmt = "INSERT INTO AES_GCM "
 							  + "values(?, ?, ?, ?)";
 				PreparedStatement pStmt = conn.prepareStatement(stmt);
 				pStmt.setString(1, docName);
@@ -103,7 +103,7 @@ public class CipherKeyStorage
 				Blob IV = conn.createBlob();
 				keyVal.setBytes(1, components.get(0).array());
 				IV.setBytes(1, components.get(1).array());
-				String stmt = "INSERT INTO AES-CBC "
+				String stmt = "INSERT INTO AES_CBC "
 							  + "values(?, ?, ?)";
 				PreparedStatement pStmt = conn.prepareStatement(stmt);
 				pStmt.setString(1, docName);
@@ -242,7 +242,7 @@ public class CipherKeyStorage
 				
 			    ByteBuffer firstComp = ByteBuffer.allocate(16);
 				ByteBuffer thirdComp = ByteBuffer.allocate(4);
-				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES-GCM "
+				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES_GCM "
 								   + "WHERE document_name = " + docName);
 				if(!rSet.next())
 					return null;
@@ -265,7 +265,7 @@ public class CipherKeyStorage
 			else if(keyType == 2)
 			{
 				ByteBuffer firstComp = ByteBuffer.allocate(16);
-				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES-CBC "
+				ResultSet rSet = stmt.executeQuery("SELECT * FROM AES_CBC "
 								   + "WHERE document_name = " + docName);
 				if(!rSet.next())
 					return null;
@@ -415,12 +415,12 @@ public class CipherKeyStorage
 			Statement stmt = conn.createStatement();
 			if(keyType == 1)
 			{
-				stmt.executeUpdate("DELETE FROM AES-GCM WHERE document_name = " + docName);
+				stmt.executeUpdate("DELETE FROM AES_GCM WHERE document_name = " + docName);
 				System.out.println("Key for document " + docName + "successfully deleted.  ");
 			}
 			else if(keyType == 2)
 			{
-				stmt.executeUpdate("DELETE FROM AES-CBC WHERE document_name = " + docName);
+				stmt.executeUpdate("DELETE FROM AES_CBC WHERE document_name = " + docName);
 				System.out.println("Key for document " + docName + "successfully deleted.  ");
 			}
 			else if(keyType == 3)
@@ -497,14 +497,14 @@ public class CipherKeyStorage
 		{
 			boolean[] tblsExistant = new boolean[7];
 			Statement stmt = conn.createStatement();
-			ResultSet rSet = stmt.executeQuery("SHOW TABLES"); //Check to see if any of the tables needed 
+			ResultSet rSet = stmt.executeQuery("SELECT name FROM sqlite_master"); //Check to see if any of the tables needed 
 			//by this program are not in the database yet.  
 			while(rSet.next())
 			{
 				String tblName = rSet.getString(1);
-				if(tblName.equalsIgnoreCase("AES-GCM"))
+				if(tblName.equalsIgnoreCase("AES_GCM"))
 					tblsExistant[0] = true;
-				else if(tblName.equalsIgnoreCase("AES-CBC"))
+				else if(tblName.equalsIgnoreCase("AES_CBC"))
 					tblsExistant[1] = true;
 				else if(tblName.equalsIgnoreCase("Affine"))
 					tblsExistant[2] = true;
@@ -522,7 +522,7 @@ public class CipherKeyStorage
 			//Now create any of the missing tables if needed.  
 			if(!(tblsExistant[0]))
 			{
-				stmt.executeUpdate("CREATE TABLE AES-GCM ("
+				stmt.executeUpdate("CREATE TABLE AES_GCM ("
 								   + "document_name varchar(255) NOT NULL, "
 								   + "key BLOB NOT NULL, "
 								   + "iv BLOB NOT NULL, "
@@ -531,7 +531,7 @@ public class CipherKeyStorage
 			}
 			if(!(tblsExistant[1]))
 			{
-				stmt.executeUpdate("CREATE TABLE AES-CBC ("
+				stmt.executeUpdate("CREATE TABLE AES_CBC ("
 								   + "document_name varchar(255) NOT NULL, "
 								   + "key BLOB NOT NULL, "
 								   + "iv BLOB NOT NULL, "

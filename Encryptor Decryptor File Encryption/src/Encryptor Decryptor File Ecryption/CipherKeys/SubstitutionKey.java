@@ -76,6 +76,7 @@ public class SubstitutionKey extends InheritableKey
 				randomInteger = random.nextInt(2097152);
 			}
 			key = randomInteger;
+			System.out.println(key);
 			try
 			{
 				affineDecKey = (BigInteger.valueOf(key).modInverse(BigInteger.valueOf(1112063))).intValue();
@@ -108,6 +109,7 @@ public class SubstitutionKey extends InheritableKey
 			{
 				ByteBuffer secondArg = ByteBuffer.allocate(4);
 				ByteBuffer thirdArg = ByteBuffer.allocate(4);
+				System.out.println(key);
 				super.keyComponents.add(firstArg.putInt(key));
 				super.keyComponents.add(secondArg.putInt(affineDecKey));
 				super.keyComponents.add(thirdArg.putInt(arbitraryX));

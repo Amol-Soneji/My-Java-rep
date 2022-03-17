@@ -194,7 +194,6 @@ public class main
 				inputSelection = userInput.nextInt();
 			}
 		}
-		userInput.close();
 		return inputSelection;
 	}
 	
@@ -296,7 +295,6 @@ public class main
 		}
 		System.out.println("Enter the name/path of the file that this key is to be associated with.  :  ");
 		String docName = userInput.nextLine();
-		userInput.close();
 		dbAccess.addKey(theKey, keyType, docName);
 		return true;
 	}
@@ -309,7 +307,6 @@ public class main
 		else
 			System.out.println("Enter the name of the file/path to be decrypted.  :  ");
 		String inputFileName = userInput.nextLine();
-		userInput.close();
 		try
 		{
 			//First try to see if file exists.  
@@ -334,7 +331,6 @@ public class main
 									   	   + "encrypted file.  :  ");
 						outputType = outputTypeInput.nextInt();
 					}
-					outputTypeInput.close();
 				}
 				if(keyType > 5)
 				{
@@ -345,7 +341,6 @@ public class main
 										   + "and decryption.  Enter 2 if you don't want to.  :  ");
 						usePunctuation = usePunctuationInput.nextInt();
 					}
-					usePunctuationInput.close();
 				}
 				System.out.println("Creating new key for file to be encrypted.  ");
 				switch(keyType)
@@ -504,7 +499,6 @@ public class main
 									   	   + "cipher text is in char-code format.  ");
 						encryptedTextTypeInt = textTypeInput.nextInt();
 					}
-					textTypeInput.close();	
 				}
 				boolean encryptedTextType = true;
 				if(encryptedTextTypeInt == 2)
