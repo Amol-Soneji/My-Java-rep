@@ -13,6 +13,12 @@ import java.sql.ResultSet;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.sql.Blob;
+import java.sql.SQLFeatureNotSupportedException;
+import java.io.PrintWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.util.Scanner;
 
 /**
  * @author Amol Soneji
@@ -23,6 +29,7 @@ public class CipherKeyStorage
 	private static final String FILE_PATH = "Keys.db"; //Default used by program.  
 	private String dbName; //Used for user provided databases or user created databases.  
 	private Connection conn;
+	private boolean blobSupported;
 	
 	public CipherKeyStorage()
 	{
@@ -76,6 +83,7 @@ public class CipherKeyStorage
 	
 	protected void addKey(InheritableKey key, int keyType, String docName)
 	{
+		docName = "\'" + docName + "\'";
 		ArrayList<ByteBuffer> components = key.getComponents();
 		components.forEach((n) -> n.rewind());
 		try 
@@ -161,6 +169,7 @@ public class CipherKeyStorage
 			else
 			{
 				String keyVal = new String(components.get(0).array(), "UTF-16");
+				keyVal = "\'" + keyVal + "\'"; //SQLite syntax format for inserting a string value.  
 				Blob usePunct = conn.createBlob();
 				usePunct.setBytes(1, components.get(1).array());
 				String stmt = "INSERT INTO Vigenere "
@@ -495,6 +504,17 @@ public class CipherKeyStorage
 	{
 		try
 		{
+			try
+			{
+				Blob test = conn.createBlob();
+				blobSupported = true;
+			}
+			catch(SQLFeatureNotSupportedException e)
+			{
+				blobSupported = false;
+				System.out.println("Due to limitations in the database driver, some parts of the key will be stored \n"
+								   + "in file(s).  These key files will be deleted when the encrypted file is decrypted.  ");
+			}
 			boolean[] tblsExistant = new boolean[7];
 			Statement stmt = conn.createStatement();
 			ResultSet rSet = stmt.executeQuery("SELECT name FROM sqlite_master"); //Check to see if any of the tables needed 
@@ -522,20 +542,43 @@ public class CipherKeyStorage
 			//Now create any of the missing tables if needed.  
 			if(!(tblsExistant[0]))
 			{
-				stmt.executeUpdate("CREATE TABLE AES_GCM ("
-								   + "document_name varchar(255) NOT NULL, "
-								   + "key BLOB NOT NULL, "
-								   + "iv BLOB NOT NULL, "
-								   + "auth_tag_len integer NOT NULL, "
-								   + "PRIMARY KEY (document_name))");
+				if(blobSupported)
+				{
+					stmt.executeUpdate("CREATE TABLE AES_GCM ("
+								   	   + "document_name varchar(255) NOT NULL, "
+								   	   + "key BLOB NOT NULL, "
+								   	   + "iv BLOB NOT NULL, "
+								   	   + "auth_tag_len integer NOT NULL, "
+								   	   + "PRIMARY KEY (document_name))");
+				}
+				else
+				{
+					stmt.executeUpdate("CREATE TABLE AES_GCM ("
+									   + "document_name varchar(255) NOT NULL, "
+									   + "key_file varchar(255) NOT NULL, "
+									   + "iv_file varchar(255) NOT NULL, "
+									   + "auth_tag_len integer NOT NULL, "
+									   + "PRIMARY KEY (document_name))");
+				}
 			}
 			if(!(tblsExistant[1]))
 			{
-				stmt.executeUpdate("CREATE TABLE AES_CBC ("
-								   + "document_name varchar(255) NOT NULL, "
-								   + "key BLOB NOT NULL, "
-								   + "iv BLOB NOT NULL, "
-								   + "PRIMARY KEY (document_name))");
+				if(blobSupported)
+				{
+					stmt.executeUpdate("CREATE TABLE AES_CBC ("
+								   	   + "document_name varchar(255) NOT NULL, "
+								   	   + "key BLOB NOT NULL, "
+								   	   + "iv BLOB NOT NULL, "
+								   	   + "PRIMARY KEY (document_name))");
+				}
+				else
+				{
+					stmt.executeUpdate("CREATE TABLE AES_CBC ("
+									   + "document_name varchar(255) NOT NULL, "
+									   + "key_file varchar(255) NOT NULL, "
+									   + "iv varchar(255) NOT NULL, "
+									   + "PRIMARY KEY (document_name))");
+				}
 			}
 			if(!(tblsExistant[2]))
 			{
@@ -555,30 +598,65 @@ public class CipherKeyStorage
 			}
 			if(!(tblsExistant[4]))
 			{
-				stmt.executeUpdate("CREATE TABLE OneTimePad ("
-								   + "document_name varchar(255) NOT NULL, "
-								   + "text_len integer NOT NULL, "
-								   + "key BLOB NOT NULL, "
-								   + "PRIMARY KEY (document_name))");
+				if(blobSupported)
+				{
+					stmt.executeUpdate("CREATE TABLE OneTimePad ("
+								   	   + "document_name varchar(255) NOT NULL, "
+								   	   + "text_len integer NOT NULL, "
+								   	   + "key BLOB NOT NULL, "
+								   	   + "PRIMARY KEY (document_name))");
+				}
+				else
+				{
+					stmt.executeUpdate("CREATE TABLE OneTimePad ("
+									   + "document_name varchar(255) NOT NULL, "
+									   + "text_len integer NOT NULL, "
+									   + "key_file varchar(255) NOT NULL, "
+									   + "PRIMARY KEY (document_name))");
+				}
 			}
 			if(!(tblsExistant[5]))
 			{
-				stmt.executeUpdate("CREATE TABLE RailFence ("
-								   + "document_name varchar(255) NOT NULL, "
-								   + "key integer NOT NULL, "
-								   + "use_punct BLOB NOT NULL, "
-								   + "PRIMARY KEY (document_name))");
+				if(blobSupported)
+				{
+					stmt.executeUpdate("CREATE TABLE RailFence ("
+								   	   + "document_name varchar(255) NOT NULL, "
+								   	   + "key integer NOT NULL, "
+								   	   + "use_punct BLOB NOT NULL, "
+								   	   + "PRIMARY KEY (document_name))");
+				}
+				else
+				{
+					stmt.executeUpdate("CREATE TABLE RailFence ("
+									   + "document_name varchar(255) NOT NULL, "
+									   + "key integer NOT NULL, "
+									   + "use_punct_file varchar(255) NOT NULL, "
+									   + "PRIMARY KEY (document_name))");
+				}
 			}
 			if(!(tblsExistant[6]))
 			{
-				stmt.executeUpdate("CREATE TABLE Vigenere ("
-								   + "document_name varchar(255) NOT NULL, "
-								   + "key varchar(255) NOT NULL, "
-								   + "use_punct BLOB NOT NULL, "
-								   + "PRIMARY KEY (document_name))");
+				if(blobSupported)
+				{
+					stmt.executeUpdate("CREATE TABLE Vigenere ("
+								   	   + "document_name varchar(255) NOT NULL, "
+								   	   + "key varchar(255) NOT NULL, "
+								   	   + "use_punct BLOB NOT NULL, "
+								   	   + "PRIMARY KEY (document_name))");
+				}
+				else
+				{
+					stmt.executeUpdate("CREATE TABLE Vigenere ("
+									   + "document_name varchar(255) NOT NULL, "
+									   + "key varchar(255) NOT NULL, "
+									   + "use_punct_file varchar(255) NOT NULL, "
+									   + "PRIMARY KEY (document_name))");
+				}
 			}
 			rSet.close();
 			stmt.close();
+			if(!conn.isClosed())
+				System.out.println("Still working.  ");
 		}
 		catch(SQLException e)
 		{
@@ -600,5 +678,17 @@ public class CipherKeyStorage
 			}
 			System.exit(1);
 		}
+	}
+	
+	//Will be used temporarily till JDBC SQLite driver supports BLOBS.  
+	private boolean createKeyFile(ByteBuffer keyContents, String keyFileName)
+	{
+		
+	}
+	
+	//Will be used temporarily till JDBC SQLite driver supports BLOBS.  
+	private ByteBuffer readKeyFile(String keyFileName)
+	{
+		
 	}
 }

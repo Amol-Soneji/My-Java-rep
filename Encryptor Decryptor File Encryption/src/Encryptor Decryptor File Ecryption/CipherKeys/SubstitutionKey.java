@@ -110,15 +110,23 @@ public class SubstitutionKey extends InheritableKey
 				ByteBuffer secondArg = ByteBuffer.allocate(4);
 				ByteBuffer thirdArg = ByteBuffer.allocate(4);
 				System.out.println(key);
-				super.keyComponents.add(firstArg.putInt(key));
-				super.keyComponents.add(secondArg.putInt(affineDecKey));
-				super.keyComponents.add(thirdArg.putInt(arbitraryX));
+				keyComponents.add(firstArg.putInt(key));
+				keyComponents.add(secondArg.putInt(affineDecKey));
+				keyComponents.add(thirdArg.putInt(arbitraryX));
 			}
 			else
-				super.keyComponents.add(firstArg.putInt(key));
+			{
+				System.out.println(key);
+				keyComponents.add(firstArg.putInt(key));
+				keyComponents.forEach((n) -> n.rewind());
+				ByteBuffer testBuffer = ByteBuffer.allocate(4);
+				testBuffer.put(keyComponents.get(0));
+				testBuffer.rewind();
+				System.out.println(testBuffer.getInt());
+			}
 		}
 		else
-			super.keyComponents.addAll(components); //Adds all to InheritableKey.  
+			keyComponents.addAll(components); //Adds all to InheritableKey.  
 	}
 	
 	public int getKeyVal()

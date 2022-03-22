@@ -401,6 +401,7 @@ public class main
 					{
 						SubstitutionKey theKey = new SubstitutionKey(false);
 						System.out.println("Reading the content of the file to be encrypted.  ");
+						System.out.println(theKey.getKeyVal());
 						SubstitutionCipher theCipher = new CaeserCipher(readFile(inputFileName), theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
 						String cipherText = "";
