@@ -14,10 +14,12 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.sql.Blob;
 import java.sql.SQLFeatureNotSupportedException;
-import java.io.PrintWriter;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -90,35 +92,64 @@ public class CipherKeyStorage
 		{
 			if(keyType == 1)
 			{
-				Blob keyVal = conn.createBlob();
-				Blob IV = conn.createBlob();
-				keyVal.setBytes(1, components.get(0).array());
-				IV.setBytes(1, components.get(1).array());
-				int authTagLength = components.get(2).getInt();
-				String stmt = "INSERT INTO AES_GCM "
-							  + "values(?, ?, ?, ?)";
-				PreparedStatement pStmt = conn.prepareStatement(stmt);
-				pStmt.setString(1, docName);
-				pStmt.setBlob(2, keyVal);
-				pStmt.setBlob(3, IV);
-				pStmt.setInt(4, authTagLength);
-				pStmt.executeUpdate();
-				pStmt.close();
+				if(blobSupported)
+				{
+					Blob keyVal = conn.createBlob();
+					Blob IV = conn.createBlob();
+					keyVal.setBytes(1, components.get(0).array());
+					IV.setBytes(1, components.get(1).array());
+					int authTagLength = components.get(2).getInt();
+					String stmt = "INSERT INTO AES_GCM "
+							  	  + "values(?, ?, ?, ?)";
+					PreparedStatement pStmt = conn.prepareStatement(stmt);
+					pStmt.setString(1, docName);
+					pStmt.setBlob(2, keyVal);
+					pStmt.setBlob(3, IV);
+					pStmt.setInt(4, authTagLength);
+					pStmt.executeUpdate();
+					pStmt.close();
+				}
+				else
+				{
+					String keyValFile = docName.substring(0, docName.indexOf("\'")) + "0\'";
+					String IVFile = docName.substring(0, docName.indexOf("\'")) + "1\'";
+					int authTagLength = components.get(2).getInt();
+					Statement stmt = conn.createStatement();
+					stmt.executeUpdate("INSERT INTO AES_GCM "
+									   + "values(" + docName + ", " + keyValFile + ", " + IVFile + ", " + authTagLength + ")");
+					stmt.close();
+					if(!createKeyFile(components.get(0), keyValFile) || !createKeyFile(components.get(1), IVFile))
+						throw new Exception();
+				}
 			}
 			else if(keyType == 2)
 			{
-				Blob keyVal = conn.createBlob();
-				Blob IV = conn.createBlob();
-				keyVal.setBytes(1, components.get(0).array());
-				IV.setBytes(1, components.get(1).array());
-				String stmt = "INSERT INTO AES_CBC "
-							  + "values(?, ?, ?)";
-				PreparedStatement pStmt = conn.prepareStatement(stmt);
-				pStmt.setString(1, docName);
-				pStmt.setBlob(2, keyVal);
-				pStmt.setBlob(3, IV);
-				pStmt.executeUpdate();
-				pStmt.close();
+				if(blobSupported)
+				{
+					Blob keyVal = conn.createBlob();
+					Blob IV = conn.createBlob();
+					keyVal.setBytes(1, components.get(0).array());
+					IV.setBytes(1, components.get(1).array());
+					String stmt = "INSERT INTO AES_CBC "
+							  	  + "values(?, ?, ?)";
+					PreparedStatement pStmt = conn.prepareStatement(stmt);
+					pStmt.setString(1, docName);
+					pStmt.setBlob(2, keyVal);
+					pStmt.setBlob(3, IV);
+					pStmt.executeUpdate();
+					pStmt.close();
+				}
+				else
+				{
+					String keyValFile = docName.substring(0, docName.indexOf("\'")) + "0\'";
+					String IVFile = docName.substring(0, docName.indexOf("\'")) + "1\'";
+					Statement stmt = conn.createStatement();
+					stmt.executeUpdate("INSERT INTO AES_CBC "
+									   + "values(" + docName +", " + keyValFile + ", " + IVFile + ")");
+					stmt.close();
+					if(!createKeyFile(components.get(0), keyValFile) || !createKeyFile(components.get(1), IVFile))
+						throw new Exception();
+				}
 			}
 			else if(keyType == 3)
 			{
@@ -141,45 +172,84 @@ public class CipherKeyStorage
 			else if(keyType == 5)
 			{
 				int textLength = components.get(0).getInt();
-				Blob keyVal = conn.createBlob();
-				keyVal.setBytes(1, components.get(1).array());
-				String stmt = "INSERT INTO OneTimePad "
-							  + "values(?, ?, ?)";
-				PreparedStatement pStmt = conn.prepareStatement(stmt);
-				pStmt.setString(1, docName);
-				pStmt.setInt(2, textLength);
-				pStmt.setBlob(3, keyVal);
-				pStmt.executeUpdate();
-				pStmt.close();
+				if(blobSupported)
+				{
+					Blob keyVal = conn.createBlob();
+					keyVal.setBytes(1, components.get(1).array());
+					String stmt = "INSERT INTO OneTimePad "
+							  	  + "values(?, ?, ?)";
+					PreparedStatement pStmt = conn.prepareStatement(stmt);
+					pStmt.setString(1, docName);
+					pStmt.setInt(2, textLength);
+					pStmt.setBlob(3, keyVal);
+					pStmt.executeUpdate();
+					pStmt.close();
+				}
+				else
+				{
+					String keyValFile = docName.substring(0, docName.indexOf("\'")) + "1\'";
+					Statement stmt = conn.createStatement();
+					stmt.executeUpdate("INSERT INTO OneTimePad "
+									   + "values(" + docName + "," + textLength + ", " + keyValFile + ")");
+					stmt.close();
+					if(!createKeyFile(components.get(1), keyValFile))
+						throw new Exception();
+				}
 			}
 			else if(keyType == 6)
 			{
 				int keyVal = components.get(0).getInt();
-				Blob usePunct = conn.createBlob();
-				usePunct.setBytes(1, components.get(1).array());
-				String stmt = "INSERT INTO RailFence "
-							  + "values(?, ?, ?)";
-				PreparedStatement pStmt = conn.prepareStatement(stmt);
-				pStmt.setString(1, docName);
-				pStmt.setInt(2, keyVal);
-				pStmt.setBlob(3, usePunct);
-				pStmt.executeUpdate();
-				pStmt.close();
+				if(blobSupported)
+				{
+					Blob usePunct = conn.createBlob();
+					usePunct.setBytes(1, components.get(1).array());
+					String stmt = "INSERT INTO RailFence "
+							  	  + "values(?, ?, ?)";
+					PreparedStatement pStmt = conn.prepareStatement(stmt);
+					pStmt.setString(1, docName);
+					pStmt.setInt(2, keyVal);
+					pStmt.setBlob(3, usePunct);
+					pStmt.executeUpdate();
+					pStmt.close();
+				}
+				else
+				{
+					String usePunctFile = docName.substring(0, docName.indexOf("\'")) + "1\'";
+					Statement stmt = conn.createStatement();
+					stmt.executeUpdate("INSERT INTO RailFence "
+									   + "values(" + docName + ", " + keyVal + ", " + usePunctFile + ")");
+					stmt.close();
+					if(!createKeyFile(components.get(1), usePunctFile))
+						throw new Exception();
+				}
 			}
 			else
 			{
 				String keyVal = new String(components.get(0).array(), "UTF-16");
 				keyVal = "\'" + keyVal + "\'"; //SQLite syntax format for inserting a string value.  
-				Blob usePunct = conn.createBlob();
-				usePunct.setBytes(1, components.get(1).array());
-				String stmt = "INSERT INTO Vigenere "
-							  + "values(?, ?, ?)";
-				PreparedStatement pStmt = conn.prepareStatement(stmt);
-				pStmt.setString(1, docName);
-				pStmt.setString(2, keyVal);
-				pStmt.setBlob(3, usePunct);
-				pStmt.executeUpdate();
-				pStmt.close();
+				if(blobSupported)
+				{
+					Blob usePunct = conn.createBlob();
+					usePunct.setBytes(1, components.get(1).array());
+					String stmt = "INSERT INTO Vigenere "
+							  	  + "values(?, ?, ?)";
+					PreparedStatement pStmt = conn.prepareStatement(stmt);
+					pStmt.setString(1, docName);
+					pStmt.setString(2, keyVal);
+					pStmt.setBlob(3, usePunct);
+					pStmt.executeUpdate();
+					pStmt.close();
+				}
+				else
+				{
+					String usePunctFile = docName.substring(0, docName.indexOf("\'")) + "1\'";
+					Statement stmt = conn.createStatement();
+					stmt.executeUpdate("INSERT INTO Vigenere "
+									   + "values(" + docName + ", " + keyVal + ", " + usePunctFile + ")");
+					stmt.close();
+					if(!createKeyFile(components.get(1), usePunctFile))
+						throw new Exception();
+				}
 			}
 		}
 		catch (Exception e)
@@ -683,12 +753,104 @@ public class CipherKeyStorage
 	//Will be used temporarily till JDBC SQLite driver supports BLOBS.  
 	private boolean createKeyFile(ByteBuffer keyContents, String keyFileName)
 	{
-		
+		try
+		{
+			File keyComponentFile = new File(keyFileName);
+			boolean existance = false;
+			if(keyComponentFile.isFile())
+				existance = true;
+			if(existance)
+				return false;
+			keyContents.rewind();
+			byte[] toWrite = keyContents.array();
+			FileOutputStream fileCreatorStream = new FileOutputStream(keyComponentFile);
+			fileCreatorStream.write(toWrite);
+			fileCreatorStream.close();
+			return true;
+		}
+		catch(SecurityException e)
+		{
+			e.printStackTrace();
+			closeDB();
+			System.out.println("This program requires read and write access inorder to work.  Please fix this issue \n"
+							   + "and start the program again.  Program exiting in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++)
+			{
+				//Do nothing.  
+			}
+			System.exit(1);
+		}
+		catch(FileNotFoundException e)
+		{
+			e.printStackTrace();
+			System.out.println("Internal program error.  ");
+			closeDB();
+			System.exit(1);
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+			System.out.println("Error in writing the file.  ");
+			closeDB();
+			System.exit(1);
+		}
+		return false; //Never reached, but compiler complains it is required.  
 	}
 	
 	//Will be used temporarily till JDBC SQLite driver supports BLOBS.  
 	private ByteBuffer readKeyFile(String keyFileName)
 	{
-		
+		ByteBuffer componentBuffer = null;
+		try
+		{
+			File componentFile = new File(keyFileName);
+			if(!componentFile.isFile())
+			{
+				System.out.println("Key component file " + keyFileName + "not found.  Please \n "
+								   + "please try again later.  ");
+				componentBuffer = ByteBuffer.allocate(1);
+				componentBuffer.put((byte) -1);
+			}
+			FileInputStream componentStream = new FileInputStream(componentFile);
+			byte[] componentContent = componentStream.readAllBytes();
+			componentStream.close();
+			componentBuffer = ByteBuffer.allocate(componentContent.length);
+			componentBuffer.put(componentContent);
+		}
+		catch(FileNotFoundException e)
+		{
+			e.printStackTrace();
+			System.out.println("Internal error with the program.  ");
+			closeDB();
+			System.exit(1);
+		}
+		catch(SecurityException e)
+		{
+			e.printStackTrace();
+			closeDB();
+			System.out.println("This program requires read and write access inorder to work.  Please fix this issue \n"
+					   		   + "and start the program again.  Program exiting in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++)
+			{
+				//Do nothing.  
+			}
+			System.exit(1);
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+			System.out.println("Error in reading the file.  ");
+			closeDB();
+			System.exit(1);
+		}
+		catch(OutOfMemoryError e)
+		{
+			e.printStackTrace();
+			System.out.println("Not enough memory to continue running program.  ");
+			closeDB();
+			System.exit(1);
+		}
+		componentBuffer.rewind();
+		return componentBuffer;
 	}
 }
