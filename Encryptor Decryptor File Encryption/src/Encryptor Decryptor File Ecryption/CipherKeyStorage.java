@@ -18,9 +18,7 @@ import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  * @author Amol Soneji
@@ -326,15 +324,27 @@ public class CipherKeyStorage
 				if(!rSet.next())
 					return null;
 				String toIgnore = rSet.getString(1); //Doc name.  
-				Blob keyVal = rSet.getBlob(2);
-				Blob IVVal = rSet.getBlob(3);
-				int authLenVal = rSet.getInt(4);
-			    byte[] IVbytes = IVVal.getBytes(1, (int)IVVal.length());
-				ByteBuffer secondComp = ByteBuffer.allocate(IVbytes.length);
-				byte[] keyBytes = keyVal.getBytes(1, (int)keyVal.length());
-				byteBuffArr.add(firstComp.put(keyBytes));
-				byteBuffArr.add(secondComp.put(IVbytes));
-				byteBuffArr.add(thirdComp.putInt(authLenVal));
+				if(blobSupported)
+				{
+					Blob keyVal = rSet.getBlob(2);
+					Blob IVVal = rSet.getBlob(3);
+					int authLenVal = rSet.getInt(4);
+					byte[] IVbytes = IVVal.getBytes(1, (int)IVVal.length());
+					ByteBuffer secondComp = ByteBuffer.allocate(IVbytes.length);
+					byte[] keyBytes = keyVal.getBytes(1, (int)keyVal.length());
+					byteBuffArr.add(firstComp.put(keyBytes));
+					byteBuffArr.add(secondComp.put(IVbytes));
+					byteBuffArr.add(thirdComp.putInt(authLenVal));
+				}
+				else
+				{
+					firstComp = readKeyFile(rSet.getString(1)).rewind();
+					ByteBuffer IVVal = readKeyFile(rSet.getString(3)).rewind();
+					int authLenVal = rSet.getInt(4);
+					byteBuffArr.add(firstComp);
+					byteBuffArr.add(IVVal);
+					byteBuffArr.add(thirdComp.putInt(authLenVal));
+				}
 				InheritableKey toReturn = new BlockKey(byteBuffArr);
 				toReturn.setComponents();
 				rSet.close();
@@ -349,13 +359,23 @@ public class CipherKeyStorage
 				if(!rSet.next())
 					return null;
 				String toIgnore = rSet.getString(1); //Doc name;
-				Blob keyVal = rSet.getBlob(2);
-				Blob IVVal = rSet.getBlob(3);
-				byte[] IVbytes = IVVal.getBytes(1, (int)IVVal.length());
-				ByteBuffer secondComp = ByteBuffer.allocate(IVbytes.length);
-				byte[] keyBytes = keyVal.getBytes(1, (int)keyVal.length());
-				byteBuffArr.add(firstComp.put(keyBytes));
-				byteBuffArr.add(secondComp.put(IVbytes));
+				if(blobSupported)
+				{
+					Blob keyVal = rSet.getBlob(2);
+					Blob IVVal = rSet.getBlob(3);
+					byte[] IVbytes = IVVal.getBytes(1, (int)IVVal.length());
+					ByteBuffer secondComp = ByteBuffer.allocate(IVbytes.length);
+					byte[] keyBytes = keyVal.getBytes(1, (int)keyVal.length());
+					byteBuffArr.add(firstComp.put(keyBytes));
+					byteBuffArr.add(secondComp.put(IVbytes));
+				}
+				else
+				{
+					firstComp = readKeyFile(rSet.getString(1)).rewind();
+					ByteBuffer IVVal = readKeyFile(rSet.getString(2)).rewind();
+					byteBuffArr.add(firstComp);
+					byteBuffArr.add(IVVal);
+				}
 				InheritableKey toReturn = new BlockKey(byteBuffArr);
 				toReturn.setComponents();
 				rSet.close();
@@ -409,11 +429,20 @@ public class CipherKeyStorage
 					return null;
 				String toIgnore = rSet.getString(1);
 				int textLenVal = rSet.getInt(2);
-				Blob keyBlob = rSet.getBlob(3);
-				byte[] keyBytes = keyBlob.getBytes(1, (int)keyBlob.length());
-				ByteBuffer secondComp = ByteBuffer.allocate(keyBytes.length);
-				byteBuffArr.add(firstComp.putInt(textLenVal));
-				byteBuffArr.add(secondComp.put(keyBytes));
+				if(blobSupported)
+				{
+					Blob keyBlob = rSet.getBlob(3);
+					byte[] keyBytes = keyBlob.getBytes(1, (int)keyBlob.length());
+					ByteBuffer secondComp = ByteBuffer.allocate(keyBytes.length);
+					byteBuffArr.add(firstComp.putInt(textLenVal));
+					byteBuffArr.add(secondComp.put(keyBytes));
+				}
+				else
+				{
+					ByteBuffer keyVal = readKeyFile(rSet.getString(3)).rewind();
+					byteBuffArr.add(firstComp.putInt(textLenVal));
+					byteBuffArr.add(keyVal);
+				}
 				InheritableKey toReturn = new OneTimePadKey(byteBuffArr);
 				toReturn.getComponents();
 				rSet.close();
@@ -429,11 +458,20 @@ public class CipherKeyStorage
 					return null;
 				String toIgnore = rSet.getString(1);
 				int keyVal = rSet.getInt(2);
-				Blob usePunctVal = rSet.getBlob(3);
-				byte[] usePunctBytes = usePunctVal.getBytes(1, (int)usePunctVal.length());
-				ByteBuffer secondComp = ByteBuffer.allocate(usePunctBytes.length);
-				byteBuffArr.add(firstComp.putInt(keyVal));
-				byteBuffArr.add(secondComp.put(usePunctBytes));
+				if(blobSupported)
+				{
+					Blob usePunctVal = rSet.getBlob(3);
+					byte[] usePunctBytes = usePunctVal.getBytes(1, (int)usePunctVal.length());
+					ByteBuffer secondComp = ByteBuffer.allocate(usePunctBytes.length);
+					byteBuffArr.add(firstComp.putInt(keyVal));
+					byteBuffArr.add(secondComp.put(usePunctBytes));
+				}
+				else
+				{
+					ByteBuffer usePunctVal = readKeyFile(rSet.getString(3)).rewind();
+					byteBuffArr.add(firstComp.putInt(keyVal));
+					byteBuffArr.add(usePunctVal);
+				}
 				InheritableKey toReturn = new TranspositionKey(byteBuffArr);
 				toReturn.getComponents();
 				rSet.close();
@@ -448,12 +486,22 @@ public class CipherKeyStorage
 					return null;
 				String toIgnore = rSet.getString(1);
 				String keyVal = rSet.getString(2);
-				Blob usePunctVal = rSet.getBlob(3);
-				ByteBuffer firstComp = ByteBuffer.allocate(keyVal.length());
-				byte[] usePunctBytes = usePunctVal.getBytes(1, (int)usePunctVal.length());
-				ByteBuffer secondComp = ByteBuffer.allocate(usePunctBytes.length);
-				byteBuffArr.add(firstComp.put(keyVal.getBytes("UTF-16")));
-				byteBuffArr.add(secondComp.put(usePunctBytes));
+				if(blobSupported)
+				{
+					Blob usePunctVal = rSet.getBlob(3);
+					ByteBuffer firstComp = ByteBuffer.allocate(keyVal.length());
+					byte[] usePunctBytes = usePunctVal.getBytes(1, (int)usePunctVal.length());
+					ByteBuffer secondComp = ByteBuffer.allocate(usePunctBytes.length);
+					byteBuffArr.add(firstComp.put(keyVal.getBytes("UTF-16")));
+					byteBuffArr.add(secondComp.put(usePunctBytes));
+				}
+				else
+				{
+					ByteBuffer usePunctVal = readKeyFile(rSet.getString(3)).rewind();
+					ByteBuffer firstComp = ByteBuffer.allocate(keyVal.length());
+					byteBuffArr.add(firstComp);
+					byteBuffArr.add(usePunctVal);
+				}
 				InheritableKey toReturn = new PolyalphabeticKey(byteBuffArr);
 				toReturn.getComponents();
 				rSet.close();
