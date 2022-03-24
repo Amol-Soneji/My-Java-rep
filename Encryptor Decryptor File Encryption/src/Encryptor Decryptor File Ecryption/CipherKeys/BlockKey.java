@@ -43,10 +43,11 @@ public class BlockKey extends InheritableKey
 			if(components.size() == 3)
 			{
 				enDecryptionMethod = true;
-				System.out.println(components.get(1).hasArray() + "Hi.  ");
 				if((components.get(0).hasArray()) && (components.get(1).hasArray()))
 				{
 					byte[] keyBytes = components.get(0).array();
+					System.out.println(keyBytes[0]);
+					System.out.println(keyBytes[keyBytes.length - 1]);
 					key = new SecretKeySpec(keyBytes, 0, keyBytes.length, "AES");
 					IV = components.get(1).array();
 					authenticationTagLength = components.get(2).getInt();
@@ -56,7 +57,6 @@ public class BlockKey extends InheritableKey
 			}
 			else
 			{
-				System.out.println(components.get(1).hasArray() + "Oh no!  ");
 				enDecryptionMethod = false;
 				if((components.get(0).hasArray()) && (components.get(1).hasArray()))
 				{
@@ -65,8 +65,6 @@ public class BlockKey extends InheritableKey
 					IV = components.get(1).array();
 				}
 			}
-			System.out.println(components.size());
-			System.out.println(this.components.size());
 			this.components.addAll(components);
 		}
 		catch(ReadOnlyBufferException e)
@@ -119,7 +117,7 @@ public class BlockKey extends InheritableKey
 			{
 				IV = new byte[12]; //IV in GCM is 12 bytes.  
 				random.nextBytes(IV);
-				authenticationTagLength = 96;
+				authenticationTagLength = 128; //Tag length is 128 bits.  
 			}
 			else 
 			{
@@ -150,6 +148,9 @@ public class BlockKey extends InheritableKey
 			{
 				ByteBuffer secondArg = ByteBuffer.allocate(IV.length);
 				ByteBuffer thirdArg = ByteBuffer.allocate(4);
+				System.out.println(key.getEncoded()[0]);
+				System.out.println(key.getEncoded()[key.getEncoded().length - 1]);
+				System.out.println("size " + key.getEncoded().length);
 				super.keyComponents.add(firstArg.put(key.getEncoded()));
 				super.keyComponents.add(secondArg.put(IV));
 				super.keyComponents.add(thirdArg.putInt(authenticationTagLength));

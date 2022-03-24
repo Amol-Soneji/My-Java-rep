@@ -147,6 +147,7 @@ public class AESCipher extends BlockCipher
 			{
 				SecretKeySpec keySpec = new SecretKeySpec(getBlockKey().getKey().getEncoded(), "AES");
 				GCMParameterSpec parameterSpec = new GCMParameterSpec(getBlockKey().getAuthenticationTagLength(), getBlockKey().getIV());
+				System.out.println("size " + getBlockKey().getKey().getEncoded().length);
 				cipher.init(Cipher.DECRYPT_MODE, keySpec, parameterSpec);
 				rawPlainText = cipher.doFinal(rawCipherText);
 			}
