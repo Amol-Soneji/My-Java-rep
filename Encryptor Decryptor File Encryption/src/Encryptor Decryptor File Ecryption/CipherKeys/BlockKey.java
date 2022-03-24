@@ -38,10 +38,12 @@ public class BlockKey extends InheritableKey
 	{
 		try
 		{
+			this.components = new ArrayList<ByteBuffer>();
 			components.forEach((n) -> n.rewind());
 			if(components.size() == 3)
 			{
 				enDecryptionMethod = true;
+				System.out.println(components.get(1).hasArray() + "Hi.  ");
 				if((components.get(0).hasArray()) && (components.get(1).hasArray()))
 				{
 					byte[] keyBytes = components.get(0).array();
@@ -54,6 +56,7 @@ public class BlockKey extends InheritableKey
 			}
 			else
 			{
+				System.out.println(components.get(1).hasArray() + "Oh no!  ");
 				enDecryptionMethod = false;
 				if((components.get(0).hasArray()) && (components.get(1).hasArray()))
 				{
@@ -62,6 +65,8 @@ public class BlockKey extends InheritableKey
 					IV = components.get(1).array();
 				}
 			}
+			System.out.println(components.size());
+			System.out.println(this.components.size());
 			this.components.addAll(components);
 		}
 		catch(ReadOnlyBufferException e)
@@ -73,6 +78,11 @@ public class BlockKey extends InheritableKey
 		{
 			e.printStackTrace();
 			System.out.println("There is a malformat with the key in the database.  ");
+		}
+		catch(NullPointerException e)
+		{
+			e.printStackTrace();
+			System.out.println("Internal problem with the program, but not the database.  ");
 		}
 		catch(Exception e)
 		{

@@ -84,6 +84,7 @@ public class CipherKeyStorage
 	protected void addKey(InheritableKey key, int keyType, String docName)
 	{
 		docName = "\'" + docName + "\'";
+		int endPosition = docName.substring(1).indexOf("\'") + 1;
 		ArrayList<ByteBuffer> components = key.getComponents();
 		components.forEach((n) -> n.rewind());
 		try 
@@ -109,8 +110,8 @@ public class CipherKeyStorage
 				}
 				else
 				{
-					String keyValFile = docName.substring(0, docName.indexOf("\'")) + "0\'";
-					String IVFile = docName.substring(0, docName.indexOf("\'")) + "1\'";
+					String keyValFile = docName.substring(0, endPosition) + "0\'";
+					String IVFile = docName.substring(0, endPosition) + "1\'";
 					int authTagLength = components.get(2).getInt();
 					Statement stmt = conn.createStatement();
 					stmt.executeUpdate("INSERT INTO AES_GCM "
@@ -139,8 +140,8 @@ public class CipherKeyStorage
 				}
 				else
 				{
-					String keyValFile = docName.substring(0, docName.indexOf("\'")) + "0\'";
-					String IVFile = docName.substring(0, docName.indexOf("\'")) + "1\'";
+					String keyValFile = docName.substring(0, endPosition) + "0\'";
+					String IVFile = docName.substring(0, endPosition) + "1\'";
 					Statement stmt = conn.createStatement();
 					stmt.executeUpdate("INSERT INTO AES_CBC "
 									   + "values(" + docName +", " + keyValFile + ", " + IVFile + ")");
@@ -185,7 +186,7 @@ public class CipherKeyStorage
 				}
 				else
 				{
-					String keyValFile = docName.substring(0, docName.indexOf("\'")) + "1\'";
+					String keyValFile = docName.substring(0, endPosition) + "1\'";
 					Statement stmt = conn.createStatement();
 					stmt.executeUpdate("INSERT INTO OneTimePad "
 									   + "values(" + docName + "," + textLength + ", " + keyValFile + ")");
@@ -212,7 +213,7 @@ public class CipherKeyStorage
 				}
 				else
 				{
-					String usePunctFile = docName.substring(0, docName.indexOf("\'")) + "1\'";
+					String usePunctFile = docName.substring(0, endPosition) + "1\'";
 					Statement stmt = conn.createStatement();
 					stmt.executeUpdate("INSERT INTO RailFence "
 									   + "values(" + docName + ", " + keyVal + ", " + usePunctFile + ")");
@@ -240,7 +241,7 @@ public class CipherKeyStorage
 				}
 				else
 				{
-					String usePunctFile = docName.substring(0, docName.indexOf("\'")) + "1\'";
+					String usePunctFile = docName.substring(0, endPosition) + "1\'";
 					Statement stmt = conn.createStatement();
 					stmt.executeUpdate("INSERT INTO Vigenere "
 									   + "values(" + docName + ", " + keyVal + ", " + usePunctFile + ")");
@@ -310,6 +311,7 @@ public class CipherKeyStorage
 	
 	protected InheritableKey getKey(String docName, int keyType)
 	{
+		docName = "\'" + docName + "\'";
 		try
 		{
 			ArrayList<ByteBuffer> byteBuffArr = new ArrayList<ByteBuffer>();
@@ -338,7 +340,7 @@ public class CipherKeyStorage
 				}
 				else
 				{
-					firstComp = readKeyFile(rSet.getString(1)).rewind();
+					firstComp = readKeyFile(rSet.getString(2)).rewind();
 					ByteBuffer IVVal = readKeyFile(rSet.getString(3)).rewind();
 					int authLenVal = rSet.getInt(4);
 					byteBuffArr.add(firstComp);
@@ -848,6 +850,7 @@ public class CipherKeyStorage
 	//Will be used temporarily till JDBC SQLite driver supports BLOBS.  
 	private ByteBuffer readKeyFile(String keyFileName)
 	{
+		keyFileName = "\'" + keyFileName + "\'";
 		ByteBuffer componentBuffer = null;
 		try
 		{

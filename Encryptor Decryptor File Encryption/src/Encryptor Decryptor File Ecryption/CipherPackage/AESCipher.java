@@ -90,8 +90,8 @@ public class AESCipher extends BlockCipher
 			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 			try
 			{
-				SecretKeySpec keySpec = new SecretKeySpec(super.getBlockKey().getKey().getEncoded(), "AES");
-				GCMParameterSpec parameterSpec = new GCMParameterSpec(super.getBlockKey().getAuthenticationTagLength(), super.getBlockKey().getIV());
+				SecretKeySpec keySpec = new SecretKeySpec(getBlockKey().getKey().getEncoded(), "AES");
+				GCMParameterSpec parameterSpec = new GCMParameterSpec(getBlockKey().getAuthenticationTagLength(), getBlockKey().getIV());
 				cipher.init(Cipher.ENCRYPT_MODE, keySpec, parameterSpec);
 				rawCipherText = cipher.doFinal(rawPlainText);
 			}
@@ -114,8 +114,8 @@ public class AESCipher extends BlockCipher
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			try
 			{
-				SecretKeySpec keySpec = new SecretKeySpec(super.getBlockKey().getKey().getEncoded(), "AES");
-				IvParameterSpec ivSpec = new IvParameterSpec(super.getBlockKey().getIV());
+				SecretKeySpec keySpec = new SecretKeySpec(getBlockKey().getKey().getEncoded(), "AES");
+				IvParameterSpec ivSpec = new IvParameterSpec(getBlockKey().getIV());
 				cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
 				rawCipherText = cipher.doFinal(rawPlainText);
 			}
@@ -145,8 +145,8 @@ public class AESCipher extends BlockCipher
 			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 			try
 			{
-				SecretKeySpec keySpec = new SecretKeySpec(super.getBlockKey().getKey().getEncoded(), "AES");
-				GCMParameterSpec parameterSpec = new GCMParameterSpec(super.getBlockKey().getAuthenticationTagLength(), super.getBlockKey().getIV());
+				SecretKeySpec keySpec = new SecretKeySpec(getBlockKey().getKey().getEncoded(), "AES");
+				GCMParameterSpec parameterSpec = new GCMParameterSpec(getBlockKey().getAuthenticationTagLength(), getBlockKey().getIV());
 				cipher.init(Cipher.DECRYPT_MODE, keySpec, parameterSpec);
 				rawPlainText = cipher.doFinal(rawCipherText);
 			}
@@ -169,8 +169,8 @@ public class AESCipher extends BlockCipher
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			try
 			{
-				SecretKeySpec keySpec = new SecretKeySpec(super.getBlockKey().getKey().getEncoded(), "AES");
-				IvParameterSpec ivSpec = new IvParameterSpec(super.getBlockKey().getIV());
+				SecretKeySpec keySpec = new SecretKeySpec(getBlockKey().getKey().getEncoded(), "AES");
+				IvParameterSpec ivSpec = new IvParameterSpec(getBlockKey().getIV());
 				cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
 				rawPlainText = cipher.doFinal(rawCipherText);
 			}
