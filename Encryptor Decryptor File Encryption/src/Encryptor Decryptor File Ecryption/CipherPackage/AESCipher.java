@@ -90,10 +90,13 @@ public class AESCipher extends BlockCipher
 			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 			try
 			{
-				SecretKeySpec keySpec = new SecretKeySpec(getBlockKey().getKey().getEncoded(), "AES");
 				GCMParameterSpec parameterSpec = new GCMParameterSpec(getBlockKey().getAuthenticationTagLength(), getBlockKey().getIV());
-				cipher.init(Cipher.ENCRYPT_MODE, keySpec, parameterSpec);
-				rawCipherText = cipher.doFinal(rawPlainText);
+				cipher.init(Cipher.ENCRYPT_MODE, getBlockKey().getKey(), parameterSpec);
+				//rawCipherText = cipher.doFinal(rawPlainText);
+				byte[] encryptedText = cipher.doFinal(rawPlainText);
+				rawCipherText = new byte[getBlockKey().getIV().length + encryptedText.length];
+				System.arraycopy(getBlockKey().getIV(), 0, rawCipherText, 0, getBlockKey().getIV().length);
+				System.arraycopy(encryptedText, 0, rawCipherText, getBlockKey().getIV().length, encryptedText.length);
 			}
 			catch(InvalidKeyException e)
 			{
@@ -145,10 +148,9 @@ public class AESCipher extends BlockCipher
 			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 			try
 			{
-				SecretKeySpec keySpec = new SecretKeySpec(getBlockKey().getKey().getEncoded(), "AES");
 				GCMParameterSpec parameterSpec = new GCMParameterSpec(getBlockKey().getAuthenticationTagLength(), getBlockKey().getIV());
 				System.out.println("size " + getBlockKey().getKey().getEncoded().length);
-				cipher.init(Cipher.DECRYPT_MODE, keySpec, parameterSpec);
+				cipher.init(Cipher.DECRYPT_MODE, getBlockKey().getKey(), parameterSpec);
 				rawPlainText = cipher.doFinal(rawCipherText);
 			}
 			catch(InvalidKeyException e)

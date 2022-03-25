@@ -48,7 +48,7 @@ public class BlockKey extends InheritableKey
 					byte[] keyBytes = components.get(0).array();
 					System.out.println(keyBytes[0]);
 					System.out.println(keyBytes[keyBytes.length - 1]);
-					key = new SecretKeySpec(keyBytes, 0, keyBytes.length, "AES");
+					key = new SecretKeySpec(keyBytes, "AES");//0, keyBytes.length, "AES");
 					IV = components.get(1).array();
 					authenticationTagLength = components.get(2).getInt();
 				}
