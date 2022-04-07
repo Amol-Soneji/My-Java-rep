@@ -5,7 +5,6 @@ package CipherPackage;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
-
 import CipherKeys.BlockKey;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -74,7 +73,7 @@ public class AESCipher extends BlockCipher
 	}
 
 	@Override
-	public String compute() throws Exception 
+	public byte[] compute() throws Exception 
 	{
 		if(mode) // Encryption
 			return encrypt();
@@ -83,7 +82,7 @@ public class AESCipher extends BlockCipher
 	}
 
 	@Override
-	protected String encrypt() throws Exception 
+	protected byte[] encrypt() throws Exception 
 	{
 		if(EnDecryptionMethod) // AES-GCM
 		{
@@ -132,12 +131,11 @@ public class AESCipher extends BlockCipher
 				throw new Exception();
 			}
 		}
-		cipherText = new String(rawCipherText, "UTF-16");
-		return cipherText;
+		return rawCipherText;
 	}
 
 	@Override
-	protected String decrypt() throws Exception 
+	protected byte[] decrypt() throws Exception 
 	{
 		if(EnDecryptionMethod) // AES-GCM
 		{
@@ -190,8 +188,7 @@ public class AESCipher extends BlockCipher
 			}
 		}
 		System.out.println(rawPlainText.length);
-		plainText = new String(rawPlainText, "UTF-16");
-		return plainText;
+		return rawPlainText;
 	}
 
 }
