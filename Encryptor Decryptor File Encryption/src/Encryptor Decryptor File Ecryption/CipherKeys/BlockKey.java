@@ -117,6 +117,7 @@ public class BlockKey extends InheritableKey
 			{
 				IV = new byte[12]; //IV in GCM is 12 bytes.  
 				random.nextBytes(IV);
+				System.out.println(IV[0] + " original  " + IV[5]  +  "  "  + IV[6]  +  "   " + IV[11]);
 				authenticationTagLength = 128; //Tag length is 128 bits.  
 			}
 			else 

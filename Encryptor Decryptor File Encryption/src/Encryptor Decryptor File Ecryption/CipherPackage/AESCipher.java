@@ -19,8 +19,8 @@ import javax.crypto.spec.IvParameterSpec;
 public class AESCipher extends BlockCipher 
 {
 	
-	private byte[] rawCipherText;
-	private byte[] rawPlainText;
+	private byte[] rawCipherText = {0};
+	private byte[] rawPlainText = {0};
 	private String plainText;
 	private String cipherText;
 	private boolean EnDecryptionMethod;
@@ -92,11 +92,7 @@ public class AESCipher extends BlockCipher
 			{
 				GCMParameterSpec parameterSpec = new GCMParameterSpec(getBlockKey().getAuthenticationTagLength(), getBlockKey().getIV());
 				cipher.init(Cipher.ENCRYPT_MODE, getBlockKey().getKey(), parameterSpec);
-				//rawCipherText = cipher.doFinal(rawPlainText);
-				byte[] encryptedText = cipher.doFinal(rawPlainText);
-				rawCipherText = new byte[getBlockKey().getIV().length + encryptedText.length];
-				System.arraycopy(getBlockKey().getIV(), 0, rawCipherText, 0, getBlockKey().getIV().length);
-				System.arraycopy(encryptedText, 0, rawCipherText, getBlockKey().getIV().length, encryptedText.length);
+				rawCipherText = cipher.doFinal(rawPlainText);
 			}
 			catch(InvalidKeyException e)
 			{
@@ -145,13 +141,14 @@ public class AESCipher extends BlockCipher
 	{
 		if(EnDecryptionMethod) // AES-GCM
 		{
+			System.out.println("This is not getting skipped.  ");
 			Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 			try
 			{
 				GCMParameterSpec parameterSpec = new GCMParameterSpec(getBlockKey().getAuthenticationTagLength(), getBlockKey().getIV());
 				System.out.println("size " + getBlockKey().getKey().getEncoded().length);
+				System.out.println(getBlockKey().getIV()[0] + "   stored version  " +  getBlockKey().getIV()[11]);
 				cipher.init(Cipher.DECRYPT_MODE, getBlockKey().getKey(), parameterSpec);
-				rawPlainText = cipher.doFinal(rawCipherText);
 			}
 			catch(InvalidKeyException e)
 			{
@@ -172,6 +169,7 @@ public class AESCipher extends BlockCipher
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			try
 			{
+				System.out.println("This is not the correct place right now, testing still on GCM.  ");
 				SecretKeySpec keySpec = new SecretKeySpec(getBlockKey().getKey().getEncoded(), "AES");
 				IvParameterSpec ivSpec = new IvParameterSpec(getBlockKey().getIV());
 				cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
@@ -191,6 +189,7 @@ public class AESCipher extends BlockCipher
 				throw new Exception();
 			}
 		}
+		System.out.println(rawPlainText.length);
 		plainText = new String(rawPlainText, "UTF-16");
 		return plainText;
 	}

@@ -27,7 +27,7 @@ public abstract class BlockCipher
 		key = null;
 	}
 	
-	public abstract String compute() throws Exception;
+	public abstract byte[] compute() throws Exception;
 	
 	protected void setBlockKey(BlockKey key)
 	{
@@ -39,8 +39,8 @@ public abstract class BlockCipher
 		return key;
 	}
 	
-	protected abstract String encrypt() throws Exception; // Char code version of the method is not added, for condensing purpouses.  
+	protected abstract byte[] encrypt() throws Exception; // Char code version of the method is not added, for condensing purpouses.  
 	
-	protected abstract String decrypt() throws Exception;
+	protected abstract byte[] decrypt() throws Exception;
 	
 }
