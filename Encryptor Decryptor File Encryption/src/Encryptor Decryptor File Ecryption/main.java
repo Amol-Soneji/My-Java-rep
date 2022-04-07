@@ -598,7 +598,7 @@ public class main
 		return true;
 	}
 	
-	private static String readFile(String fileName)
+	private static byte[] readFile(String fileName)
 	{
 		String fileContents = "";
 		try
@@ -636,7 +636,7 @@ public class main
 		return fileContents;
 	}
 	
-	private static boolean writeFile(String fileName, String contents)
+	private static boolean writeFile(String fileName, byte[] contents)
 	{
 		try
 		{
