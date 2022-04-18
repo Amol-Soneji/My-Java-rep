@@ -3,7 +3,9 @@ import CipherPackage.*;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;
+import java.io.PrintWriter;//To remove.  
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 import javax.crypto.SecretKey;
@@ -351,7 +353,7 @@ public class main
 						System.out.println("Reading content of file to be encrypted.  ");
 						BlockCipher theCipher = new AESCipher(readFile(inputFileName), theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
-						String cipherText = theCipher.compute();
+						byte[] cipherText = theCipher.compute();
 						System.out.println("Creating new encrypted file.  ");
 						if(!writeFile(encryptedFileName, cipherText))
 							throw new Exception();
@@ -367,7 +369,7 @@ public class main
 						System.out.println("Reading content of the file to be encrypted.  ");
 						BlockCipher theCipher = new AESCipher(readFile(inputFileName), theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
-						String cipherText = theCipher.compute();
+						byte[] cipherText = theCipher.compute();
 						System.out.println("Creating new encrypted file.  ");
 						if(!writeFile(encryptedFileName, cipherText))
 							throw new Exception();
@@ -383,7 +385,7 @@ public class main
 						System.out.println("Reading content of the file to be encrypted.  ");
 						SubstitutionCipher theCipher = new AffineCipher(readFile(inputFileName), theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
-						String cipherText = "";
+						byte[] cipherText = "";
 						if(outputType == 1)
 							cipherText = theCipher.compute(true);
 						else
@@ -404,7 +406,7 @@ public class main
 						System.out.println(theKey.getKeyVal());
 						SubstitutionCipher theCipher = new CaeserCipher(readFile(inputFileName), theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
-						String cipherText = "";
+						byte[] cipherText = "";
 						if(outputType == 1)
 							cipherText = theCipher.compute(true);
 						else
@@ -421,12 +423,12 @@ public class main
 					case 5: //Create an encrypted file using One Time Pad
 					{
 						System.out.println("Reading the contents of the file to be encrypted.  ");
-						String fileContents = readFile(inputFileName);
+						byte[] fileContents = readFile(inputFileName);
 						int contentLength = fileContents.length();
 						OneTimePadKey theKey = new OneTimePadKey(contentLength);
 						OneTimePadCipher theCipher = new OneTimePadCipher(fileContents, theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
-						String cipherText = theCipher.compute(true);
+						byte[] cipherText = theCipher.compute(true);
 						System.out.println("Creating new encrypted file.  ");
 						if(!writeFile(encryptedFileName, cipherText))
 							throw new Exception();
@@ -446,7 +448,7 @@ public class main
 						System.out.println("Reading the contents of the file to be encrypted.  ");
 						RailFenceCipher theCipher = new RailFenceCipher(readFile(inputFileName), theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
-						String cipherText = "";
+						byte[] cipherText = "";
 						if(outputType == 1)
 							cipherText = theCipher.compute(true);
 						else
@@ -470,7 +472,7 @@ public class main
 						System.out.println("Reading the contents of the file to be encrypted.  ");
 						VigenereCipher theCipher = new VigenereCipher(readFile(inputFileName), theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
-						String cipherText = "";
+						byte[] cipherText = "";
 						if(usePunctuation == 1)
 							cipherText = theCipher.compute(true);
 						else
@@ -513,7 +515,7 @@ public class main
 						System.out.println("Reading contents of encrypted file.  ");
 						AESCipher theCipher = new AESCipher(readFile(inputFileName), theKey, false);
 						System.out.println("Decrypting the encrypted file contents.  ");
-						String plainText = theCipher.compute();
+						byte[] plainText = theCipher.compute();
 						System.out.println("Creating the plain text file.  ");
 						writeFile(decryptedFileName, plainText);
 					}
@@ -524,7 +526,7 @@ public class main
 						System.out.println("Reading contents of the encrypted file.  ");
 						AESCipher theCipher = new AESCipher(readFile(inputFileName), theKey, false);
 						System.out.println("Decrypting the encrypted file contents.  ");
-						String plainText = theCipher.compute();
+						byte[] plainText = theCipher.compute();
 						System.out.println("Creating the plain text file.  ");
 						writeFile(decryptedFileName, plainText);
 					}
@@ -535,7 +537,7 @@ public class main
 						System.out.println("Reading contents of the encrypted file.  ");
 						AffineCipher theCipher = new AffineCipher(readFile(inputFileName), theKey, false);
 						System.out.println("Decrypting the encrypted file contents.  ");
-						String plainText = theCipher.compute(encryptedTextType);
+						byte[] plainText = theCipher.compute(encryptedTextType);
 						System.out.println("Creating the plain text file.  ");
 						writeFile(decryptedFileName, plainText);
 					}
@@ -546,7 +548,7 @@ public class main
 						System.out.println("Reading contents of the encrypted file.  ");
 						CaeserCipher theCipher = new CaeserCipher(readFile(inputFileName), theKey, false);
 						System.out.println("Decrypting the encrypted file contents.  ");
-						String plainText = theCipher.compute(encryptedTextType);
+						byte[] plainText = theCipher.compute(encryptedTextType);
 						System.out.println("Creating the plain text file.  ");
 						writeFile(decryptedFileName, plainText);
 					}
@@ -557,7 +559,7 @@ public class main
 						System.out.println("Reading contents of the encrypted file.  ");
 						OneTimePadCipher theCipher = new OneTimePadCipher(readFile(inputFileName), theKey, false);
 						System.out.println("Decrypting the encrypted file contents.  ");
-						String plainText = theCipher.compute(true);
+						byte[] plainText = theCipher.compute(true);
 						System.out.println("Creating the plain text file.  ");
 						writeFile(decryptedFileName, plainText);
 					}
@@ -568,7 +570,7 @@ public class main
 						System.out.println("Reading contents of the encrypted file.  ");
 						RailFenceCipher theCipher = new RailFenceCipher(readFile(inputFileName), theKey, false);
 						System.out.println("Decrypting the encrypted file contents.  ");
-						String plainText = theCipher.compute(encryptedTextType);
+						byte[] plainText = theCipher.compute(encryptedTextType);
 						System.out.println("Creating the plain text file.  ");
 						writeFile(decryptedFileName, plainText);
 					}
@@ -579,7 +581,7 @@ public class main
 						System.out.println("Reading contents of the encrypted file.  ");
 						VigenereCipher theCipher = new VigenereCipher(readFile(inputFileName), theKey, false);
 						System.out.println("Decrypting the encrypted file contents.  ");
-						String plainText = theCipher.compute(encryptedTextType);
+						byte[] plainText = theCipher.compute(encryptedTextType);
 						System.out.println("Creating the plain text file.  ");
 						writeFile(decryptedFileName, plainText);
 					}
@@ -600,11 +602,11 @@ public class main
 	
 	private static byte[] readFile(String fileName)
 	{
-		String fileContents = "";
+		byte[] fileContents;
 		try
 		{
 			File fileToRead = new File(fileName);
-			Scanner fileReader = new Scanner(fileToRead, "UTF-16");
+			Scanner fileReader = new Scanner(fileToRead, "UTF-16"); //To remove.  
 			while(fileReader.hasNextLine())
 			{
 				fileContents = fileContents + fileReader.nextLine() + "\n";
@@ -641,7 +643,7 @@ public class main
 		try
 		{
 			File newFile = new File(fileName);
-			PrintWriter fileWriter = new PrintWriter(newFile, "UTF-16");
+			PrintWriter fileWriter = new PrintWriter(newFile, "UTF-16"); //To remove.  
 			fileWriter.print(contents);
 			fileWriter.close();
 			return true;
