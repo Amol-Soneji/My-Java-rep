@@ -26,7 +26,7 @@ public abstract class SubstitutionCipher
 		key = null;
 	}
 	
-	public abstract String compute(boolean resultType);
+	public abstract byte[] compute(boolean resultType);
 	
 	protected void setKey(SubstitutionKey key)
 	{

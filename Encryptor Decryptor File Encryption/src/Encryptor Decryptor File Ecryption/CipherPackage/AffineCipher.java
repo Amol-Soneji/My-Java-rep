@@ -4,6 +4,7 @@
 package CipherPackage;
 
 import CipherKeys.SubstitutionKey;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @author Amol Soneji
@@ -30,26 +31,65 @@ public class AffineCipher extends SubstitutionCipher
 			cipherText = text;
 		super.setKey(key);
 	}
-
-	@Override
-	public String compute(boolean resultType) 
+	
+	public AffineCipher(byte[] text, SubstitutionKey key, boolean mode)
 	{
-		if(mode) 
+		this.mode = mode;
+		try 
 		{
-			if(resultType)
-				return encrypt();
+			if(mode)
+				plainText = new String(text, "UTF-16");
 			else
-				return encryptCharCodes();
+				cipherText = new String(text, "UTF-16");
 		}
-		else 
+		catch(UnsupportedEncodingException e)
 		{
-			if(resultType)
-				return decrypt();
-			else
-				return decryptCharCodes();
+			e.printStackTrace();
+			System.out.println("Please use a computer that supports UTF-16 to use this program.  ");
+			System.out.println("Program exiting in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++);
+			{
+				//Do nothing.  
+			}
+			System.exit(1);
 		}
+		super.setKey(key);
 	}
 
+	@Override
+	public byte[] compute(boolean resultType) 
+	{
+		byte[] toReturn = null;
+		try
+		{
+			if(mode) 
+			{
+				if(resultType)
+					toReturn = encrypt().getBytes("UTF-16");
+				else
+					toReturn = encryptCharCodes().getBytes("UTF-16");
+			}
+			else 
+			{
+				if(resultType)
+					toReturn = decrypt().getBytes("UTF-16");
+				else
+					toReturn = decryptCharCodes().getBytes("UTF-16");
+			}
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+			System.out.println("Please use a computer that supports UTF-16 to use this program.  ");
+			System.out.println("Program exiting in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++);
+			{
+				//Do nothing.  
+			}
+			System.exit(1);
+		}
+		return toReturn;
+	}
 	@Override
 	protected String encrypt() 
 	{
