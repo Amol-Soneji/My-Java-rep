@@ -4,6 +4,7 @@
 package CipherPackage;
 
 import CipherKeys.SubstitutionKey;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @author Amol Soneji
@@ -23,31 +24,71 @@ public class CaeserCipher extends SubstitutionCipher
 	 */
 	public CaeserCipher(String text, SubstitutionKey key, boolean mode) 
 	{
-		this.mode = mode;
+		this.mode = mode; 
 		if(mode) //Encryption
 			this.plainText = text;
 		else //Decryption
 			this.cipherText = text;
 		super.setKey(key);
 	}
+	
+	public CaeserCipher(byte[] text, SubstitutionKey key, boolean mode)
+	{
+		this.mode = mode;
+		try
+		{
+			if(mode)
+				this.plainText = new String(text, "UTF-16");
+			else
+				this.cipherText = new String(text, "UTF-16");
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+			System.out.println("Please use a computer that supports UTF-16 to use this program.  ");
+			System.out.println("Program exiting in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++);
+			{
+				//Do nothing.  
+			}
+			System.exit(1);
+		}
+		super.setKey(key);
+	}
 
 	@Override
-	public String compute(boolean resultType) 
+	public byte[] compute(boolean resultType) 
 	{
-		if(resultType) //Return the actual en/decrypted string and not a char code literal string.  
+		byte[] toReturn = null;
+		try
 		{
-			if(mode)
-				return encrypt();
-			else
-				return decrypt();
+			if(resultType) //Return the actual en/decrypted string and not a char code literal string.  
+			{
+				if(mode)
+					toReturn = encrypt().getBytes("UTF-16");
+				else
+					toReturn = decrypt().getBytes("UTF-16");
+			}
+			else //Return a char code literal string of the encrypted string or return a decrypted String no longer showing char codes.  
+			{
+				if(mode)
+					toReturn = encryptCharCodes().getBytes("UTF-16");
+				else
+					toReturn = decryptCharCodes().getBytes("UTF-16");
+			}
 		}
-		else //Return a char code literal string of the encrypted string or return a decrypted String no longer showing char codes.  
+		catch(UnsupportedEncodingException e)
 		{
-			if(mode)
-				return encryptCharCodes();
-			else
-				return decryptCharCodes();
+			e.printStackTrace();
+			System.out.println("Please use a computer that supports UTF-16 to use this program.  ");
+			System.out.println("Program exiting in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++);
+			{
+				//Do nothing.  
+			}
+			System.exit(1);
 		}
+		return toReturn;
 	}
 
 	@Override
