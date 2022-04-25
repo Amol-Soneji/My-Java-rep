@@ -4,6 +4,7 @@
 package CipherPackage;
 
 import java.util.stream.IntStream;
+import java.io.UnsupportedEncodingException;
 import CipherKeys.TranspositionKey;
 
 /**
@@ -16,7 +17,7 @@ public class RailFenceCipher extends TranspositionCipher
 	private String[] cipherTextBuilder;
 	private String[] plainTextBuilder;
 	private String plainText;
-	private String cipherText;
+	private byte[] cipherText;
 	private boolean mode;
 	private int textLength;
 	private int requiredLengthsCheck;
@@ -50,22 +51,66 @@ public class RailFenceCipher extends TranspositionCipher
 		}
 		else  //Decrypt
 		{
-			cipherText = text;
+			try
+			{
+				cipherText = text.getBytes("UTF-16");
+			}
+			catch(UnsupportedEncodingException e)
+			{
+				e.printStackTrace();
+				System.out.println("Please use a computer that supports UTF-16 to use this program.  ");
+				System.out.println("Program exiting in 10 seconds.  ");
+				for(int i = 0; i < 10000; i++);
+				{
+					//Do nothing.  
+				}
+				System.exit(1);
+			}
 			super.setKey(key);
 			textLength=text.length();
 			plainTextBuilder = new String[key.getKeyVal()];
 		}
 	}
+	
+	public RailFenceCipher(byte[] text, TranspositionKey key, boolean mode) 
+	{
+		this.mode = mode;
+		super.setKey(key);
+		if(mode) // True for encrypt.  
+			System.out.println("Program does not currently support making cipher text via byte input for Rail Fence Cipher.  ");
+		else  //Decrypt
+		{
+			cipherText = text;
+			textLength=text.length;
+			plainTextBuilder = new String[key.getKeyVal()];
+		}
+	}
 
 	@Override
-	public String compute(boolean resultType) throws InvalidCipherTextException
+	public byte[] compute(boolean resultType) throws InvalidCipherTextException
 	{
 		if(mode) // True means encryption mode.  
 		{
-			if(resultType) // True means to return a cipher text of characters.  
-				return encrypt();
-			else // Return a String of integers, where each integer represents the code point for each of the Cipher text characters, with the exception of /n special character.  
-				return encryptCharCodes();
+			try
+			{
+				if(resultType) // True means to return a cipher text of characters.  
+					return encrypt().getBytes("UTF-16");
+				else // Return a String of integers, where each integer represents the code point for each of the Cipher text characters, with the exception of /n special character.  
+					return encryptCharCodes().getBytes("UTF-16");
+			}
+			catch(UnsupportedEncodingException e)
+			{
+				e.printStackTrace();
+				System.out.println("Please use a computer that supports UTF-16 to use this program.  ");
+				System.out.println("Program exiting in 10 seconds.  ");
+				for(int i = 0; i < 10000; i++);
+				{
+					//Do nothing.  
+				}
+				System.exit(1);
+			}
+			byte[] nullBytes = null; //Added because, 
+			return nullBytes; //compiler complains since it thinks that nothing will get returned and not acknowledge the exit() if exception is caught.  
 		}
 		else // False means decryption mode.  
 		{
@@ -73,7 +118,7 @@ public class RailFenceCipher extends TranspositionCipher
 				return decrypt();
 			else // The decryption process will require converting code points of cipher text characters back to characters before decryption.  
 			{
-				textLength = cipherText.split(" ").length;
+				textLength =  cipherText.length; //cipherText.split(" ").length;
 				return decryptCharCodes();
 			}
 		}
@@ -117,11 +162,12 @@ public class RailFenceCipher extends TranspositionCipher
 					direction = false;
 			}
 		}
+		String cipherString = "";
 		for(int rail = 0; rail < super.getKey().getKeyVal(); rail++) 
 		{
-			cipherText = cipherText + cipherTextBuilder[rail];
+			cipherString = cipherString + cipherTextBuilder[rail];
 		}
-		return cipherText;
+		return cipherString;
 	}
 
 	@Override
@@ -134,7 +180,7 @@ public class RailFenceCipher extends TranspositionCipher
 		{
 			for(int rail = 0; (rail < super.getKey().getKeyVal()) && (index < textLength - 1); rail++) 
 			{
-				cipherTextBuilder[rail] = cipherTextBuilder[rail] + String.valueOf(cipherText.codePointAt(index)) + " ";
+				cipherTextBuilder[rail] = cipherTextBuilder[rail] + String.valueOf(plainText.codePointAt(index)) + " ";
 				if(rail == super.getKey().getKeyVal() - 1) // This is for determining which rail the next character will be in.  
 				{
 					nextRailPointer = rail - 1;
@@ -149,12 +195,12 @@ public class RailFenceCipher extends TranspositionCipher
 			}
 			for(int rail = super.getKey().getKeyVal() - 2; rail > 0; rail--) 
 			{
-				cipherTextBuilder[rail] = cipherTextBuilder[rail] + String.valueOf(cipherText.codePointAt(index)) + " ";
+				cipherTextBuilder[rail] = cipherTextBuilder[rail] + String.valueOf(plainText.codePointAt(index)) + " ";
 				nextRailPointer = rail - 1;
 				index++;
 			}
 		}
-		cipherTextBuilder[nextRailPointer] = cipherTextBuilder[nextRailPointer] + String.valueOf(cipherText.codePointAt(textLength - 1));
+		cipherTextBuilder[nextRailPointer] = cipherTextBuilder[nextRailPointer] + String.valueOf(plainText.codePointAt(textLength - 1));
 		if((nextRailPointer == 0) || (!direction && (nextRailPointer != super.getKey().getKeyVal() - 1))) // Convert nextRailPointer into currentRailPointer
 		{
 			nextRailPointer++;
@@ -180,85 +226,121 @@ public class RailFenceCipher extends TranspositionCipher
 					direction = false;
 			}
 		}
+		String cipherString = "";
 		for(int rail = 0; rail < super.getKey().getKeyVal(); rail++) 
 		{
-			cipherText = cipherText + cipherTextBuilder[rail];
+			cipherString = cipherString + cipherTextBuilder[rail];
 		}
-		return cipherText;
+		return cipherString;
 	}
 
 	@Override
-	protected String decrypt() throws InvalidCipherTextException
+	protected byte[] decrypt() throws InvalidCipherTextException
 	{
-		if((textLength % (2 * (super.getKey().getKeyVal() - 1))) != 0)
-			throw new InvalidCipherTextException("Ciphertext length is not a multiple of 2(key-1).  ");
-		int firstAndLastRailLength = textLength / (2 * (super.getKey().getKeyVal() - 1));
-		requiredLengthsCheck = 2 * firstAndLastRailLength;
-		plainTextBuilder[0] = cipherText.substring(0, firstAndLastRailLength);
-		int pointer = firstAndLastRailLength;
-		for(int index = 1; index < super.getKey().getKeyVal() - 1; index++) 
+		try
 		{
-			plainTextBuilder[index] = cipherText.substring(pointer, pointer + requiredLengthsCheck);
-			pointer = pointer + requiredLengthsCheck;
+			String cipherString = new String(cipherText, "UTF-16");
+			textLength = cipherString.length();
+			if((textLength % (2 * (super.getKey().getKeyVal() - 1))) != 0)
+				throw new InvalidCipherTextException("Ciphertext length is not a multiple of 2(key-1).  ");
+			int firstAndLastRailLength = textLength / (2 * (super.getKey().getKeyVal() - 1));
+			requiredLengthsCheck = 2 * firstAndLastRailLength;
+			plainTextBuilder[0] = cipherString.substring(0, firstAndLastRailLength);
+			int pointer = firstAndLastRailLength;
+			for(int index = 1; index < super.getKey().getKeyVal() - 1; index++) 
+			{
+				plainTextBuilder[index] = cipherString.substring(pointer, pointer + requiredLengthsCheck);
+				pointer = pointer + requiredLengthsCheck;
+			}
+			plainTextBuilder[super.getKey().getKeyVal() - 1] = cipherString.substring(pointer);
+			boolean direction = false; // False for next rail being in the rail bellow, and True for next rail being above.  
+			int topRailPointer = 0;
+			int midPointer = 0;
+			int bottomRailPointer = 0;
+			int index = 0;
+			int nextRailPointer = 0;
+			while(index < textLength) 
+			{
+				while((nextRailPointer < super.getKey().getKeyVal()) && !direction) 
+				{
+					if(nextRailPointer == 0) 
+					{
+						plainText = plainText + plainTextBuilder[nextRailPointer].substring(topRailPointer, topRailPointer + 1);
+						topRailPointer++;
+						nextRailPointer++;
+					}
+					else if(nextRailPointer == (super.getKey().getKeyVal() - 1))
+					{
+						plainText = plainText + plainTextBuilder[nextRailPointer].substring(bottomRailPointer, bottomRailPointer + 1);
+						midPointer++; // midPointer can now be incremented, as this iteration of mid rails has already been completed.  
+						bottomRailPointer++;
+						nextRailPointer--;
+						direction = true;
+					}
+					else
+					{
+						plainText = plainText + plainTextBuilder[nextRailPointer].substring(midPointer, midPointer + 1);
+						nextRailPointer++;
+					}
+					index++;
+				}
+				while((nextRailPointer > 0) && direction && (index < textLength)) // The index conditional is because the code can be able to go into this while loop even if the last character has been done.  
+				{
+					if(nextRailPointer == 1)
+					{
+						plainText = plainText + plainTextBuilder[nextRailPointer].substring(midPointer, midPointer + 1);
+						midPointer++; // midPointer can now be incremented, as this was the last iteration of mid rails, in this direction.  
+						nextRailPointer--;
+						direction = false;
+					}
+					else
+					{
+						plainText = plainText + plainTextBuilder[nextRailPointer].substring(midPointer, midPointer + 1);
+						nextRailPointer--;
+					}
+					index++;
+				}
+			}
+			return plainText.getBytes("UTF-16");
 		}
-		plainTextBuilder[super.getKey().getKeyVal() - 1] = cipherText.substring(pointer);
-		boolean direction = false; // False for next rail being in the rail bellow, and True for next rail being above.  
-		int topRailPointer = 0;
-		int midPointer = 0;
-		int bottomRailPointer = 0;
-		int index = 0;
-		int nextRailPointer = 0;
-		while(index < textLength) 
+		catch(UnsupportedEncodingException e)
 		{
-			while((nextRailPointer < super.getKey().getKeyVal()) && !direction) 
+			e.printStackTrace();
+			System.out.println("Please use a computer that supports UTF-16 to use this program.  ");
+			System.out.println("Program exiting in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++);
 			{
-				if(nextRailPointer == 0) 
-				{
-					plainText = plainText + plainTextBuilder[nextRailPointer].substring(topRailPointer, topRailPointer + 1);
-					topRailPointer++;
-					nextRailPointer++;
-				}
-				else if(nextRailPointer == (super.getKey().getKeyVal() - 1))
-				{
-					plainText = plainText + plainTextBuilder[nextRailPointer].substring(bottomRailPointer, bottomRailPointer + 1);
-					midPointer++; // midPointer can now be incremented, as this iteration of mid rails has already been completed.  
-					bottomRailPointer++;
-					nextRailPointer--;
-					direction = true;
-				}
-				else
-				{
-					plainText = plainText + plainTextBuilder[nextRailPointer].substring(midPointer, midPointer + 1);
-					nextRailPointer++;
-				}
-				index++;
+				//Do nothing.  
 			}
-			while((nextRailPointer > 0) && direction && (index < textLength)) // The index conditional is because the code can be able to go into this while loop even if the last character has been done.  
-			{
-				if(nextRailPointer == 1)
-				{
-					plainText = plainText + plainTextBuilder[nextRailPointer].substring(midPointer, midPointer + 1);
-					midPointer++; // midPointer can now be incremented, as this was the last iteration of mid rails, in this direction.  
-					nextRailPointer--;
-					direction = false;
-				}
-				else
-				{
-					plainText = plainText + plainTextBuilder[nextRailPointer].substring(midPointer, midPointer + 1);
-					nextRailPointer--;
-				}
-				index++;
-			}
+			System.exit(1);
 		}
-		return plainText;
+		byte[] nullBytes = null; //Added because, 
+		return nullBytes; //compiler complains since it thinks nothing is being returned.  
 	}
 
 	@Override
-	protected String decryptCharCodes() throws InvalidCipherTextException
+	protected byte[] decryptCharCodes() throws InvalidCipherTextException
 	{
 		if((textLength % (2 * (super.getKey().getKeyVal() - 1))) != 0)
 			throw new InvalidCipherTextException("Ciphertext length is not a multiple of 2(key-1).  ");
-		String[] cipherArray = cipherText.split(" ");
+		String[] cipherArray = null;
+		try
+		{
+			String cipherString = new String(cipherText, "UTF-16");
+			cipherArray = cipherString.split(" ");
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+			System.out.println("Please use a computer that supports UTF-16 to use this program.  ");
+			System.out.println("Program exiting in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++);
+			{
+				//Do nothing.  
+			}
+			System.exit(1);
+		}
+		textLength = cipherArray.length;
 		int firstAndLastRailLength = textLength / (2 * (super.getKey().getKeyVal() - 1));
 		requiredLengthsCheck = 2 * firstAndLastRailLength;
 		int cipherTextPositionPointer = 0;
@@ -331,7 +413,23 @@ public class RailFenceCipher extends TranspositionCipher
 				}
 			}
 		}
-		return plainText;
+		try
+		{
+			return plainText.getBytes("UTF-16");
+		}
+		catch(UnsupportedEncodingException e)
+		{
+			e.printStackTrace();
+			System.out.println("Please use a computer that supports UTF-16 to use this program.  ");
+			System.out.println("Program exiting in 10 seconds.  ");
+			for(int i = 0; i < 10000; i++);
+			{
+				//Do nothing.  
+			}
+			System.exit(1);
+		}
+		byte[] nullByteArray = null; //Added because, 
+		return nullByteArray; //compiler thinks nothing is being returned.  
 	}
 	
 	//private boolean checkIfValid(String rail, int railSize) throws InvalidCipherTextException
