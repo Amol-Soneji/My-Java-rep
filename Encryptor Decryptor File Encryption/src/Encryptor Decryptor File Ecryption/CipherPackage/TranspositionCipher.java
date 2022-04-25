@@ -27,7 +27,7 @@ public abstract class TranspositionCipher
 		key = null;
 	}
 	
-	public abstract String compute(boolean resultType) throws Exception;
+	public abstract byte[] compute(boolean resultType) throws Exception;
 	
 	protected void setKey(TranspositionKey key)
 	{
@@ -48,7 +48,7 @@ public abstract class TranspositionCipher
 	
 	protected abstract String encryptCharCodes();
 	
-	protected abstract String decrypt() throws Exception;
+	protected abstract byte[] decrypt() throws Exception;
 	
-	protected abstract String decryptCharCodes() throws Exception;
+	protected abstract byte[] decryptCharCodes() throws Exception;
 }
