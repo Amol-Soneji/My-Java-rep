@@ -3,7 +3,7 @@ import CipherPackage.*;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.PrintWriter;//To remove.  
+//import java.io.PrintWriter;//To remove.  
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
@@ -385,7 +385,7 @@ public class main
 						System.out.println("Reading content of the file to be encrypted.  ");
 						SubstitutionCipher theCipher = new AffineCipher(readFile(inputFileName), theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
-						byte[] cipherText = "";
+						byte[] cipherText = null;
 						if(outputType == 1)
 							cipherText = theCipher.compute(true);
 						else
@@ -406,7 +406,7 @@ public class main
 						System.out.println(theKey.getKeyVal());
 						SubstitutionCipher theCipher = new CaeserCipher(readFile(inputFileName), theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
-						byte[] cipherText = "";
+						byte[] cipherText = null;
 						if(outputType == 1)
 							cipherText = theCipher.compute(true);
 						else
@@ -424,7 +424,7 @@ public class main
 					{
 						System.out.println("Reading the contents of the file to be encrypted.  ");
 						byte[] fileContents = readFile(inputFileName);
-						int contentLength = fileContents.length();
+						int contentLength = fileContents.length;
 						OneTimePadKey theKey = new OneTimePadKey(contentLength);
 						OneTimePadCipher theCipher = new OneTimePadCipher(fileContents, theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
@@ -448,7 +448,7 @@ public class main
 						System.out.println("Reading the contents of the file to be encrypted.  ");
 						RailFenceCipher theCipher = new RailFenceCipher(readFile(inputFileName), theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
-						byte[] cipherText = "";
+						byte[] cipherText = null;
 						if(outputType == 1)
 							cipherText = theCipher.compute(true);
 						else
@@ -472,7 +472,7 @@ public class main
 						System.out.println("Reading the contents of the file to be encrypted.  ");
 						VigenereCipher theCipher = new VigenereCipher(readFile(inputFileName), theKey, true);
 						System.out.println("Encrypting.  Please wait.  ");
-						byte[] cipherText = "";
+						byte[] cipherText = null;
 						if(usePunctuation == 1)
 							cipherText = theCipher.compute(true);
 						else
@@ -602,16 +602,14 @@ public class main
 	
 	private static byte[] readFile(String fileName)
 	{
-		byte[] fileContents;
+		byte[] fileContents = null;
 		try
 		{
 			File fileToRead = new File(fileName);
-			Scanner fileReader = new Scanner(fileToRead, "UTF-16"); //To remove.  
-			while(fileReader.hasNextLine())
-			{
-				fileContents = fileContents + fileReader.nextLine() + "\n";
-			}
-			fileReader.close();
+			//Scanner fileReader = new Scanner(fileToRead, "UTF-16"); //To remove. 
+			FileInputStream byteStream = new FileInputStream(fileToRead);
+			fileContents = byteStream.readAllBytes();
+			byteStream.close();
 		}
 		catch(IllegalArgumentException e)
 		{
@@ -643,9 +641,9 @@ public class main
 		try
 		{
 			File newFile = new File(fileName);
-			PrintWriter fileWriter = new PrintWriter(newFile, "UTF-16"); //To remove.  
-			fileWriter.print(contents);
-			fileWriter.close();
+			FileOutputStream outputByteStream = new FileOutputStream(newFile);
+			outputByteStream.write(contents);
+			outputByteStream.close();
 			return true;
 		}
 		catch(SecurityException e)
