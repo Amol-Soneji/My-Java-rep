@@ -12,3 +12,7 @@ Supported file encryption algorithms:
 -One-Time Pad [Done]  
 -Vigenère Cipher (with UTF-16 support) [Done]  
 -AES (CBC and GCM) (128-bit) [Done]  
+
+Testing:
+-AES (GCM) [Pass]
+-AES (CBC) 

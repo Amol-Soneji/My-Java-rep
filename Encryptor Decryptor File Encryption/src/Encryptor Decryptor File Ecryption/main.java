@@ -490,6 +490,7 @@ public class main
 			}
 			else
 			{
+				System.out.println(inputFileName);
 				String decryptedFileName = inputFileName.substring(0, inputFileName.indexOf("Encrypted"))
 										   + inputFileName.substring(inputFileName.indexOf("."));
 				int encryptedTextTypeInt = 0;
