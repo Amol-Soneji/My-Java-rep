@@ -15,4 +15,5 @@ Supported file encryption algorithms:
 
 Testing:
 -AES (GCM) [Pass]
--AES (CBC) 
+-AES (CBC) [Pass]
+-One-Time Pad 

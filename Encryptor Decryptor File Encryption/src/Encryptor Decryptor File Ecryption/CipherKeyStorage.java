@@ -373,8 +373,8 @@ public class CipherKeyStorage
 				}
 				else
 				{
-					firstComp = readKeyFile(rSet.getString(1)).rewind();
-					ByteBuffer IVVal = readKeyFile(rSet.getString(2)).rewind();
+					firstComp = readKeyFile(rSet.getString(2)).rewind();
+					ByteBuffer IVVal = readKeyFile(rSet.getString(3)).rewind();
 					byteBuffArr.add(firstComp);
 					byteBuffArr.add(IVVal);
 				}
@@ -854,7 +854,14 @@ public class CipherKeyStorage
 		ByteBuffer componentBuffer = null;
 		try
 		{
+			File currentDirectory = new File(".");
+			File[] listOfFiles = currentDirectory.listFiles();
+			for(File aFile : listOfFiles)
+			{
+				System.out.println(aFile.getName());
+			}
 			File componentFile = new File(keyFileName);
+			System.out.println(componentFile.canRead());
 			if(!componentFile.isFile())
 			{
 				System.out.println("Key component file " + keyFileName + "not found.  Please \n "
@@ -862,6 +869,7 @@ public class CipherKeyStorage
 				componentBuffer = ByteBuffer.allocate(1);
 				componentBuffer.put((byte) -1);
 			}
+			System.out.println(System.getProperty("user.dir"));
 			FileInputStream componentStream = new FileInputStream(componentFile);
 			byte[] componentContent = componentStream.readAllBytes();
 			componentStream.close();

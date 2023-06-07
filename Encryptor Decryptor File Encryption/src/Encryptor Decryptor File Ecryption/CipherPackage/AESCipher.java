@@ -131,7 +131,6 @@ public class AESCipher extends BlockCipher
 			Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 			try
 			{
-				System.out.println("This is not the correct place right now, testing still on GCM.  ");
 				SecretKeySpec keySpec = new SecretKeySpec(getBlockKey().getKey().getEncoded(), "AES");
 				IvParameterSpec ivSpec = new IvParameterSpec(getBlockKey().getIV());
 				cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
